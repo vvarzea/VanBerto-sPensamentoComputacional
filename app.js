@@ -4318,10 +4318,10 @@ const ROOMS = {
        "Porta 4: a palavra é CIBERCONDUTA."],
       ["Porta 5: analisa cada opção — qual tem mais comprimento e variedade de caracteres?",
        "Porta 5: palavras do dicionário + anos são fáceis de adivinhar, mesmo com maiúsculas.",
-       "Porta 5: a resposta é C — Xk#9!mPq3@Lr. Aleatória, longa, sem padrão previsível."],
+       "Porta 5: a resposta certa é a aleatória: Xk#9!mPq3@Lr. Aleatória, longa, sem padrão previsível."],
       ["Porta 6: lê o cenário com atenção — há 4 opções muito parecidas.",
        "Porta 6: nunca cliques em links de emails urgentes. Urgência é técnica de phishing.",
-       "Porta 6: resposta C — vai diretamente ao site oficial do banco, sem usar o link."],
+       "Porta 6: a resposta certa é a que vai diretamente ao site oficial do banco, sem usar o link."],
       ["Porta 7: são 17 letras formando 2 palavras sobre a tua presença permanente online.",
        "Porta 7: pensa no que deixas para trás na internet — permanente e pesquisável.",
        "Porta 7: a expressão é IDENTIDADE DIGITAL."],
@@ -4334,8 +4334,8 @@ const ROOMS = {
 <b>Porta 2</b> — Corretas: <b>2, 3, 5, 6</b> (apoiar em privado, guardar provas, bloquear, avisar adulto). Erradas: 1 (ignorar não é solução) e 4 (comentar publicamente pode escalar o conflito).<br>
 <b>Porta 3</b> — Ordem: Parar → Apoiar vítima em privado → Guardar provas → Bloquear/denunciar → Avisar adulto.<br>
 <b>Porta 4</b> — Anagrama: <b>CIBERCONDUTA</b> (12 letras).<br>
-<b>Porta 5</b> — Resposta: <b>C</b> (Xk#9!mPq3@Lr — aleatória, longa, sem palavras reais). Erradas: A (palavra+ano fácil de adivinhar), B (sequência numérica), D (nome próprio+números previsível).<br>
-<b>Porta 6</b> — Resposta: <b>C</b> (apagar o email e ir diretamente ao site oficial do banco sem usar o link). A urgência falsa é a técnica central do phishing — nunca clicar em links de emails suspeitos.<br>
+<b>Porta 5</b> — Resposta: <b>Xk#9!mPq3@Lr</b> (aleatória, longa, sem palavras reais). Erradas: Portugal2024 (palavra+ano fácil de adivinhar), 12345678! (sequência numérica), pedro1234! (nome próprio+números previsível).<br>
+<b>Porta 6</b> — Resposta: <b>ir ao site oficial</b> (apagar o email e ir diretamente ao site oficial do banco sem usar o link). A urgência falsa é a técnica central do phishing — nunca clicar em links de emails suspeitos.<br>
 <b>Porta 7</b> — Anagrama: <b>IDENTIDADE DIGITAL</b> (2 palavras, 17 letras sem acentos).<br>
 <b>Porta 8</b> — Corretas: <b>1, 3, 5</b> (tratar com respeito, não partilhar dados pessoais, pedir ajuda a adulto/professor).`,
     doors:[
@@ -4359,13 +4359,13 @@ const ROOMS = {
     missionTitle:"Missão: Salvar a Fonte da Escola",
     robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos salvar a fonte da escola! 💧",
     finalMessage:"Conseguiste abrir as 8 portas e salvar a fonte da escola!",
-    pedagogicalSummary:"💧 Cada gota conta! Uma torneira a pingar desperdiça +5 500 litros por ano. Um duche de 5 minutos usa 50L — a banheira usa 150L. Pequenas ações quotidianas podem salvar milhares de litros e proteger o futuro do planeta.",
+    pedagogicalSummary:"💧 Cada gota conta! Uma torneira a pingar desperdiça +5 500 litros por ano. Um duche de 5 minutos usa 40L — a banheira usa 120L. Pequenas ações quotidianas podem salvar milhares de litros e proteger o futuro do planeta.",
     hints:[
       ["Porta 1: 4 frases — 3 são verdadeiras. Cuidado com mitos sobre desperdício!",
        "Porta 1: a frase 2 é mito — uma torneira a pingar desperdiça ~5500 litros/ano.",
-       "Porta 1: verdadeiras 1, 3 e 4. Código = (3)(1.ª=1)(2.ª=3) = 313."],
+       "Porta 1: verdadeiras 1, 3 e 4. Código = (3)(1)(3)(4) = 3134."],
       ["Porta 2: 6 opções — algumas parecem poupar água mas não tanto quanto pensas.",
-       "Porta 2: a banheira usa ~150L. Um duche de 5 min usa ~50L. Qual poupa mais?",
+       "Porta 2: a banheira usa ~120L. Um duche de 5 min usa ~40L. Qual poupa mais?",
        "Porta 2: corretas 1, 3, 4, 6. Erradas: 2 (banheira) e 5 (torneira aberta ao ensaboar)."],
       ["Porta 3: o ciclo da água tem 4 fases — em que ordem acontecem?",
        "Porta 3: começa pela evaporação (sol aquece a água) e termina com infiltração (solo).",
@@ -4375,10 +4375,10 @@ const ROOMS = {
        "Porta 4: a palavra é PRECIPITACAO."],
       ["Porta 5: calcula com atenção — duche × litros × pessoas × dias.",
        "Porta 5: duche de 4 min × 8L/min = 32L/pessoa/dia. Faz as contas para 4 pessoas, 7 dias.",
-       "Porta 5: opção C — 4×4×8×7 + 12×7 = 896+84 = 980L/semana. A mais eficiente!"],
+       "Porta 5: a opção certa é o duche de 4 min — 4×4×8×7 + 12×7 = 896+84 = 980L/semana. A mais eficiente!"],
       ["Porta 6: quando há fuga de água, qual é a prioridade?",
        "Porta 6: avisar sempre um adulto — e fechar a torneira se for seguro fazê-lo.",
-       "Porta 6: resposta B — avisar adulto/professor e fechar a torneira."],
+       "Porta 6: a resposta certa é avisar adulto/professor e fechar a torneira."],
       ["Porta 7: 2 palavras (sem acento) sobre água que podemos consumir.",
        "Porta 7: 4+7 letras — o adjetivo descreve a água segura para beber.",
        "Porta 7: a expressão é AGUA POTAVEL."],
@@ -4388,11 +4388,11 @@ const ROOMS = {
     ],
     teacherNotes:`<h4>📋 Notas para a Professora</h4>
 <b>Porta 1</b> — Verdadeiras: 1, 3 e 4; código <b>3134</b>. (Frase 2 é mito: torneira a pingar desperdiça ~5500L/ano.)<br>
-<b>Porta 2</b> — Corretas: 1, 3, 4, 6. Erradas: 2 (banheira usa ~150L vs duche 5min=50L), 5 (torneira aberta ao ensaboar desperdiça ~8L).<br>
+<b>Porta 2</b> — Corretas: 1, 3, 4, 6. Erradas: 2 (banheira usa ~120L vs duche 5min=40L), 5 (torneira aberta ao ensaboar desperdiça ~8L).<br>
 <b>Porta 3</b> — Ordem: Evaporação → Condensação → Precipitação → Infiltração.<br>
 <b>Porta 4</b> — Anagrama: <b>PRECIPITACAO</b>.<br>
-<b>Porta 5</b> — Resposta: C (duche 4min×4pessoas×7dias + lava-loiças 1x/dia = ~980L/semana, o mais eficiente).<br>
-<b>Porta 6</b> — Resposta: B (avisar adulto e fechar a torneira se for seguro).<br>
+<b>Porta 5</b> — Resposta: duche de 4 min (duche 4min×4pessoas×7dias + lava-loiças 1x/dia = ~980L/semana, o mais eficiente).<br>
+<b>Porta 6</b> — Resposta: avisar adulto e fechar a torneira se for seguro.<br>
 <b>Porta 7</b> — Anagrama: <b>AGUA POTAVEL</b>.<br>
 <b>Porta 8</b> — Resposta livre: ≥ 3 práticas de poupança de água.`,
     doors:[
@@ -4426,7 +4426,7 @@ const ROOMS = {
        "Porta 2: corretas 1, 2, 4, 6. Erradas: 3 (velas) e 5 (janela em hora de ponta)."],
       ["Porta 3: 4 opções — qual fonte polui MAIS o ar interior de uma sala com muitas pessoas?",
        "Porta 3: cada pessoa expira CO₂. Sem ventilação, os níveis sobem rapidamente.",
-       "Porta 3: resposta B — muitas pessoas sem ventilação é a maior fonte de CO₂ interior."],
+       "Porta 3: a resposta certa é: muitas pessoas sem ventilação é a maior fonte de CO₂ interior."],
       ["Porta 4: 8 letras sobre a contaminação do ar por substâncias nocivas — gases, fumo, partículas.",
        "Porta 4: é o efeito de gases de escape, fábricas e queimadas no ar que respiramos.",
        "Porta 4: a palavra é POLUICAO."],
@@ -4435,7 +4435,7 @@ const ROOMS = {
        "Porta 5: Comboio: 150×14g = 2100g = 2,1kg CO₂. O mais eficiente!"],
       ["Porta 6: a sala tem CO₂ elevado. Qual é a solução mais eficaz e segura?",
        "Porta 6: abrir janelas renova o ar. Avisar um adulto é sempre a atitude certa.",
-       "Porta 6: resposta B — abrir janelas para ventilar e avisar um adulto/professor."],
+       "Porta 6: a resposta certa é abrir janelas para ventilar e avisar um adulto/professor."],
       ["Porta 7: 2 palavras (sem acento) sobre o que queremos respirar todos os dias.",
        "Porta 7: adjetivo + substantivo — descreve o ar que não tem poluição.",
        "Porta 7: a expressão é AR LIMPO."],
@@ -4446,10 +4446,10 @@ const ROOMS = {
     teacherNotes:`<h4>📋 Notas para a Professora</h4>
 <b>Porta 1</b> — Verdadeiras: 1 e 3; código <b>213</b>. (Frase 2: carros elétricos têm impacto na produção de energia. Frase 4: ozono estratosférico protege-nos.)<br>
 <b>Porta 2</b> — Corretas: 1, 2, 4, 6. Erradas: 3 (velas produzem partículas finas), 5 (hora de ponta = mais poluição).<br>
-<b>Porta 3</b> — Resposta: <b>B</b> (muitas pessoas sem ventilação — acumulação de CO₂ e humidade).<br>
+<b>Porta 3</b> — Resposta: <b>muitas pessoas sem ventilação</b> (muitas pessoas sem ventilação — acumulação de CO₂ e humidade).<br>
 <b>Porta 4</b> — Anagrama: <b>POLUICAO</b> (8 letras, sem acento).<br>
-<b>Porta 5</b> — Resposta: C (comboio: 15×2×5×14g = 2.100g = 2,1kg CO₂/semana).<br>
-<b>Porta 6</b> — Resposta: B (abrir janelas + avisar adulto).<br>
+<b>Porta 5</b> — Resposta: comboio (15×2×5×14g = 2.100g = 2,1kg CO₂/semana).<br>
+<b>Porta 6</b> — Resposta: abrir janelas + avisar adulto.<br>
 <b>Porta 7</b> — Anagrama: <b>AR LIMPO</b>.<br>
 <b>Porta 8</b> — Resposta livre: ≥ 3 boas práticas (mínimo 4 caracteres cada) para proteger o ar.`,
     doors:[
@@ -4542,7 +4542,7 @@ const ROOMS = {
        "Sala 2: a palavra é DESINFORMACAO."],
       ["Sala 3: qual título usa linguagem exagerada, mistério e não tem fonte identificável?",
        "Sala 3: clickbait usa palavras como 'chocante', 'nunca viste', 'vai mudar tudo'.",
-       "Sala 3: o título B é clickbait — exagerado, misterioso, sem fonte, apela à emoção."],
+       "Sala 3: o clickbait é o título exagerado, misterioso, sem fonte, apela à emoção."],
       ["Sala 4: ordena os 4 passos para verificar antes de partilhar.",
        "Sala 4: começa por parar e não partilhar impulsivamente. Depois verifica a fonte.",
        "Sala 4: ordem — Parar → Verificar fonte → Comparar fontes → Só então partilhar."],
@@ -4554,7 +4554,7 @@ const ROOMS = {
        "Sala 6: corretas: urgência ('partilha já'), sem fonte identificável, linguagem emocional."],
       ["Sala 7: o que deves fazer quando recebes um vídeo que parece falso?",
        "Sala 7: deepfakes são difíceis de detetar. A atitude certa é verificar antes de reagir.",
-       "Sala 7: resposta B — não partilhar e procurar o vídeo em fontes oficiais para verificar se é deepfake."],
+       "Sala 7: a resposta certa é não partilhar e procurar o vídeo em fontes oficiais para verificar se é deepfake."],
       ["Sala 8: escolhe exatamente 3 boas práticas contra Fake News.",
        "Sala 8: verificar fonte, usar facto-checkers e não partilhar sem confirmar são as essenciais.",
        "Sala 8: corretas: verificar fonte, consultar sites de facto-checking e não partilhar na dúvida."]
@@ -4562,11 +4562,11 @@ const ROOMS = {
     teacherNotes:`<h4>📋 Notas para a Professora</h4>
 <b>Porta 1</b> — Verdadeiras: <b>2 e 4</b> (fotos podem ser deepfakes; fact-checking é ferramenta essencial); código <b>224</b>. Erradas: 1 (fotos podem ser manipuladas), 3 (título não chega para verificar).<br>
 <b>Porta 2</b> — Anagrama: <b>DESINFORMACAO</b> (13 letras, sem acentos).<br>
-<b>Porta 3</b> — Clickbait: título <b>B</b> (maiúsculas, emojis excessivos, linguagem alarmante sem fonte).<br>
+<b>Porta 3</b> — Clickbait: o título <b>alarmista</b> (maiúsculas, emojis excessivos, linguagem alarmante sem fonte).<br>
 <b>Porta 4</b> — Ordem: Parar → Verificar quem publicou → Comparar com outras fontes → Só partilhar com certeza.<br>
 <b>Porta 5</b> — Ligações: Urgência extrema↔manipulação, Sem fonte/autor↔informação inventada, Erros ortográficos↔não revisto, Emojis/maiúsculas↔clickbait.<br>
 <b>Porta 6</b> — 3 sinais corretos: <b>1</b> (urgência extrema), <b>3</b> (sem fonte/data/autor), <b>5</b> (afirmação chocante impossível de verificar). Errados: 2 (estar em WhatsApp não é sinal) e 4 (emojis de limão não são sinal).<br>
-<b>Porta 7</b> — Resposta: <b>B</b> (não partilhar, procurar em fontes oficiais e verificar se é deepfake).<br>
+<b>Porta 7</b> — Resposta: <b>não partilhar</b> (e procurar em fontes oficiais e verificar se é deepfake).<br>
 <b>Porta 8</b> — Corretas: <b>1, 3, 5</b> (verificar a fonte, comparar com outros sites confiáveis, falar com adulto quando há dúvidas).`,
     doors:[
       {id:1,icon:"🧩",title:"Sala 1 · Código da Verdade",topic:"Verdadeiro/Falso + código",points:15},
@@ -4863,7 +4863,7 @@ function er_renderDoorsSidebar(){
 }
 
 /* ═══════════════════ SELECT DOOR ═══════════════════ */
-function er_renderHintBtn(doorIdx){
+function er_renderHintBtn(doorIdx,asEl){
   const hints=erCurrentRoom&&erCurrentRoom.hints;
   const hint=hints&&hints[doorIdx];
   if(!hint) return "";
@@ -4908,7 +4908,7 @@ function er_renderHintBtn(doorIdx){
     }
   };
   const wrap=document.createElement("div"); wrap.appendChild(btn); wrap.appendChild(box);
-  return wrap.outerHTML;
+  return asEl?wrap:wrap.outerHTML;
 }
 function er_selectDoor(i){
   if(erState.timeUp) return;
@@ -4919,7 +4919,7 @@ function er_selectDoor(i){
   document.getElementById("er-mission-title").textContent=d.title+" "+d.icon;
   document.getElementById("er-mission-topic").textContent=d.topic+" · +"+d.points+" ⭐ · Tentativas: "+erState.triesPerDoor[i];
   document.getElementById("er-mission-speech").textContent=(erCurrentRoom.noTimer?T("erRoomWord"):T("erDoorWord"))+" "+(i+1)+": "+T("erLetsGo");
-  document.getElementById("er-hint-area").innerHTML=er_renderHintBtn(0);
+  {const ha=document.getElementById("er-hint-area");ha.innerHTML="";const hb=er_renderHintBtn(i,true);if(hb)ha.appendChild(hb);}
   erSetFeedback("info","");
   er_renderDoorsSidebar();
   const CE=document.getElementById("er-mission-content");
@@ -4996,7 +4996,7 @@ function er_showFinalPopup(bonus=0){
   const emoji=pct>=90?"🏆":pct>=65?"🎉":"😊";
   document.getElementById("er-final-emoji").textContent=emoji;
   document.getElementById("er-final-title").textContent=T("erMissionComplete")+" "+stars;
-  document.getElementById("er-final-text").textContent=erCurrentRoom.finalMessage+((!erCurrentRoom.noTimer&&!window.vbErNoTimer&&!erState.overtime)?"  ⚡ Medalha de velocidade!":"");
+  document.getElementById("er-final-text").textContent=erCurrentRoom.finalMessage;
   // Pedagogical summary
   const summaryEl=document.getElementById("er-final-summary");
   if(summaryEl){
@@ -5041,7 +5041,9 @@ document.getElementById("er-btn-hint").addEventListener("click",()=>{
   const tries=erState.triesPerDoor[idx]||0;
   const maxLevel=tries>=3?2:tries>=1?1:0;
   erState.hintsUsed++;
-  const levelIdx=Math.min(erState.hintsUsed-1,maxLevel,levels.length-1);
+  erState.hintsPerDoor=erState.hintsPerDoor||{};
+  const _u=erState.hintsPerDoor[idx]||0; erState.hintsPerDoor[idx]=_u+1;
+  const levelIdx=Math.min(_u,maxLevel,levels.length-1);
   const levelLabel=levelIdx===0?"geral":levelIdx===1?"específica":"resposta";
   const ha=document.getElementById("er-hint-area");
   ha.innerHTML=`<div class="er-hint-panel">💡 <span><b>Pista ${levelIdx+1} (${levelLabel}):</b> ${levels[levelIdx]||"Lê bem o enunciado e pensa com calma."}</span></div>`;
@@ -5112,6 +5114,12 @@ function erLockPuzzle(container){
   container.querySelectorAll(".er-mc-option").forEach(el=>{ el.classList.add("answered"); });
 }
 
+/* ── Feedback de caixas de seleção: diz quantas estão mal, sem revelar quais ── */
+function erWrongMsg(c,exp){
+  const n=c.filter((v,k)=>v!==!!exp[k]).length;
+  return `<div class="er-msgbox err"><b>❌ Ainda não.</b> Tens ${n} escolha${n!==1?"s":""} por corrigir. Desconfia das que parecem certas mas podem ter o efeito contrário — pensa no que acontece a seguir.</div>`;
+}
+
 /* ── Multiple Choice (Malware / FakeNews) ── */
 function er_mcRoom(data,idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   CE.innerHTML=`
@@ -5122,7 +5130,9 @@ function er_mcRoom(data,idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   const AA=document.getElementById("er-mc-answers");
   const letters=["A","B","C","D"];
   let answered=false;
-  data.answers.forEach((a,ai)=>{
+  const _ans=data.answers.map(a=>({...a,text:a.text.replace(/^[A-D]\s*·\s*/,"")}));
+  for(let j=_ans.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[_ans[j],_ans[k]]=[_ans[k],_ans[j]];}
+  _ans.forEach((a,ai)=>{
     const btn=document.createElement("div");
     btn.className="er-mc-option"; btn.tabIndex=0;
     btn.innerHTML=`<div class="er-mc-badge">${letters[ai]}</div><div>${a.text}</div>`;
@@ -5393,7 +5403,7 @@ function er_imsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> Se receber uma mensagem estranha de um amigo a pedir dinheiro, devo confirmar por telefone antes de responder.</div></label>
       </div>
       <div class="er-field"><label class="er-lbl-small" for="d1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Ex: 214" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
+        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
         <div id="d1_msg"></div></div>`;
     document.getElementById("d1_check").addEventListener("click",()=>{
       erAddTry(0);
@@ -5418,19 +5428,18 @@ function er_imsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         <label class="er-choice"><input type="checkbox" id="d2_5"/> <div><b>5.</b> Bloquear e denunciar a conta do agressor na plataforma</div></label>
         <label class="er-choice"><input type="checkbox" id="d2_6"/> <div><b>6.</b> Avisar um adulto ou professor de confiança sobre a situação</div></label>
       </div>
-      <div class="er-mini" style="color:var(--err);margin-top:4px;">⚠️ Opção 4 parece correta mas pode escalar o conflito — na dúvida, fala em privado ou com um adulto.</div>
-      <div class="er-row"><button class="btn sm" id="d2_check">Confirmar</button></div><div id="d2_msg"></div>`;
+            <div class="er-row"><button class="btn sm" id="d2_check">Confirmar</button></div><div id="d2_msg"></div>`;
     document.getElementById("d2_check").addEventListener("click",()=>{
       erAddTry(1);
       const c=[1,2,3,4,5,6].map(i=>document.getElementById("d2_"+i).checked);
       // Correct: 2,3,5,6 (apoiar, provas, bloquear, avisar adulto) — NOT 1 (ignorar) NOT 4 (comentar público)
       const ok=!c[0]&&c[1]&&c[2]&&!c[3]&&c[4]&&c[5];
-      if(!ok){document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Atenção à opção 4 — comentar publicamente pode escalar o conflito. E ignorar nunca é a solução.</div>`;erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");return;}
+      if(!ok){document.getElementById("d2_msg").innerHTML=`${erWrongMsg(c,[0,1,1,0,1,1])}`;erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");return;}
       document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Apoiar em privado, guardar provas, bloquear e avisar um adulto. +${D[1].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 2 concluída.");erCompleteDoor(1);
     });
   } else if(idx===2){
     // Harder: 5-step order with subtle wrong options mixed in (no obviously bad steps)
-    er_orderDoor(3,"Ordena os 5 passos corretos quando testemunhas ciberbullying contra um colega.",
+    er_orderDoor(3,"Ordena os 5 passos corretos quando testemunhas ciberbullying contra um colega. Pensa: o que tens de fazer ANTES de bloquear, para não perderes as provas?",
       ["Parar e não reagir impulsivamente — respirar fundo",
        "Apoiar a vítima em privado — ela não está sozinha",
        "Guardar provas (capturas de ecrã com data/hora visível)",
@@ -5457,7 +5466,7 @@ function er_imsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       question:"Recebes um email do 'Banco de Portugal' a dizer que a tua conta vai ser bloqueada em 24h. O email tem um link para 'confirmar os teus dados'. O que fazes?",
       answers:[
         {text:"A · Clico no link, é urgente e não quero perder o acesso", correct:false, fb:"❌ Urgência falsa é a principal técnica de phishing. Nunca cliques sem verificar."},
-        {text:"B · Reencaminho para os meus pais e explico o que recebi", correct:false, fb:"Quase certo — mas reencaminhar pode espalhar o link. O melhor é mostrar sem clicar."},
+        {text:"B · Reencaminho o email aos meus amigos para os avisar", correct:false, fb:"❌ Reencaminhar espalha o link perigoso. Para avisar alguém, mostra o email a um adulto sem clicar no link."},
         {text:"C · Apago o email, vou diretamente ao site do banco (sem usar o link) e verifico se há algum problema", correct:true,  fb:"✅ Perfeito! Nunca uses links de emails suspeitos. Vai sempre diretamente ao site oficial."},
         {text:"D · Respondo ao email a pedir mais informações antes de decidir", correct:false, fb:"❌ Responder confirma que o email existe e é lido — podes receber mais ataques."}
       ]
@@ -5488,7 +5497,7 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> Um duche de 5 minutos usa menos água do que um banho de banheira completa.</div></label>
       </div>
       <div class="er-field"><label class="er-lbl-small" for="d1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Ex: 3134" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
+        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
         <div id="d1_msg"></div></div>`;
     document.getElementById("d1_check").addEventListener("click",()=>{
       erAddTry(0);
@@ -5512,9 +5521,9 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
     document.getElementById("d2_check").addEventListener("click",()=>{
       erAddTry(1);
       const c=[1,2,3,4,5,6].map(i=>document.getElementById("d2_"+i).checked);
-      // Correct: 1,3,4,6. Wrong: 2 (banheira usa 150L vs duche 40L), 5 (deixar aberta)
+      // Correct: 1,3,4,6. Wrong: 2 (banheira usa 120L vs duche 40L), 5 (deixar aberta)
       const ok=c[0]&&!c[1]&&c[2]&&c[3]&&!c[4]&&c[5];
-      if(!ok){document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Atenção: a banheira usa ~150L vs duche de 5min = ~50L! E a torneira aberta enquanto ensaboamos desperdiça ~8L.</div>`;erPlaySound("wrong");return;}
+      if(!ok){document.getElementById("d2_msg").innerHTML=`${erWrongMsg(c,[1,0,1,1,0,1])}`;erPlaySound("wrong");return;}
       document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[1].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 2 concluída.");erCompleteDoor(1);
     });
   } else if(idx===2){
@@ -5535,7 +5544,7 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         {text:"A · Cada pessoa toma um duche de 10 min por dia (4×10×8L×7 dias)", correct:false, fb:"❌ 4×10×8×7 = 2.240 L/semana. Demasiado!"},
         {text:"B · Cada pessoa toma um banho de banheira completa por dia (4×120L×7 dias)", correct:false, fb:"❌ 4×120×7 = 3.360 L/semana. O mais dispendioso!"},
         {text:"C · Cada pessoa toma um duche de 4 min por dia + lava-loiças 1x/dia (4×4×8×7 + 12×7)", correct:true,  fb:"✅ 896L + 84L = 980 L/semana. A opção mais eficiente!"},
-        {text:"D · Lava-loiças a funcionar 3x por dia (12×3×7 dias)", correct:false, fb:"❌ 12×21 = 252L. Mas ignora a higiene pessoal! Incompleto."}
+        {text:"D · Cada pessoa toma um duche de 6 min por dia + lava-loiças 2x/dia (4×6×8×7 + 12×14)", correct:false, fb:"❌ 1.344 L + 168 L = 1.512 L/semana. Mais do que a opção do duche de 4 min."}
       ]
     },4,CE,addTry,erCompleteDoor,erState,erSetFeedback,erPlaySound);
   } else if(idx===5){
@@ -5562,11 +5571,11 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       <div class="er-field">
         <label class="er-choice"><input type="checkbox" id="d1_q1"/> <div><b>1.</b> Ventilar uma sala de aula durante 10 minutos reduz o CO₂ acumulado e melhora a concentração.</div></label>
         <label class="er-choice"><input type="checkbox" id="d1_q2"/> <div><b>2.</b> Os carros elétricos não produzem qualquer impacto ambiental — são 100% limpos.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q3"/> <div><b>3.</b> Uma viagem de bicicleta de 5 km em vez de carro poupa cerca de 1 kg de CO₂.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> O ozono na estratosfera é prejudicial — devemos eliminar toda a camada de ozono.</div></label>
+        <label class="er-choice"><input type="checkbox" id="d1_q3"/> <div><b>3.</b> Fazer 5 km de bicicleta (ida e volta) em vez de carro poupa cerca de 1 kg de CO₂.</div></label>
+        <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> O ozono junto ao solo e o ozono na estratosfera têm exatamente o mesmo efeito na nossa saúde.</div></label>
       </div>
       <div class="er-field"><label class="er-lbl-small" for="d1_code">Código</label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Ex: 213" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
+        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
         <div id="d1_msg"></div></div>`;
     document.getElementById("d1_check").addEventListener("click",()=>{
       erAddTry(0);
@@ -5592,7 +5601,7 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       const c=[1,2,3,4,5,6].map(i=>document.getElementById("d2_"+i).checked);
       // Correct: 1,2,4,6. Wrong: 3 (velas produzem partículas finas), 5 (hora de ponta = mais poluição)
       const ok=c[0]&&c[1]&&!c[2]&&c[3]&&!c[4]&&c[5];
-      if(!ok){document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b></div>`;erPlaySound("wrong");return;}
+      if(!ok){document.getElementById("d2_msg").innerHTML=`${erWrongMsg(c,[1,1,0,1,0,1])}`;erPlaySound("wrong");return;}
       document.getElementById("d2_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[1].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 2 concluída.");erCompleteDoor(1);
     });
   } else if(idx===2){
@@ -5611,7 +5620,7 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   } else if(idx===4){
     er_mcRoom({
       speech:"<b>Porta 5 — Emissões de CO₂</b><br>Carro = 120g CO₂/km · Autocarro = 68g/km por passageiro · Comboio = 14g/km.",
-      question:"O Pedro percorre 15 km por dia, 5 dias por semana (ida+volta). Qual transporte emite menos CO₂ numa semana?",
+      question:"O Pedro percorre 15 km em cada sentido (ida e volta), 5 dias por semana. Qual transporte emite menos CO₂ numa semana?",
       answers:[
         {text:"A · Carro todos os dias  (15×2×5 = 150 km × 120g)", correct:false, fb:"❌ 150×120g = 18.000g = 18kg CO₂! Enorme impacto ambiental."},
         {text:"B · Autocarro todos os dias  (150 km × 68g)", correct:false, fb:"❌ 150×68g = 10.200g = 10,2kg. Melhor que o carro, mas não o mínimo."},
@@ -5659,9 +5668,14 @@ function er_anagramaDoor(doorN,scrambled,answer,hint,CE,addTry,erCompleteDoor,D,
       <span style="font-size:1rem;flex-shrink:0;">💡</span>
       <div><b>Pista:</b> ${hint}<br><span style="font-size:.73rem;opacity:.75;">${sizeHint}</span></div>
     </div>
+    <div id="d_mask" style="text-align:center;font-weight:900;letter-spacing:.2em;font-size:1.05rem;margin:2px 0 6px;"></div><div style="text-align:center;margin-bottom:6px;"><button class="btn sm" id="d_reveal" type="button">🔎 Revelar mais uma letra</button></div>
     <div class="er-field"><label class="er-lbl-small" for="d_word">${isPhrase?"Expressão secreta (sem acentos)":"Palavra secreta (sem acentos)"}</label>
       <div class="er-row"><input id="d_word" type="text" placeholder="Escreve aqui…" autocomplete="off" autocorrect="off" spellcheck="false"/><button class="btn sm" id="d_check">Desbloquear</button></div>
       <div id="d_msg"></div></div>`;
+  let _rev=0; const _words=answer.split(" ");
+  const _mask=()=>{let n=0;document.getElementById("d_mask").textContent=_words.map(w=>[...w].map((ch,j)=>{if(j===0)return ch;const sh=n<_rev;n++;return sh?ch:"_";}).join(" ")).join("   ");};
+  _mask();
+  document.getElementById("d_reveal").addEventListener("click",()=>{const tot=answer.replace(/\s+/g,"").length-_words.length;if(_rev<tot)_rev++;_mask();if(_rev>=tot)document.getElementById("d_reveal").disabled=true;});
   document.getElementById("d_check").addEventListener("click",()=>{
     erAddTry(i);
     const w=erNormalize(document.getElementById("d_word").value).replace(/\s+/g," ").trim();
@@ -5686,6 +5700,10 @@ function er_anagramaDoor(doorN,scrambled,answer,hint,CE,addTry,erCompleteDoor,D,
 function er_radioDoor(doorN,question,options,correct,D,dIdx,addTry,erCompleteDoor,setFeedback,playSound,CE){
   const i=dIdx-1;
   const name="r"+doorN;
+  const _L="ABCDEFG"; const _okTxt=options[_L.indexOf(correct)].replace(/^[A-G]\.\s*/,"");
+  const _o=options.map(o=>o.replace(/^[A-G]\.\s*/,""));
+  for(let j=_o.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[_o[j],_o[k]]=[_o[k],_o[j]];}
+  options=_o.map((t,ix)=>_L[ix]+". "+t); correct=_L[_o.indexOf(_okTxt)];
   CE.innerHTML=`<div class="er-mini"><b>Situação:</b> ${question}</div>
     <div class="er-field">${options.map(opt=>`<label class="er-choice"><input type="radio" name="${name}" value="${opt[0]}"/> <div>${opt}</div></label>`).join("")}</div>
     <div class="er-row"><button class="btn sm" id="rad_check">Confirmar</button></div><div id="rad_msg"></div>`;
@@ -5728,7 +5746,7 @@ function er_checkboxes3Door(doorN,instruction,items,correctIdxs,D,addTry,erCompl
 /* ── HELPER: Resposta livre ── */
 function er_livreDoor(doorN,instr,placeholder,D,addTry,erCompleteDoor,setFeedback,playSound,CE){
   const i=doorN-1;
-  CE.innerHTML=`<div class="er-mini"><b>💬 Desafio final:</b> ${instr}<br><span style="color:var(--muted);font-size:.78rem;">Escreve cada prática numa linha ou separadas por vírgula. Mínimo 3 palavras cada.</span></div>
+  CE.innerHTML=`<div class="er-mini"><b>💬 Desafio final:</b> ${instr}<br><span style="color:var(--muted);font-size:.78rem;">Escreve cada prática numa linha ou separadas por vírgula. 3 práticas diferentes.</span></div>
     <div class="er-field"><label class="er-lbl-small" for="livre_in">As tuas 3 boas práticas</label>
       <textarea id="livre_in" rows="4" placeholder="${placeholder}" style="width:100%;padding:8px 12px;border-radius:10px;border:1.5px solid rgba(199,210,254,0.7);font-family:'Nunito Sans',sans-serif;font-size:.82rem;resize:vertical;outline:none;color:#0f172a;background:#fff;"></textarea>
       <div class="er-row" style="margin-top:5px;"><button class="btn sm" id="livre_check">✅ Concluir</button></div>
@@ -5736,10 +5754,15 @@ function er_livreDoor(doorN,instr,placeholder,D,addTry,erCompleteDoor,setFeedbac
   document.getElementById("livre_check").addEventListener("click",()=>{
     erAddTry(i);
     const raw=(document.getElementById("livre_in").value||"");
-    const items=raw.split(/[\n,;]/).map(s=>s.trim()).filter(s=>s.length>=4);
+    const KW={agua:/torneira|duche|banho|fuga|reg(a|ar|ue)|reutiliz|louca|maquina|lavar|balde|poupar|fechar|reparar|chuva|jardim|escov|carga|autoclismo|descarga|cisterna|mangueira|pingar|reciclar/,
+      ar:/\ba pe\b|bicicleta|bici|arvore|planta|transporte|publico|comboio|autocarro|partilh|carro|boleia|janela|ventil|queim|energia|eletric|fumo|tabaco|reciclar|pedonal|caminh|residuos|lareira|aquecimento|poluic|trotinete/};
+    const all=[...new Set(raw.split(/[\n,;]/).map(s=>s.trim()).filter(s=>s.length>=4))];
+    const _kw=KW[erCurrentRoom.id];
+    const items=_kw?all.filter(s=>_kw.test(erNormalize(s).toLowerCase())):all;
+    const _bad=all.length-items.length;
     if(items.length<3){
       const found=items.length;
-      document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Só ${found} prática${found!==1?"s":""} válida${found!==1?"s":""}.</b> Escreve pelo menos 3 práticas concretas, com no mínimo 4 caracteres cada.</div>`;
+      document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Só ${found} prática${found!==1?"s":""} válida${found!==1?"s":""}.</b> Escreve 3 práticas diferentes e concretas${_bad?` (não reconheci ${_bad} — usa ações reais do dia a dia)`:""}.</div>`;
       erPlaySound("wrong");return;
     }
     document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Muito bem!</b> Registaste ${items.length} boas práticas. +${D[i].points} ⭐</div>`;
@@ -6147,7 +6170,7 @@ if(typeof applyQxStatic==="function") applyQxStatic();
     ],
     ar: [
       {title:"🌿 Árvores urbanas",text:"As árvores nas cidades são verdadeiras máquinas de ar limpo: absorvem CO₂, libertam oxigénio e podem reduzir a temperatura local até 5°C. Uma única árvore adulta pode absorver cerca de 22 kg de CO₂ por ano!"},
-      {title:"🚲 Mobilidade sustentável",text:"Uma viagem de bicicleta de 5 km em vez de carro poupa cerca de 1 kg de CO₂. Se toda a gente em Portugal substituísse uma viagem de carro por semana por bicicleta ou a pé, a redução de emissões seria enorme — e a saúde melhorava!"},
+      {title:"🚲 Mobilidade sustentável",text:"Fazer 5 km de bicicleta (ida e volta) em vez de carro poupa cerca de 1 kg de CO₂. Se toda a gente em Portugal substituísse uma viagem de carro por semana por bicicleta ou a pé, a redução de emissões seria enorme — e a saúde melhorava!"},
       {title:"🏫 Ar interior nas escolas",text:"O CO₂ que respiramos acumula-se em espaços fechados. Ventilar uma sala de aula durante 10 minutos por dia reduz significativamente o CO₂ e melhora a concentração e o desempenho dos alunos. Abre as janelas!"},
       {title:"⚡ Energias renováveis",text:"Portugal é um dos líderes europeus em energias renováveis — a energia eólica já produz mais de 25% da nossa eletricidade! O sol e o vento são fontes de energia inesgotáveis que não poluem o ar."},
     ],
