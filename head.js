@@ -78,6 +78,7 @@
     go.addEventListener('click',save);
     g.addEventListener('keydown',function(e){if(e.key==='Escape')e.stopPropagation();},true);
     document.querySelectorAll('.certificate-bot').forEach(function(sp){var c=document.createElement('canvas');c.width=c.height=192;c.style.cssText='width:56px;height:56px;display:block';sp.textContent='';sp.appendChild(c);bot(c);});
+    document.addEventListener('vb-app-ready',function(){bot(g.querySelector('#vb-gate-bot'));document.querySelectorAll('.certificate-bot canvas').forEach(bot);});
     if(!valid(get())) show();
     /* se apagarem o nome no perfil, volta a pedir */
     var pi=document.getElementById('student-name-input');
@@ -88,7 +89,7 @@
 
   window.addEventListener('DOMContentLoaded',function(){
     var $=function(i){return document.getElementById(i);};
-    var NK=typeof STUDENT_NAME_KEY!=='undefined'?STUDENT_NAME_KEY:'vanbertos_student_name_v1';
+    var NK='vanbertos_student_name_v1';
     function name(){try{return (localStorage.getItem(NK)||'').trim();}catch(e){return '';}}
     /* 1. cabeçalho: Perfil = nome do aluno; Aa e Pausa vão para o menu Mais */
     var pb=$('btn-hdr-profile');
@@ -111,13 +112,13 @@
       if(!c.querySelector('.vb-play')){var b=document.createElement('div');b.className='vb-play';b.textContent='Jogar! ▶';c.appendChild(b);}
     });
     document.querySelectorAll('.universe-group-label').forEach(function(l,i){l.style.setProperty('--gc',gcs[i%gcs.length]);});
-    function prog(id){var raw=null;try{raw=localStorage.getItem((typeof STORAGE_PREFIX!=='undefined'?STORAGE_PREFIX:'vanbertos_unified_v1_')+id);}catch(e){}
+    function prog(id){var raw=null;try{raw=localStorage.getItem('vanbertos_unified_v1_'+id);}catch(e){}
       if(!raw)return null;var c=0,st=0;try{Object.values(JSON.parse(raw)).forEach(function(bt){bt&&Object.values(bt).forEach(function(d){d&&d.levels&&Object.values(d.levels).forEach(function(l){if(l&&l.completed){c++;st+=(l.stars||1);}});});});}catch(e){return null;}return {c:c,st:st};}
-    function paintProg(){document.querySelectorAll('.universe-card').forEach(function(cd){var el=cd.querySelector('.vb-prog');if(!el){el=document.createElement('div');el.className='vb-prog';var pl=cd.querySelector('.vb-play');cd.insertBefore(el,pl);}
+    function paintProg(){document.querySelectorAll('.universe-card').forEach(function(cd){if(cd.dataset.vbEr)return;var el=cd.querySelector('.vb-prog');if(!el){el=document.createElement('div');el.className='vb-prog';var pl=cd.querySelector('.vb-play');cd.insertBefore(el,pl);}
       var r=prog(cd.dataset.universe);el.textContent=(r&&r.c)?('✅ '+r.c+(r.c===1?' nível':' níveis')+' · ⭐ '+r.st):'🆕 Ainda não jogaste';});}
     paintProg();if(us)new MutationObserver(function(){if(us.classList.contains('active'))paintProg();}).observe(us,{attributes:true,attributeFilter:['class']});
     /* 5. continuar onde ficou */
-    var uk=typeof UNIVERSE_KEY!=='undefined'?UNIVERSE_KEY:null,last=null;try{if(uk)last=localStorage.getItem(uk);}catch(e){}
+    var uk='vanbertos_universe_v1',last=null;try{if(uk)last=localStorage.getItem(uk);}catch(e){}
     var card=last&&document.querySelector('.universe-card[data-universe="'+last+'"]'),grid=document.querySelector('.universe-grid');
     if(card&&grid){var t=card.querySelector('.u-title'),k=document.createElement('div');k.id='vb-continue';k.className='show';k.setAttribute('role','button');k.tabIndex=0;
       k.innerHTML='<span style="font-size:1.6rem">▶️</span><span>Continuar: '+(t?t.textContent:'')+'</span>';
@@ -134,11 +135,10 @@
 ;(function(){
   /* Escape Rooms: cronómetro opcional (desligado por defeito no 1.º ciclo) */
   var K='vb_er_notimer_v1';
-  function load(){var v=null;try{v=localStorage.getItem(K);}catch(e){}
-    if(v===null){try{return (typeof currentCycleKey!=='undefined')&&currentCycleKey==='1c';}catch(e){return false;}}return v==='1';}
-  window.vbErNoTimer=false;
+  Object.defineProperty(window,'vbErNoTimer',{configurable:true,
+    get:function(){var v=null;try{v=localStorage.getItem(K);}catch(e){}return v===null?!!(window.vbApp&&window.vbApp.cycle==='1c'):v==='1';},
+    set:function(x){try{localStorage.setItem(K,x?'1':'0');}catch(e){}}});
   window.addEventListener('DOMContentLoaded',function(){
-    window.vbErNoTimer=load();
     var hero=document.querySelector('.er-hub-hero');if(!hero||document.getElementById('vb-er-timer'))return;
     var b=document.createElement('button');b.id='vb-er-timer';b.type='button';
     function paint(){b.setAttribute('aria-pressed',window.vbErNoTimer);b.textContent=window.vbErNoTimer?'⏱️ Sem cronómetro (calmo)':'⏱️ Com cronómetro (10 min)';}
@@ -152,10 +152,10 @@
     /* grupos de universos retráteis */
     var K='vb_groups_v1',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){}
     document.querySelectorAll('.universe-group-label').forEach(function(l){
-      var id=l.dataset.group||l.textContent.trim(),cards=[],n=l.nextElementSibling;
-      while(n&&!n.classList.contains('universe-group-label')){if(n.classList.contains('universe-card'))cards.push(n);n=n.nextElementSibling;}
+      var id=l.dataset.group||l.textContent.trim();
+      function getCards(){var out=[],n=l.nextElementSibling;while(n&&!n.classList.contains('universe-group-label')){if(n.classList.contains('universe-card')||n.classList.contains('vb-er-opts'))out.push(n);n=n.nextElementSibling;}return out;}
       l.setAttribute('role','button');l.tabIndex=0;
-      function set(open){l.setAttribute('aria-expanded',open);cards.forEach(function(c){c.classList.toggle('vb-collapsed',!open);});}
+      function set(open){l.setAttribute('aria-expanded',open);getCards().forEach(function(c){c.classList.toggle('vb-collapsed',!open);});}
       function tog(){var o=l.getAttribute('aria-expanded')!=='false';set(!o);st[id]=!o?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
       l.addEventListener('click',tog);l.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
       set(st[id]!==0);
@@ -169,5 +169,64 @@
       new MutationObserver(place).observe(more,{attributes:true,attributeFilter:['class']});
       addEventListener('resize',place);addEventListener('scroll',place,true);
     }
+  });
+})();
+
+;(function(){
+  var ICON={MOVE:'⬆️',BACK:'⬇️',LEFT:'↩️',RIGHT:'↪️',COLLECT:'✋',DROP:'📥'},NAME={MOVE:'Avançar',BACK:'Recuar',LEFT:'Esquerda',RIGHT:'Direita',COLLECT:'Recolher',DROP:'Depositar'};
+  var trail=[],box=null,list=null,lbl=null;
+  function mk(){if(box)return true;var q=document.getElementById('queue-box');if(!q||!q.parentNode)return false;
+    box=document.createElement('div');box.id='vb-trail';box.className='qx-hidden';box.setAttribute('role','list');box.setAttribute('aria-label','O que fiz');
+    box.innerHTML='<span class="vb-trail-lbl">📝 O que fiz:</span><div class="vb-trail-list"></div>';
+    lbl=box.querySelector('.vb-trail-lbl');list=box.querySelector('.vb-trail-list');q.parentNode.insertBefore(box,q);return true;}
+  function draw(){if(!mk())return;
+    var on=!!(window.vbApp&&window.vbApp.cycle==='1c');document.body.classList.toggle('vb-c1',on);box.classList.toggle('qx-hidden',!on);if(!on)return;
+    lbl.textContent='📝 O que fiz'+(trail.length?' ('+trail.length+'):':':');
+    list.innerHTML=trail.length?trail.map(function(c,i){return '<span class="vb-step'+(i===trail.length-1?' last':'')+'" role="listitem" title="'+(NAME[c]||c)+'" aria-label="'+(NAME[c]||c)+'">'+(ICON[c]||'•')+'</span>';}).join(''):'<span class="vb-trail-empty">Carrega nos botões e fica aqui o teu caminho.</span>';
+    list.scrollLeft=list.scrollWidth;}
+  window.vbTrailPush=function(c){trail.push(c);draw();};
+  window.vbTrailSync=function(){if(window.vbApp&&window.vbApp.moves===0)trail=[];draw();};
+})();
+
+;(function(){
+  /* Escape Rooms: as 5 salas aparecem logo no ecrã inicial */
+  var tiles=['#ffd23f','#2ee6a6','#4cc9f0','#ff9aa2','#c4b5fd'];
+  function build(){
+    var A=window.vbApp&&window.vbApp.er;if(!A||!A.rooms)return;
+    var lbl=document.querySelector('.universe-group-label[data-group="escaperooms"]');if(!lbl)return;
+    var orig=document.querySelector('.universe-card[data-universe="escaperooms"]');if(orig)orig.remove();
+    document.querySelectorAll('.vb-er-card').forEach(function(x){x.remove();});
+    var frag=document.createDocumentFragment();
+    Object.values(A.rooms).forEach(function(r,i){
+      var p=null;try{p=A.progress(r.id);}catch(e){}
+      var done=p&&p.completed?p.completed.filter(Boolean).length:0,total=r.doors.length,unit=r.noTimer?'salas':'portas';
+      var c=document.createElement('div');c.className='universe-card vb-er-card';c.dataset.vbEr=r.id;c.setAttribute('role','button');c.tabIndex=0;
+      c.style.setProperty('--tile',tiles[i%tiles.length]);
+      var ic=document.createElement('div');ic.className='u-icon';ic.innerHTML=r.icon;
+      var t=document.createElement('div');t.className='u-title';t.textContent=r.title;
+      var d=document.createElement('div');d.className='u-desc';d.textContent=r.desc;
+      var ch=document.createElement('div');ch.className='u-chips';(r.chips||[]).slice(0,2).forEach(function(x){var s=document.createElement('span');s.className='u-chip';s.textContent=x;ch.appendChild(s);});
+      var pr=document.createElement('div');pr.className='vb-prog';
+      pr.textContent=(done?'✅ '+done+'/'+total+' '+unit:'🆕 '+total+' '+unit)+' · '+(r.noTimer?'sem limite de tempo':'⏱️ 10 min');
+      var pl=document.createElement('div');pl.className='vb-play';pl.textContent='Jogar! ▶';
+      [ic,t,d,ch,pr,pl].forEach(function(x){c.appendChild(x);});
+      function go(){A.open();A.game(r.id);}
+      c.addEventListener('click',go);c.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+      frag.appendChild(c);
+    });
+    var row=document.querySelector('.vb-er-opts');if(!row){row=document.createElement('div');row.className='vb-er-opts';}
+    var tm=document.getElementById('vb-er-timer');
+    if(!tm){tm=document.createElement('button');tm.id='vb-er-timer';tm.type='button';
+      var paint=function(){tm.setAttribute('aria-pressed',window.vbErNoTimer);tm.textContent=window.vbErNoTimer?'⏱️ Sem cronómetro (calmo)':'⏱️ Com cronómetro (10 min)';};
+      tm.onclick=function(){window.vbErNoTimer=!window.vbErNoTimer;paint();};paint();}
+    else if(tm.parentNode!==row){tm.parentNode&&tm.parentNode.removeChild(tm);}
+    row.appendChild(tm);
+    frag.appendChild(row);
+    lbl.after(frag);
+    if(lbl.getAttribute('aria-expanded')==='false'){var n=lbl.nextElementSibling;while(n&&!n.classList.contains('universe-group-label')){n.classList.add('vb-collapsed');n=n.nextElementSibling;}}
+  }
+  document.addEventListener('vb-app-ready',function(){
+    build();var us=document.getElementById('universe-screen');
+    if(us)new MutationObserver(function(){if(us.classList.contains('active'))build();}).observe(us,{attributes:true,attributeFilter:['class']});
   });
 })();

@@ -1909,3 +1909,18 @@ body:not(.dark) .er-hint-btn{background:#ffd23f!important;color:#1e1b4b!importan
 .vb-play{align-self:flex-end;font-size:.9rem!important;padding:5px 14px!important;margin-top:8px;background:#fff!important;border-width:2.5px!important;box-shadow:0 2px 0 var(--ink)!important;border-radius:999px!important;}
 #popup-share{display:none!important;}
 .hdr-more{max-width:calc(100vw - 16px);overflow-y:auto;}
+
+/* ===== 1.º ciclo: registo do que o aluno fez ===== */
+#vb-trail{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 12px;background:#fff;border:3px solid #1e1b4b;border-radius:16px;box-shadow:0 4px 0 #1e1b4b;}
+#vb-trail.qx-hidden{display:none;}
+#vb-trail .vb-trail-lbl{font:800 .9rem 'Fredoka',sans-serif;color:#1e1b4b;white-space:nowrap;}
+#vb-trail .vb-trail-list{display:flex;gap:6px;overflow-x:auto;flex:1;padding:2px;scrollbar-width:thin;}
+#vb-trail .vb-step{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;font-size:1.3rem;background:#fff3d6;border:2.5px solid #1e1b4b;border-radius:11px;}
+#vb-trail .vb-step.last{background:#2ee6a6;}
+#vb-trail .vb-trail-empty{color:#64748b;font:700 .85rem 'Nunito Sans',sans-serif;}
+
+.vb-collapsed{display:none!important;}
+.vb-er-opts{grid-column:1/-1;display:flex;justify-content:center;}
+.vb-er-card .u-icon{font-size:1.9rem;}
+/* 1.º ciclo: comandos imediatos, sem painel "Sequência" vazio */
+body.vb-c1 #queue-box{display:none!important;}

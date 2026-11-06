@@ -2314,7 +2314,7 @@ function loadLevel(index){
   currentLevelIndex=index;
   const base=levels[index];
   levelState=buildLevelState(base);
-  dir=0;carriedItem=false;moveCount=0;
+  dir=0;carriedItem=false;moveCount=0; if(window.vbTrailSync) window.vbTrailSync();
   updateMoves();runningQueue=false;resetQueue();
   escapeAllDeposited=false;escapeQuizOpen=false;
   const popupEscape=$("popup-escape-quiz"); if(popupEscape) popupEscape.classList.remove("visible");
@@ -2904,7 +2904,7 @@ function renderGrid(){
 
 
 /* ============================= COMMANDS ============================= */
-function updateMoves(){ const m=$("moves"); if(m) m.textContent=T('movements',{n:moveCount}); }
+function updateMoves(){ const m=$("moves"); if(m) m.textContent=T('movements',{n:moveCount}); if(window.vbTrailSync) window.vbTrailSync(); }
 function starsToEmoji(n){ return n===3?"⭐⭐⭐":n===2?"⭐⭐":"⭐"; }
 function computeStars(used,min){ if(!min||!Number.isFinite(min)) return 1; if(used<=min) return 3; if(used<=Math.ceil(min*1.25)) return 2; return 1; }
 
@@ -3051,7 +3051,7 @@ function dropItem(){
 }
 function runSingleCommand(cmd){
   if(!levelState) return;
-  moveCount++;updateMoves();
+  moveCount++;updateMoves(); if(window.vbTrailPush) window.vbTrailPush(cmd);
   if(cmd==="MOVE")moveForward();
   else if(cmd==="BACK")moveBackward();
   else if(cmd==="LEFT")turnRobot("left");
@@ -5987,6 +5987,7 @@ function erClose(){
   document.getElementById("er-overlay").classList.remove("visible");
   if(erTimerInterval){clearInterval(erTimerInterval);erTimerInterval=null;}
 }
+window.vbER={open:erOpen,game:erShowGame,rooms:ROOMS,progress:er_getStoredProgress};
 document.getElementById("er-btn-back").addEventListener("click",erClose);
 document.getElementById("er-btn-universe").addEventListener("click",function(){ erClose(); showScreen("universe-screen"); });
 document.querySelectorAll('.universe-card').forEach(function(card){
@@ -6386,5 +6387,8 @@ if(typeof applyQxStatic==="function") applyQxStatic();
   cv.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); say(); } });
 })();
 
+/* ponte para o head.js (o jogo corre dentro de um fecho, por isso expõe só o necessário) */
+window.vbApp={get cycle(){return currentCycleKey;},get moves(){return moveCount;},get er(){return window.vbER;}};
+document.dispatchEvent(new Event('vb-app-ready'));
 }); // end DOMContentLoaded
 
