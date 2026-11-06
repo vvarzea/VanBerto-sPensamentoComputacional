@@ -2,10 +2,18 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
+    <meta name="theme-color" content="#ff9a3d" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="VanBerto's" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <title>VanBerto's Pensamento Computacional</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent:#6366f1;
@@ -1769,6 +1777,170 @@
 
 
 
+
+  <style id="vb-playful">
+    /* ===== Tema lúdico v1: do 1.º ciclo ao secundário ===== */
+    :root{--ink:#1e1b4b;--sun:#ffd23f;--coral:#ff6b6b;--mint:#2ee6a6;--sky:#4cc9f0;--grape:#7c3aed;--cream:#fff8e7;}
+    body:not(.dark){background-color:var(--cream);
+      background-image:radial-gradient(rgba(255,150,60,.30) 1.4px,transparent 1.6px);background-size:22px 22px;}
+    body:not(.dark) .bg-layer,body:not(.dark) .wave-layer{display:none;}
+    h1,h2,h3,h4,header h1{font-family:'Fredoka','Nunito',sans-serif;letter-spacing:.2px;}
+    body:not(.dark) header{background:#fff;border:3px solid var(--ink);border-radius:20px;
+      box-shadow:0 5px 0 var(--ink);backdrop-filter:none;}
+    body:not(.dark) header h1{color:var(--ink);font-weight:700;}
+    body:not(.dark) .btn{background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:14px;font-weight:800;
+      box-shadow:0 3px 0 var(--ink);transition:transform .08s,box-shadow .08s;}
+    body:not(.dark) .btn:hover{background:var(--sun);}
+    body:not(.dark) .btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink);}
+    body:not(.dark) .pill{background:var(--sun);color:var(--ink);border:2px solid var(--ink);font-weight:800;}
+    body:not(.dark) .chip{background:#fff;color:var(--ink);border:2px solid var(--ink);font-weight:800;}
+    /* comandos do robô: estilo botão de consola, cores com significado */
+    body:not(.dark) .dpad-btn.cmd-btn{background:#fff;border:3px solid var(--ink);color:var(--ink);border-radius:18px;
+      box-shadow:0 5px 0 var(--ink);}
+    body:not(.dark) .dpad-btn.cmd-btn:hover{filter:none;background:#f3e8ff;box-shadow:0 6px 0 var(--ink);}
+    body:not(.dark) .dpad-btn.cmd-btn:active,body:not(.dark) .dpad-btn.cmd-btn.cmd-btn-active{transform:translateY(5px);box-shadow:0 0 0 var(--ink);}
+    body:not(.dark) .dp-move.cmd-btn,body:not(.dark) .dp-back.cmd-btn{background:var(--grape);color:#fff;}
+    body:not(.dark) .dp-left.cmd-btn,body:not(.dark) .dp-right.cmd-btn{background:var(--sky);color:var(--ink);box-shadow:0 5px 0 var(--ink);}
+    body:not(.dark) .dp-collect.cmd-btn{background:var(--sun);color:var(--ink);box-shadow:0 5px 0 var(--ink);}
+    body:not(.dark) .dp-drop.cmd-btn{background:var(--mint);color:var(--ink);box-shadow:0 5px 0 var(--ink);}
+    body:not(.dark) .dpad-compass{border:3px solid var(--ink);background:#fff;box-shadow:0 4px 0 var(--ink);}
+    body:not(.dark) .compass-needle polygon{fill:var(--grape);}
+    .dpad-label{font-weight:900;font-family:'Fredoka','Nunito',sans-serif;}
+    @media(max-width:600px){.dpad-label{font-size:.74rem!important;}}
+    /* PWA: áreas seguras e sem zoom acidental */
+    body{padding-bottom:env(safe-area-inset-bottom);-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+    header{margin-top:env(safe-area-inset-top);}
+    #vb-install{position:fixed;top:calc(env(safe-area-inset-top) + 8px);right:10px;z-index:9999;display:none;
+      font:800 .85rem 'Fredoka',sans-serif;color:var(--ink);background:var(--mint);border:2.5px solid var(--ink);
+      border-radius:999px;padding:8px 14px;box-shadow:0 3px 0 var(--ink);cursor:pointer;}
+    #vb-install.show{display:block;}
+
+    /* ===== Sem barra lateral: o tabuleiro e o código ganham espaço ===== */
+    .academy-side{display:none!important;}
+    .academy-shell{grid-template-columns:1fr!important;}
+    /* tons frios -> quentes (só modo claro) */
+    body:not(.dark){--card-soft:#fffdf6;--accent-soft:#fff3d6;--accent-mid:#fcd9a0;--info-bg:#fff8e6;--info-border:#fcd34d;}
+    body:not(.dark) .er-sidebar{background:#fff7e0;border-color:#1e1b4b33;}
+    #hdr-progress{background:#fff;color:var(--ink);border:2px solid var(--ink);font-weight:800;border-radius:999px;padding:4px 10px;font-size:.8rem;white-space:nowrap;}
+    @media(max-width:600px){#btn-hdr-profile{display:none!important;}}
+
+    /* ===== Jogo: telemóvel, legibilidade e acessibilidade ===== */
+    #write-code{font-size:16px;line-height:1.5;}
+    .vb-tools{display:inline-flex;gap:4px;align-items:center;margin-left:4px;}
+    .vb-tools .btn{padding:4px 9px;}
+    .vb-tools .btn[aria-pressed="true"]{background:var(--sun)!important;}
+    body.vb-dys,body.vb-dys *{font-family:Verdana,Tahoma,'Trebuchet MS',sans-serif!important;letter-spacing:.03em;word-spacing:.12em;}
+    @media(max-width:750px){
+      .back-row{gap:6px;margin-bottom:6px;} .breadcrumbs{font-size:.8rem;}
+      .controls-row{display:flex;flex-wrap:wrap;gap:6px;}
+      .controls-row .btn,.qx-actions .btn{min-height:44px;font-size:.9rem;}
+      #btn-run-queue,#wr-run{flex:1 1 100%;order:-1;min-height:52px;font-size:1.1rem;background:var(--mint)!important;color:var(--ink)!important;border:3px solid var(--ink)!important;}
+      .chip,.pill,.badge{font-size:.8rem;}
+      .write-msg{font-size:.9rem;}
+    }
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;}}
+
+    #vb-name-gate{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:20px;
+      background:rgba(255,248,231,.96);background-image:radial-gradient(rgba(255,150,60,.30) 1.4px,transparent 1.6px);background-size:22px 22px;}
+    #vb-name-gate.show{display:flex;}
+    #vb-name-box{width:100%;max-width:420px;background:#fff;border:3px solid #1e1b4b;border-radius:24px;box-shadow:0 8px 0 #1e1b4b;padding:26px 22px;text-align:center;font-family:'Fredoka','Nunito',sans-serif;color:#1e1b4b;}
+    #vb-name-box h2{margin:6px 0 4px;font-size:1.6rem;} #vb-name-box p{margin:0 0 16px;font-family:'Nunito Sans',sans-serif;color:#475569;}
+    #vb-name-box .vb-bot{font-size:3rem;line-height:1;}
+    #vb-name-input{width:100%;font:700 1.2rem 'Fredoka',sans-serif;padding:12px 14px;border:3px solid #1e1b4b;border-radius:14px;text-align:center;outline:none;color:#1e1b4b;}
+    #vb-name-input:focus{background:#fff8e1;}
+    #vb-name-go{margin-top:14px;width:100%;min-height:52px;font:800 1.15rem 'Fredoka',sans-serif;color:#1e1b4b;background:#2ee6a6;border:3px solid #1e1b4b;border-radius:16px;box-shadow:0 5px 0 #1e1b4b;cursor:pointer;}
+    #vb-name-go:disabled{background:#e5e7eb;color:#94a3b8;box-shadow:0 5px 0 #94a3b8;border-color:#94a3b8;cursor:not-allowed;}
+    #vb-name-go:not(:disabled):active{transform:translateY(5px);box-shadow:none;}
+    #vb-name-box small{display:block;margin-top:12px;color:#64748b;font-family:'Nunito Sans',sans-serif;}
+  </style>
+
+
+
+
+  <script>
+  /* PWA: service worker + botão "Instalar" */
+  (function(){
+    if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
+      window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});
+    }
+    var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+    var dp=null;
+    function btn(){var b=document.getElementById('vb-install');if(!b){b=document.createElement('button');b.id='vb-install';b.textContent='📲 Instalar app';document.body.appendChild(b);}return b;}
+    window.addEventListener('beforeinstallprompt',function(e){
+      e.preventDefault();dp=e;if(standalone)return;var b=btn();b.classList.add('show');
+      b.onclick=function(){dp.prompt();dp.userChoice.finally(function(){b.classList.remove('show');dp=null;});};
+    });
+    window.addEventListener('appinstalled',function(){var b=document.getElementById('vb-install');if(b)b.classList.remove('show');});
+    /* iPhone/iPad: o Safari não tem prompt; mostra a dica uma vez */
+    window.addEventListener('load',function(){
+      var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+      if(ios&&!standalone){var k='vb_ios_tip';try{if(localStorage.getItem(k))return;localStorage.setItem(k,'1');}catch(e){}
+        var b=btn();b.textContent='📲 Partilhar ▸ Adicionar ao ecrã principal';b.classList.add('show');b.onclick=function(){b.classList.remove('show');};
+        setTimeout(function(){b.classList.remove('show');},9000);}
+    });
+  })();
+  </script>
+
+  <script>
+  /* Perfil + progresso no cabeçalho (a barra lateral está escondida) */
+  window.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('btn-hdr-profile'),side=document.getElementById('side-profile'),sp=document.getElementById('side-progress'),h=document.getElementById('hdr-progress');
+    if(b&&side) b.addEventListener('click',function(){side.click();});
+    function sync(){ if(!sp||!h) return; var n=(sp.textContent.match(/\d+/g)||[]); h.textContent='⭐ '+(n[0]||0)+' · 🌟 '+(n[1]||0); }
+    if(sp){ new MutationObserver(sync).observe(sp,{childList:true,subtree:true,characterData:true}); sync(); }
+  });
+  </script>
+
+  <script>
+  /* Velocidade do robô + fonte legível */
+  window.addEventListener('DOMContentLoaded',function(){
+    var S={slow:1.8,normal:1,fast:.45},cur='normal',D='vb_dys_v1',K='vb_speed_v1';
+    try{cur=localStorage.getItem(K)||'normal';}catch(e){} if(!S[cur])cur='normal'; window.vbSpeed=S[cur];
+    var row=document.querySelector('#game-screen .controls-row');
+    if(row){var w=document.createElement('div');w.className='vb-tools';w.setAttribute('role','group');w.setAttribute('aria-label','Velocidade do robô');
+      [['slow','🐢','Devagar'],['normal','🚶','Normal'],['fast','🐇','Rápido']].forEach(function(o){
+        var b=document.createElement('button');b.type='button';b.className='btn secondary small';b.textContent=o[1];b.title='Velocidade: '+o[2];b.setAttribute('aria-label',o[2]);
+        b.setAttribute('aria-pressed',o[0]===cur);
+        b.onclick=function(){cur=o[0];window.vbSpeed=S[cur];try{localStorage.setItem(K,cur);}catch(e){}
+          w.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});};
+        w.appendChild(b);});
+      row.appendChild(w);}
+    var hp=document.getElementById('hdr-progress');
+    if(hp){var d=document.createElement('button');d.type='button';d.className='btn secondary small';d.textContent='Aa';d.title='Letra mais fácil de ler';d.setAttribute('aria-label','Letra mais fácil de ler');
+      var on=false;try{on=localStorage.getItem(D)==='1';}catch(e){}
+      function ap(){document.body.classList.toggle('vb-dys',on);d.setAttribute('aria-pressed',on);} ap();
+      d.onclick=function(){on=!on;try{localStorage.setItem(D,on?'1':'0');}catch(e){} ap();};
+      hp.parentNode.insertBefore(d,hp.nextSibling);}
+  });
+  </script>
+
+  <script>
+  /* Nome obrigatório antes de jogar */
+  window.addEventListener('DOMContentLoaded',function(){
+    var KEY='vanbertos_student_name_v1';
+    function get(){try{return (localStorage.getItem(KEY)||'').trim();}catch(e){return '';}}
+    function valid(v){return v.trim().length>=2 && /[A-Za-zÀ-ÿ]/.test(v);}
+    var g=document.createElement('div');g.id='vb-name-gate';g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-labelledby','vb-name-title');
+    g.innerHTML='<div id="vb-name-box"><div class="vb-bot">🤖</div><h2 id="vb-name-title">Olá! Como te chamas?</h2><p>O VanBerto\'s precisa de saber o teu nome para guardar o teu progresso.</p>'+
+      '<input id="vb-name-input" type="text" maxlength="40" autocomplete="off" autocapitalize="words" placeholder="Escreve o teu nome" aria-label="O teu nome"><button id="vb-name-go" type="button" disabled>Vamos jogar! 🚀</button>'+
+      '<small>O nome fica guardado só neste equipamento.</small></div>';
+    document.body.appendChild(g);
+    var inp=g.querySelector('#vb-name-input'),go=g.querySelector('#vb-name-go');
+    function show(){g.classList.add('show');inp.value='';go.disabled=true;setTimeout(function(){inp.focus();},50);}
+    function save(){var v=inp.value.trim().replace(/\s+/g,' ');if(!valid(v))return;
+      try{localStorage.setItem(KEY,v);}catch(e){}
+      var pi=document.getElementById('student-name-input');if(pi){pi.value=v;pi.dispatchEvent(new Event('input',{bubbles:true}));}
+      g.classList.remove('show');}
+    inp.addEventListener('input',function(){go.disabled=!valid(inp.value);});
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();save();}});
+    go.addEventListener('click',save);
+    g.addEventListener('keydown',function(e){if(e.key==='Escape')e.stopPropagation();},true);
+    if(!valid(get())) show();
+    /* se apagarem o nome no perfil, volta a pedir */
+    var pi=document.getElementById('student-name-input');
+    if(pi) pi.addEventListener('blur',function(){if(!valid(pi.value)) show();});
+  });
+  </script>
 </head>
 <body>
   <div class="bg-layer"></div>
@@ -1781,11 +1953,12 @@
         <h1><span class="logo-emoji" id="logo-robot"></span> VanBerto's Pensamento Computacional</h1>
       </div>
       <div class="badge-row">
-        <div class="badge" id="universe-badge">🤖 Pensamento Computacional</div>
+        <button class="btn secondary small" id="btn-hdr-profile">👤 Perfil</button>
+        <div class="badge" id="hdr-progress" title="Os teus níveis e estrelas">⭐ 0 · 🌟 0</div>
         <!-- Saudação com nome do aluno — inspirada no Dia da Criança -->
         <div id="vb-student-greeting">👤 <span id="vb-student-name-display"></span></div>
         <!-- Botão Pausa Professor — tecla P -->
-        <button class="btn secondary small" id="btn-teacher-pause" title="Pausar jogo para a turma (P)" style="border-color:rgba(99,102,241,0.4);color:#4338ca;">⏸️ Pausa</button>
+        <button class="btn secondary small" id="btn-teacher-pause" title="Pausar jogo para a turma (P)">⏸️ Pausa</button>
         <button class="btn secondary small" id="btn-reset-level-top">🔁 Reiniciar nível</button>
         <button class="btn secondary small" id="btn-change-universe">🌍 Mudar universo</button>
         <div class="hdr-more-wrap">
@@ -1985,11 +2158,6 @@
                     style="width:100%;padding:8px 12px;border-radius:10px;border:1.5px solid #c7d2fe;font-size:.9rem;outline:none;">
                 </div>
                 <div id="overall-stats" style="font-size:.85rem;color:var(--muted);text-align:center;min-width:120px;"></div>
-              </div>
-              <div class="export-import-row" style="margin-top:10px;margin-bottom:0;">
-                <button class="btn small" id="btn-export-progress">📤 Exportar progresso</button>
-                <button class="btn secondary small" id="btn-import-trigger">📥 Importar progresso</button>
-                <input type="file" id="import-file-input" accept=".json" style="display:none;">
               </div>
             </div>
 
@@ -4253,10 +4421,10 @@ const _bbum=$("btn-back-universes-menu"); if(_bbum) _bbum.addEventListener("clic
 const _bpm=$("btn-profile-mobile"); if(_bpm) _bpm.addEventListener("click",()=>{ renderProfile(); showScreen("profile-screen"); });
 
 // Export / Import
-$("btn-export-progress").addEventListener("click",()=>exportProgress());
+
 const _ecb=$("btn-export-class");if(_ecb)_ecb.addEventListener("click",()=>exportClassReport());
-$("btn-import-trigger").addEventListener("click",()=>$("import-file-input").click());
-$("import-file-input").addEventListener("change",(e)=>{ importProgress(e.target.files[0]); e.target.value=""; });
+
+
 $("btn-change-universe").addEventListener("click",()=>showScreen("universe-screen"));
 
 /* ============================= THEMES ============================= */
@@ -5840,7 +6008,7 @@ function progLevelSetup(){
 }
 
 /* ── Execução da árvore ── */
-function qxDelay(){ return currentCycleKey==="1c"?450:currentCycleKey==="2c"?320:currentCycleKey==="3c"?230:160; }
+function qxDelay(){ return (window.vbSpeed||1)*(currentCycleKey==="1c"?450:currentCycleKey==="2c"?320:currentCycleKey==="3c"?230:160);}
 async function runQueueEntry(entry,delay){
   if(!runningQueue||!levelState) return;
   if(entry.type==="repeat"){
