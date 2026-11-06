@@ -1852,7 +1852,13 @@
     #vb-name-go:disabled{background:#e5e7eb;color:#94a3b8;box-shadow:0 5px 0 #94a3b8;border-color:#94a3b8;cursor:not-allowed;}
     #vb-name-go:not(:disabled):active{transform:translateY(5px);box-shadow:none;}
     #vb-name-box small{display:block;margin-top:12px;color:#64748b;font-family:'Nunito Sans',sans-serif;}
+
+    header > div:first-child p{display:block!important;margin:0;font:700 .85rem 'Fredoka','Nunito',sans-serif;color:#475569;}
+    header > div:first-child p strong{color:var(--ink);}
+    #vb-name-box .vb-by{margin:14px 0 0;font:700 .9rem 'Fredoka',sans-serif;color:#475569;}
+    #vb-name-box .vb-by strong{color:#1e1b4b;}
   </style>
+
 
 
 
@@ -1921,12 +1927,13 @@
     function get(){try{return (localStorage.getItem(KEY)||'').trim();}catch(e){return '';}}
     function valid(v){return v.trim().length>=2 && /[A-Za-zÀ-ÿ]/.test(v);}
     var g=document.createElement('div');g.id='vb-name-gate';g.setAttribute('role','dialog');g.setAttribute('aria-modal','true');g.setAttribute('aria-labelledby','vb-name-title');
-    g.innerHTML='<div id="vb-name-box"><div class="vb-bot">🤖</div><h2 id="vb-name-title">Olá! Como te chamas?</h2><p>O VanBerto\'s precisa de saber o teu nome para guardar o teu progresso.</p>'+
+    g.innerHTML='<div id="vb-name-box"><canvas class="vb-bot" id="vb-gate-bot" width="192" height="192" style="width:96px;height:96px" aria-hidden="true"></canvas><h2 id="vb-name-title">Olá! Como te chamas?</h2><p>O VanBerto\'s precisa de saber o teu nome para guardar o teu progresso.</p>'+
       '<input id="vb-name-input" type="text" maxlength="40" autocomplete="off" autocapitalize="words" placeholder="Escreve o teu nome" aria-label="O teu nome"><button id="vb-name-go" type="button" disabled>Vamos jogar! 🚀</button>'+
-      '<small>O nome fica guardado só neste equipamento.</small></div>';
+      '<small>O nome fica guardado só neste equipamento.</small><p class="vb-by">© Prof.ª Vanda Várzea</p></div>';
     document.body.appendChild(g);
     var inp=g.querySelector('#vb-name-input'),go=g.querySelector('#vb-name-go');
-    function show(){g.classList.add('show');inp.value='';go.disabled=true;setTimeout(function(){inp.focus();},50);}
+    function bot(c){try{var x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);x.scale(c.width/96,c.height/96);window.drawVanBerto(x,'happy',-1,true);}catch(e){}}
+    function show(){bot(g.querySelector('#vb-gate-bot'));g.classList.add('show');inp.value='';go.disabled=true;setTimeout(function(){inp.focus();},50);}
     function save(){var v=inp.value.trim().replace(/\s+/g,' ');if(!valid(v))return;
       try{localStorage.setItem(KEY,v);}catch(e){}
       var pi=document.getElementById('student-name-input');if(pi){pi.value=v;pi.dispatchEvent(new Event('input',{bubbles:true}));}
@@ -1935,6 +1942,7 @@
     inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();save();}});
     go.addEventListener('click',save);
     g.addEventListener('keydown',function(e){if(e.key==='Escape')e.stopPropagation();},true);
+    document.querySelectorAll('.certificate-bot').forEach(function(sp){var c=document.createElement('canvas');c.width=c.height=192;c.style.cssText='width:56px;height:56px;display:block';sp.textContent='';sp.appendChild(c);bot(c);});
     if(!valid(get())) show();
     /* se apagarem o nome no perfil, volta a pedir */
     var pi=document.getElementById('student-name-input');
@@ -1951,6 +1959,7 @@
     <header>
       <div>
         <h1><span class="logo-emoji" id="logo-robot"></span> VanBerto's Pensamento Computacional</h1>
+        <p id="vb-teacher">Professora: <strong>Vanda Várzea</strong></p>
       </div>
       <div class="badge-row">
         <button class="btn secondary small" id="btn-hdr-profile">👤 Perfil</button>
@@ -3091,6 +3100,7 @@ function applyLangToDOM() {
   }
   function cfVan(ctx,x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
 
+  window.drawVanBerto=drawVanBerto;
   function drawVanBerto(ctx,blink,step,armsUp){
     const w=96,h=96;
     ctx.clearRect(0,0,w,h);
@@ -3532,7 +3542,7 @@ const ALL_UNIVERSES = {
     cycleDescs: { "1c":"Comandos imediatos", "2c":"Sequência · Planeamento", "3c":"Sequência + otimização", "sec":"Estratégia e eficiência" },
     data: {
       "1c": { name:"1.º Ciclo", mode:"direct", themes: {
-        robo: { name:"Robô & Ambiente", emoji:"🌱🤖", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
+        robo: { name:"Robô & Ambiente", emoji:"🌱", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
           levels:[
             {size:5,robot:[4,0],items:[[2,2]],deposit:[[0,4]],obstacles:[],difficulty:"Fácil",desc:"Recolhe a folha e leva ao contentor."},
             {size:5,robot:[4,0],items:[[3,2],[1,3]],deposit:[[0,4]],obstacles:[[2,1]],difficulty:"Médio",desc:"Recolhe as folhas e contorna o obstáculo."},
@@ -6732,7 +6742,7 @@ const ROOMS = {
     desc:"Ciberbullying, privacidade e cidadania digital. 8 portas, 10 minutos.",
     chips:["🤝 Ciberbullying","🔐 Passwords","👁️ Privacidade"],
     missionTitle:"Missão: Proteger a Comunidade Online",
-    robotIntro:"Olá! Eu sou o VanBerto's 🤖.<br>Vamos construir uma Internet mais segura e mais humana! 🛡️",
+    robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos construir uma Internet mais segura e mais humana! 🛡️",
     finalMessage:"Conseguiste abrir as 8 portas e activar o Escudo Digital!",
     pedagogicalSummary:"🛡️ Os teus direitos digitais existem sempre — online e offline! Respeito, privacidade e pedir ajuda a um adulto são as 3 chaves de uma internet mais segura. A tua identidade digital é permanente: pensa antes de publicar.",
     hints:[
@@ -6789,7 +6799,7 @@ const ROOMS = {
     desc:"Ciclo da água, consumo responsável e nascentes. 8 portas, 10 minutos.",
     chips:["☁️ Ciclo da Água","🚿 Poupar","🧮 Cálculo"],
     missionTitle:"Missão: Salvar a Fonte da Escola",
-    robotIntro:"Olá! Eu sou o VanBerto's 🤖.<br>Vamos salvar a fonte da escola! 💧",
+    robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos salvar a fonte da escola! 💧",
     finalMessage:"Conseguiste abrir as 8 portas e salvar a fonte da escola!",
     pedagogicalSummary:"💧 Cada gota conta! Uma torneira a pingar desperdiça +5 500 litros por ano. Um duche de 5 minutos usa 50L — a banheira usa 150L. Pequenas ações quotidianas podem salvar milhares de litros e proteger o futuro do planeta.",
     hints:[
@@ -6846,7 +6856,7 @@ const ROOMS = {
     desc:"Qualidade do ar, poluição e mobilidade sustentável. 8 portas, 10 minutos.",
     chips:["🌿 Ar limpo","🚲 Mobilidade","🏭 Poluição"],
     missionTitle:"Missão: Salvar o Ar da Escola",
-    robotIntro:"Olá! Eu sou o VanBerto's 🤖.<br>Vamos melhorar o ar da escola! 🌬️",
+    robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos melhorar o ar da escola! 🌬️",
     finalMessage:"Conseguiste abrir as 8 portas e limpar o ar da escola!",
     pedagogicalSummary:"🌬️ A qualidade do ar depende das nossas escolhas! Ir a pé, de bicicleta ou de comboio pode reduzir quilogramas de CO₂ por semana. Ventilar os espaços interiores e evitar velas perfumadas também faz diferença. O ar limpo começa em cada um de nós.",
     hints:[
@@ -6903,7 +6913,7 @@ const ROOMS = {
     desc:"8 salas com puzzles variados sobre vírus, ransomware e phishing. Sem limite de tempo.",
     chips:["🐛 Vírus","💣 Ransomware","🎣 Phishing"],
     missionTitle:"Missão: Limpar o Malware da Escola",
-    robotIntro:"Olá! Eu sou o VanBerto's 🤖.<br>O computador da escola foi infectado! Vamos limpar o malware! 🦠",
+    robotIntro:"Olá! Eu sou o VanBerto's.<br>O computador da escola foi infectado! Vamos limpar o malware! 🦠",
     finalMessage:"Conseguiste eliminar todas as ameaças digitais e salvar a escola!",
     pedagogicalSummary:"🦠 A defesa digital precisa de várias camadas! Antivírus atualizado, backups regulares, não clicar em links suspeitos e reconhecer engenharia social são os 4 pilares da proteção. Prevenir é sempre mais fácil do que remediar.",
     noTimer:true,
@@ -6961,7 +6971,7 @@ const ROOMS = {
     desc:"8 salas com puzzles variados sobre notícias falsas, fontes e deepfakes. Sem limite de tempo.",
     chips:["🔍 Fontes","🎥 Deepfakes","💬 Boatos"],
     missionTitle:"Missão: Caçar Fake News na Escola",
-    robotIntro:"Olá! Eu sou o VanBerto's 🤖.<br>As Fake News estão a invadir a escola! Vamos travá-las! 📰",
+    robotIntro:"Olá! Eu sou o VanBerto's.<br>As Fake News estão a invadir a escola! Vamos travá-las! 📰",
     finalMessage:"Conseguiste identificar todas as Fake News e proteger a turma!",
     pedagogicalSummary:"📰 Antes de partilhar: PARA → verifica a fonte → compara com outros meios → só então partilha. Deepfakes, clickbait e linguagem emocional são sinais de alerta. Ser um utilizador crítico é a melhor defesa contra a desinformação.",
     noTimer:true,
@@ -7288,7 +7298,7 @@ function er_renderDoorsSidebar(){
       <div class="er-dicon">${d.icon}</div>
       <div class="er-door-num">${label} ${i+1}</div>
       <div style="font-size:.55rem;color:${isDone?"#10b981":isLocked?"var(--muted)":"var(--er-rc,#6366f1)"};font-weight:700;">${isDone?"✅ Ok":isLocked?"🔒":"★ "+d.points+"pts"}</div>
-      ${isActive?`<div style="position:absolute;top:4px;right:4px;font-size:.7rem;">🤖</div>`:""}`;
+      ${isActive?`<div style="position:absolute;top:4px;right:4px;font-size:.7rem;">📍</div>`:""}`;
     if(!isLocked||isDone) btn.addEventListener("click",()=>er_selectDoor(i));
     sb.appendChild(btn);
   });
