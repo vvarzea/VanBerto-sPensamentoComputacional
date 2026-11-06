@@ -1857,7 +1857,40 @@
     header > div:first-child p strong{color:var(--ink);}
     #vb-name-box .vb-by{margin:14px 0 0;font:700 .9rem 'Fredoka',sans-serif;color:#475569;}
     #vb-name-box .vb-by strong{color:#1e1b4b;}
+
+    /* ===== Ecrã inicial v2 ===== */
+    body:not(.dark){--muted:#475569;--muted-light:#64748b;}
+    body:not(.dark) .academy-main,body:not(.dark) #academy-main{background:#fffdf7!important;border:3px solid var(--ink)!important;border-radius:22px!important;box-shadow:0 6px 0 var(--ink)!important;}
+    /* cabeçalho enxuto */
+    #vb-student-greeting{display:none!important;}
+    body.vb-home #btn-reset-level-top,body.vb-home #btn-change-universe,body:not(.vb-ingame) #btn-reset-level-top{display:none!important;}
+    #btn-hdr-profile{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    @media(max-width:600px){#btn-hdr-profile{display:inline-flex!important;}}
+    .hdr-more .vb-moved{width:100%;justify-content:flex-start;}
+    /* títulos de grupo */
+    .universe-group-label{display:inline-flex;align-items:center;gap:8px;font:700 1.15rem 'Fredoka','Nunito',sans-serif!important;text-transform:none!important;letter-spacing:0!important;
+      color:var(--ink)!important;background:var(--gc,#ffd23f);border:3px solid var(--ink);border-radius:999px;padding:6px 16px!important;box-shadow:0 3px 0 var(--ink);border-bottom:3px solid var(--ink)!important;margin:10px 0 4px;width:fit-content;}
+    /* cartões */
+    .universe-grid{align-items:stretch;}
+    .universe-card{display:flex!important;flex-direction:column;background:#fff!important;border:3px solid var(--ink)!important;border-radius:22px!important;box-shadow:0 6px 0 var(--ink);padding:16px!important;cursor:pointer;transition:transform .12s,box-shadow .12s;}
+    .universe-card:hover{transform:translateY(-3px);box-shadow:0 9px 0 var(--ink);}
+    .universe-card:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink);}
+    .universe-card .u-icon{width:58px;height:58px;display:grid;place-items:center;font-size:1.9rem;background:var(--tile,#ffd23f);border:3px solid var(--ink);border-radius:16px;margin-bottom:10px;}
+    .universe-card .u-title{font:700 1.15rem 'Fredoka','Nunito',sans-serif;color:var(--ink);}
+    .universe-card .u-desc{color:#475569;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .universe-card .u-chips{margin-top:auto;padding-top:10px;}
+    .universe-card .u-chip{background:#fff3d6;color:var(--ink);border:2px solid var(--ink);font-weight:800;}
+    .universe-card .u-chips .u-chip:nth-child(n+3){display:none;}
+    .vb-play{margin-top:12px;text-align:center;font:800 1.05rem 'Fredoka',sans-serif;color:var(--ink);background:#2ee6a6;border:3px solid var(--ink);border-radius:14px;padding:9px;box-shadow:0 3px 0 var(--ink);}
+    /* continuar */
+    #vb-continue{grid-column:1/-1;display:none;align-items:center;gap:12px;cursor:pointer;background:#2ee6a6;border:3px solid var(--ink);border-radius:20px;box-shadow:0 6px 0 var(--ink);padding:14px 18px;font:700 1.15rem 'Fredoka',sans-serif;color:var(--ink);}
+    #vb-continue.show{display:flex;} #vb-continue:active{transform:translateY(5px);box-shadow:none;}
+    .universe-hero p{color:#475569;}
+    /* o robô flutuante já não tapa os cartões */
+    @media(max-width:1100px){#fixed-robot-wrap .fixed-bubble{display:none!important;}}
+    @media(max-width:700px){#fixed-robot-wrap{transform:scale(.7);transform-origin:bottom right;}}
   </style>
+
 
 
 
@@ -1949,6 +1982,41 @@
     if(pi) pi.addEventListener('blur',function(){if(!valid(pi.value)) show();});
   });
   </script>
+
+  <script>
+  window.addEventListener('DOMContentLoaded',function(){
+    var $=function(i){return document.getElementById(i);};
+    var NK=typeof STUDENT_NAME_KEY!=='undefined'?STUDENT_NAME_KEY:'vanbertos_student_name_v1';
+    function name(){try{return (localStorage.getItem(NK)||'').trim();}catch(e){return '';}}
+    /* 1. cabeçalho: Perfil = nome do aluno; Aa e Pausa vão para o menu Mais */
+    var pb=$('btn-hdr-profile');
+    function paint(){var n=name();if(pb)pb.textContent='👤 '+(n||'Perfil');
+      var h=document.querySelector('.universe-hero h2');if(h)h.textContent=n?'Olá, '+n.split(' ')[0]+'! Escolhe o teu universo':'Escolhe o teu universo!';}
+    var nd=$('vb-student-name-display');if(nd)new MutationObserver(paint).observe(nd,{childList:true,characterData:true,subtree:true});
+    var pi=$('student-name-input');if(pi)pi.addEventListener('input',function(){setTimeout(paint,0);});
+    window.addEventListener('storage',paint);paint();
+    var more=document.querySelector('.hdr-more');
+    if(more){[$('btn-teacher-pause')].concat([].slice.call(document.querySelectorAll('.badge-row > .btn')).filter(function(b){return b.textContent.trim()==='Aa';})).forEach(function(b){if(b){b.classList.add('vb-moved');more.appendChild(b);}});}
+    /* estado: início / jogo */
+    var us=$('universe-screen'),gs=$('game-screen');
+    function st(){document.body.classList.toggle('vb-home',!!us&&us.classList.contains('active'));document.body.classList.toggle('vb-ingame',!!gs&&gs.classList.contains('active'));}
+    [us,gs].forEach(function(e){if(e)new MutationObserver(st).observe(e,{attributes:true,attributeFilter:['class']});});st();
+    /* 3. cartões: sem "Todos os Ciclos", botão Jogar, cores por cartão */
+    var tiles=['#ffd23f','#2ee6a6','#4cc9f0','#ff9aa2','#c4b5fd','#fdba74'],gcs=['#ffd23f','#4cc9f0','#2ee6a6','#ff9aa2'];
+    document.querySelectorAll('.universe-card').forEach(function(c,i){
+      c.style.setProperty('--tile',tiles[i%tiles.length]);
+      c.querySelectorAll('.u-chip').forEach(function(x){if(/todos os ciclos/i.test(x.textContent))x.remove();});
+      if(!c.querySelector('.vb-play')){var b=document.createElement('div');b.className='vb-play';b.textContent='Jogar! ▶';c.appendChild(b);}
+    });
+    document.querySelectorAll('.universe-group-label').forEach(function(l,i){l.style.setProperty('--gc',gcs[i%gcs.length]);});
+    /* 5. continuar onde ficou */
+    var uk=typeof UNIVERSE_KEY!=='undefined'?UNIVERSE_KEY:null,last=null;try{if(uk)last=localStorage.getItem(uk);}catch(e){}
+    var card=last&&document.querySelector('.universe-card[data-universe="'+last+'"]'),grid=document.querySelector('.universe-grid');
+    if(card&&grid){var t=card.querySelector('.u-title'),k=document.createElement('div');k.id='vb-continue';k.className='show';k.setAttribute('role','button');k.tabIndex=0;
+      k.innerHTML='<span style="font-size:1.6rem">▶️</span><span>Continuar: '+(t?t.textContent:'')+'</span>';
+      k.onclick=function(){card.click();};k.onkeydown=function(e){if(e.key==='Enter')card.click();};grid.insertBefore(k,grid.firstChild);}
+  });
+  </script>
 </head>
 <body>
   <div class="bg-layer"></div>
@@ -2026,7 +2094,7 @@
                 <div class="hero-robot" id="hero-robot"></div>
               </div>
               <h2>Escolhe o teu universo!</h2>
-              <p>Programa o VanBerto's, explora temas reais e sobe de nível — do 1.º Ciclo ao Secundário. Escolhe um universo e depois o teu ciclo!</p>
+              <p>Programa o VanBerto's e sobe de nível, do 1.º Ciclo ao Secundário.</p>
             </div>
             <div class="universe-grid">
               <!-- ===== GRUPO: SEGURANÇA NA INTERNET ===== -->
