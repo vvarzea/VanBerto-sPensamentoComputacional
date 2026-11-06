@@ -4,7 +4,7 @@
     if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
       window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});
     }
-    var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+    var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
     var dp=null;
     function btn(){var b=document.getElementById('vb-install');if(!b){b=document.createElement('button');b.id='vb-install';b.textContent='📲 Instalar app';document.body.appendChild(b);}return b;}
     window.addEventListener('beforeinstallprompt',function(e){
@@ -124,3 +124,9 @@
       k.onclick=function(){card.click();};k.onkeydown=function(e){if(e.key==='Enter')card.click();};grid.insertBefore(k,grid.firstChild);}
   });
   
+;(function(){
+  window.addEventListener('DOMContentLoaded',function(){
+    var er=document.getElementById('er-app');
+    if(er&&!document.getElementById('er-sign')){var d=document.createElement('div');d.id='er-sign';d.className='vb-sign';d.textContent='© Prof.ª Vanda Várzea';er.appendChild(d);}
+  });
+})();

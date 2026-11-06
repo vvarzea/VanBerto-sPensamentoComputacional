@@ -1869,3 +1869,7 @@
     @media(max-width:1100px){#fixed-robot-wrap .fixed-bubble{display:none!important;}}
     @media(max-width:700px){#fixed-robot-wrap{transform:scale(.7);transform-origin:bottom right;}}
   
+/* assinatura única: © Prof.ª Vanda Várzea (rodapé de todo o jogo e das Escape Rooms) */
+#app-footer,.vb-sign{text-align:center;padding:16px 0 12px;margin-top:8px;font:700 .85rem 'Fredoka','Nunito',sans-serif;letter-spacing:.3px;color:#1e1b4b;opacity:.85;border-top:0;}
+body.dark #app-footer,.vb-sign.vb-dark{color:#c7d2fe;}
+#er-sign{flex:0 0 auto;width:100%;}
