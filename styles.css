@@ -1943,3 +1943,22 @@ body.vb-c1 #queue-box{display:none!important;}
 #vb-resume .vb-resume-txt span{font:700 .85rem 'Nunito Sans',sans-serif;color:#475569;}
 #vb-resume .vb-resume-go{font:800 .95rem 'Fredoka',sans-serif;color:#1e1b4b;background:#2ee6a6;border:2.5px solid #1e1b4b;border-radius:999px;padding:7px 16px;box-shadow:0 3px 0 #1e1b4b;cursor:pointer;}
 #vb-resume .vb-resume-go:active{transform:translateY(3px);box-shadow:none;}
+
+/* ===== Telemóvel: nada pode alargar a página além do ecrã =====
+   Causa: a coluna "1fr" da grelha do jogo tem largura mínima = conteúdo (o tabuleiro tem casas de 52px fixos),
+   por isso crescia além do ecrã. O tabuleiro 3D calculava o ajuste pela largura dessa caixa alargada
+   (ficava cortado) e a barra fixa de comandos também ficava mais larga que o ecrã. */
+html{overflow-x:hidden;max-width:100%;}
+body{max-width:100%;}
+#app,.screen,.game-layout,.game-layout>div,.grid-wrapper,.level-info{min-width:0;max-width:100%;}
+.game-layout{grid-template-columns:minmax(0,1fr) 300px;}
+@media(max-width:750px){
+  .game-layout{grid-template-columns:minmax(0,1fr);}
+  #app{padding:8px;gap:10px;}
+  #game-screen.screen{padding:12px 10px;}
+  #game-screen .dpad-wrap{width:100%;box-sizing:border-box;overflow:hidden;}
+  #game-screen .dpad-wrap .dpad-btn{overflow:hidden;}
+  #game-screen .dpad-wrap .dpad-btn .dpad-label{font-size:.66rem!important;max-width:100%;overflow:hidden;text-overflow:clip;}
+  .view-ctrls{margin-left:0;max-width:100%;justify-content:center;}
+  .level-info .tag-row{min-width:0;}
+}
