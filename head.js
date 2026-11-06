@@ -130,3 +130,44 @@
     if(er&&!document.getElementById('er-sign')){var d=document.createElement('div');d.id='er-sign';d.className='vb-sign';d.textContent='© Prof.ª Vanda Várzea';er.appendChild(d);}
   });
 })();
+
+;(function(){
+  /* Escape Rooms: cronómetro opcional (desligado por defeito no 1.º ciclo) */
+  var K='vb_er_notimer_v1';
+  function load(){var v=null;try{v=localStorage.getItem(K);}catch(e){}
+    if(v===null){try{return (typeof currentCycleKey!=='undefined')&&currentCycleKey==='1c';}catch(e){return false;}}return v==='1';}
+  window.vbErNoTimer=false;
+  window.addEventListener('DOMContentLoaded',function(){
+    window.vbErNoTimer=load();
+    var hero=document.querySelector('.er-hub-hero');if(!hero||document.getElementById('vb-er-timer'))return;
+    var b=document.createElement('button');b.id='vb-er-timer';b.type='button';
+    function paint(){b.setAttribute('aria-pressed',window.vbErNoTimer);b.textContent=window.vbErNoTimer?'⏱️ Sem cronómetro (calmo)':'⏱️ Com cronómetro (10 min)';}
+    b.onclick=function(){window.vbErNoTimer=!window.vbErNoTimer;try{localStorage.setItem(K,window.vbErNoTimer?'1':'0');}catch(e){}paint();};
+    paint();hero.appendChild(b);
+  });
+})();
+
+;(function(){
+  window.addEventListener('DOMContentLoaded',function(){
+    /* grupos de universos retráteis */
+    var K='vb_groups_v1',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){}
+    document.querySelectorAll('.universe-group-label').forEach(function(l){
+      var id=l.dataset.group||l.textContent.trim(),cards=[],n=l.nextElementSibling;
+      while(n&&!n.classList.contains('universe-group-label')){if(n.classList.contains('universe-card'))cards.push(n);n=n.nextElementSibling;}
+      l.setAttribute('role','button');l.tabIndex=0;
+      function set(open){l.setAttribute('aria-expanded',open);cards.forEach(function(c){c.classList.toggle('vb-collapsed',!open);});}
+      function tog(){var o=l.getAttribute('aria-expanded')!=='false';set(!o);st[id]=!o?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
+      l.addEventListener('click',tog);l.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
+      set(st[id]!==0);
+    });
+    /* menu "Mais" abre sempre dentro do ecrã */
+    var more=document.getElementById('hdr-more'),btn=document.getElementById('btn-hdr-more');
+    if(more&&btn){
+      var place=function(){if(more.classList.contains('qx-hidden'))return;var r=btn.getBoundingClientRect(),w=more.offsetWidth||190;
+        more.style.position='fixed';more.style.right='auto';more.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+'px';
+        more.style.top=(r.bottom+6)+'px';more.style.maxHeight=Math.max(140,innerHeight-r.bottom-18)+'px';};
+      new MutationObserver(place).observe(more,{attributes:true,attributeFilter:['class']});
+      addEventListener('resize',place);addEventListener('scroll',place,true);
+    }
+  });
+})();

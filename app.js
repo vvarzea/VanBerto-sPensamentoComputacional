@@ -4608,8 +4608,8 @@ function initERState(room){
     score:0, completed:Array(n).fill(false),
     triesTotal:0, triesPerDoor:Array(n).fill(0),
     hintsUsed:0,
-    timeTotalSec: room.noTimer ? 0 : 10*60,
-    timeLeftSec:  room.noTimer ? 0 : 10*60,
+    timeTotalSec: (room.noTimer||window.vbErNoTimer) ? 0 : 10*60,
+    timeLeftSec:  (room.noTimer||window.vbErNoTimer) ? 0 : 10*60,
     timeUp:false, timerRunning:false,
     teacherOpen:false
   };
@@ -4741,7 +4741,7 @@ function er_startRoom(roomId, keepProgress=false){
       <div class="er-kpi">⭐ Pontos: <strong id="er-kpi-score">0</strong></div>
       <div class="er-kpi">🔓 Portas: <strong id="er-kpi-doors">0/${r.doors.length}</strong></div>
       <div class="er-kpi">🔁 Tentativas: <strong id="er-kpi-tries">0</strong></div>
-      ${!r.noTimer?`<div class="er-kpi er-timer-ring" id="er-timer-ring-wrap" style="position:relative;display:flex;align-items:center;justify-content:center;">
+      ${(!r.noTimer&&!window.vbErNoTimer)?`<div class="er-kpi er-timer-ring" id="er-timer-ring-wrap" style="position:relative;display:flex;align-items:center;justify-content:center;">
         <svg class="er-timer-svg" width="40" height="40" viewBox="0 0 40 40" style="transform:rotate(-90deg);">
           <circle class="er-timer-track" cx="20" cy="20" r="16"/>
           <circle class="er-timer-fill" id="er-timer-fill" cx="20" cy="20" r="16"
@@ -4767,7 +4767,7 @@ function er_startRoom(roomId, keepProgress=false){
   er_updateKPIs();
   er_renderDoorsSidebar();
 
-  if(!r.noTimer) er_startTimer();
+  if(!r.noTimer&&!window.vbErNoTimer) er_startTimer();
 
   // auto-select door 0
   er_selectDoor(0);
@@ -4962,7 +4962,7 @@ function erCompleteDoor(i){
 
   er_saveRoomProgress(erCurrentRoom.id,erState);
   if(erState.completed.every(Boolean)){
-    const bonus=erCurrentRoom.noTimer?0:er_computeTimeBonus();
+    const bonus=(erCurrentRoom.noTimer||window.vbErNoTimer)?0:er_computeTimeBonus();
     erState.score+=bonus;
     er_updateKPIs();
     er_stopTimer();
@@ -5007,7 +5007,7 @@ function er_showFinalPopup(bonus=0){
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.score}</div><div class="er-kpi-lbl">⭐ Pontos totais</div></div>
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.completed.filter(Boolean).length}/${erCurrentRoom.doors.length}</div><div class="er-kpi-lbl">🔓 Portas abertas</div></div>
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.triesTotal}</div><div class="er-kpi-lbl">🔁 Tentativas</div></div>
-    <div class="er-kpi-card"><div class="er-kpi-val">${erCurrentRoom.noTimer?"—":er_formatTime(erState.timeLeftSec)}</div><div class="er-kpi-lbl">⏱️ Tempo restante</div></div>`;
+    <div class="er-kpi-card"><div class="er-kpi-val">${(erCurrentRoom.noTimer||window.vbErNoTimer)?"—":er_formatTime(erState.timeLeftSec)}</div><div class="er-kpi-lbl">⏱️ Tempo restante</div></div>`;
   erSpawnConfetti();
   erPlaySound("victory");
   document.getElementById("er-popup-final").classList.add("visible");

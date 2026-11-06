@@ -1873,3 +1873,39 @@
 #app-footer,.vb-sign{text-align:center;padding:16px 0 12px;margin-top:8px;font:700 .85rem 'Fredoka','Nunito',sans-serif;letter-spacing:.3px;color:#1e1b4b;opacity:.85;border-top:0;}
 body.dark #app-footer,.vb-sign.vb-dark{color:#c7d2fe;}
 #er-sign{flex:0 0 auto;width:100%;}
+
+/* ===== Escape Rooms v2: mesmo estilo lúdico do resto do jogo ===== */
+body:not(.dark) #er-overlay{background-color:#fff8e7;background-image:radial-gradient(rgba(255,150,60,.30) 1.4px,transparent 1.6px);background-size:22px 22px;}
+body:not(.dark) .er-bg-glow{display:none;}
+body:not(.dark) .er-header,body:not(.dark) .er-panel,body:not(.dark) .er-puzzle,body:not(.dark) .er-kpi-card,body:not(.dark) .er-room-card,body:not(.dark) .er-popup-inner,body:not(.dark) .er-hub-hero{
+  background:#fff!important;border:3px solid #1e1b4b!important;border-radius:20px!important;box-shadow:0 5px 0 #1e1b4b!important;}
+body:not(.dark) .er-sidebar{background:#fff7e0;border:3px solid #1e1b4b;border-radius:18px;}
+.er-room-card{cursor:pointer;transition:transform .12s,box-shadow .12s;}
+.er-room-card:hover{transform:translateY(-3px);} .er-room-card:active{transform:translateY(4px);}
+.er-room-title,.er-mission-title,.er-header h1{font-family:'Fredoka','Nunito',sans-serif!important;color:#1e1b4b;}
+body:not(.dark) .er-door-btn,body:not(.dark) .er-mc-option,body:not(.dark) .er-hint-btn,body:not(.dark) .er-chip{border:2.5px solid #1e1b4b!important;border-radius:14px!important;box-shadow:0 3px 0 #1e1b4b;font-weight:800;}
+body:not(.dark) .er-hint-btn{background:#ffd23f!important;color:#1e1b4b!important;}
+#er-overlay input[type=text],#er-overlay input:not([type]),#er-overlay textarea{font-size:16px!important;border:3px solid #1e1b4b!important;border-radius:12px!important;padding:10px 12px;}
+#vb-er-timer{display:inline-flex;align-items:center;gap:6px;margin:10px auto 0;font:800 .95rem 'Fredoka',sans-serif;color:#1e1b4b;background:#fff;border:3px solid #1e1b4b;border-radius:999px;padding:8px 16px;box-shadow:0 3px 0 #1e1b4b;cursor:pointer;}
+#vb-er-timer[aria-pressed="true"]{background:#2ee6a6;}
+@media(max-width:700px){
+  .er-body{grid-template-columns:1fr!important;}
+  .er-sidebar{flex-direction:row!important;overflow-x:auto;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch;}
+  .er-door-btn{min-height:48px;flex:0 0 auto;}
+  .er-bottombar .btn{min-height:46px;}
+  #er-app{padding:10px;}
+}
+
+/* ===== Grupos retráteis em destaque; "Jogar" discreto; sem "Copiar resultado"; menu Mais dentro do ecrã ===== */
+.universe-group-label{grid-column:1/-1;width:100%!important;justify-content:space-between;cursor:pointer;user-select:none;
+  font-size:1.45rem!important;padding:14px 22px!important;border-radius:20px!important;box-shadow:0 6px 0 var(--ink)!important;margin:14px 0 6px!important;
+  transition:transform .1s,box-shadow .1s;}
+.universe-group-label:hover{filter:brightness(1.04);}
+.universe-group-label:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)!important;}
+.universe-group-label::after{content:'▾';font-size:1.3rem;margin-left:auto;padding-left:12px;}
+.universe-group-label[aria-expanded="false"]::after{content:'▸';}
+.universe-group-label:focus-visible{outline:4px solid #7c3aed;outline-offset:3px;}
+.universe-card.vb-collapsed{display:none!important;}
+.vb-play{align-self:flex-end;font-size:.9rem!important;padding:5px 14px!important;margin-top:8px;background:#fff!important;border-width:2.5px!important;box-shadow:0 2px 0 var(--ink)!important;border-radius:999px!important;}
+#popup-share{display:none!important;}
+.hdr-more{max-width:calc(100vw - 16px);overflow-y:auto;}
