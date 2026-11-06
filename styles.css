@@ -1862,7 +1862,7 @@
     .vb-prog{margin-top:10px;font:800 .85rem 'Nunito Sans',sans-serif;color:#475569;}
     .vb-play{margin-top:8px;text-align:center;font:800 1.05rem 'Fredoka',sans-serif;color:var(--ink);background:#2ee6a6;border:3px solid var(--ink);border-radius:14px;padding:9px;box-shadow:0 3px 0 var(--ink);}
     /* continuar */
-    #vb-continue{grid-column:1/-1;display:none;align-items:center;gap:12px;cursor:pointer;background:#2ee6a6;border:3px solid var(--ink);border-radius:20px;box-shadow:0 6px 0 var(--ink);padding:14px 18px;font:700 1.15rem 'Fredoka',sans-serif;color:var(--ink);}
+    #vb-continue{display:none!important;grid-column:1/-1;align-items:center;gap:12px;cursor:pointer;background:#2ee6a6;border:3px solid var(--ink);border-radius:20px;box-shadow:0 6px 0 var(--ink);padding:14px 18px;font:700 1.15rem 'Fredoka',sans-serif;color:var(--ink);}
     #vb-continue.show{display:flex;} #vb-continue:active{transform:translateY(5px);box-shadow:none;}
     .universe-hero p{color:#475569;}
     /* o robô flutuante já não tapa os cartões */
@@ -1936,3 +1936,10 @@ body.vb-c1 #queue-box{display:none!important;}
   #vb-trail .vb-step{width:32px;height:32px;font-size:1.1rem;border-radius:9px;}
   #vb-trail .vb-trail-empty{font-size:.78rem;}
 }
+
+/* Continuar dentro do universo: discreto */
+#vb-resume{display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 0 10px;padding:10px 14px;background:#fff;border:3px solid #1e1b4b;border-radius:16px;box-shadow:0 4px 0 #1e1b4b;}
+#vb-resume .vb-resume-txt{display:flex;flex-direction:column;min-width:0;font-family:'Fredoka','Nunito',sans-serif;color:#1e1b4b;}
+#vb-resume .vb-resume-txt span{font:700 .85rem 'Nunito Sans',sans-serif;color:#475569;}
+#vb-resume .vb-resume-go{font:800 .95rem 'Fredoka',sans-serif;color:#1e1b4b;background:#2ee6a6;border:2.5px solid #1e1b4b;border-radius:999px;padding:7px 16px;box-shadow:0 3px 0 #1e1b4b;cursor:pointer;}
+#vb-resume .vb-resume-go:active{transform:translateY(3px);box-shadow:none;}

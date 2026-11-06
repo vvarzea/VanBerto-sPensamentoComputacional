@@ -4104,6 +4104,7 @@ function pickTheme(ck, tk){
   if(!GAME_DATA||!GAME_DATA[ck]) return;
   currentCycleKey=ck;currentThemeKey=tk;
   currentCycle=GAME_DATA[ck];currentTheme=currentCycle.themes[tk];
+  try{localStorage.setItem('vb_last_v1_'+currentUniverseId,JSON.stringify({ck:ck,tk:tk}));}catch(e){}
   const progress=loadProgress(ck,tk);
   const lvls=levelsFor(ck,currentTheme);
   currentLevelIndex=Math.min(progress.currentLevelIndex||0,Math.max(0,lvls.length-1));
@@ -6388,7 +6389,12 @@ if(typeof applyQxStatic==="function") applyQxStatic();
 })();
 
 /* ponte para o head.js (o jogo corre dentro de um fecho, por isso expõe só o necessário) */
-window.vbApp={get cycle(){return currentCycleKey;},get moves(){return moveCount;},get er(){return window.vbER;}};
+window.vbApp={get cycle(){return currentCycleKey;},get moves(){return moveCount;},get er(){return window.vbER;},
+  get resume(){return {
+    info:function(){try{const raw=localStorage.getItem('vb_last_v1_'+currentUniverseId);if(!raw)return null;const s=JSON.parse(raw);
+      const cy=GAME_DATA[s.ck],th=cy&&cy.themes[s.tk];if(!th)return null;const p=loadProgress(s.ck,s.tk)||{};
+      return {ck:s.ck,tk:s.tk,cycle:cy.name,theme:th.name,emoji:th.emoji||'',level:(p.currentLevelIndex||0)+1,total:levelsFor(s.ck,th).length};}catch(e){return null;}},
+    go:function(ck,tk){pickTheme(ck,tk);}};}};
 document.dispatchEvent(new Event('vb-app-ready'));
 }); // end DOMContentLoaded
 

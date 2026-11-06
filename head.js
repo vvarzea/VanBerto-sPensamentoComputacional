@@ -117,12 +117,7 @@
     function paintProg(){document.querySelectorAll('.universe-card').forEach(function(cd){if(cd.dataset.vbEr)return;var el=cd.querySelector('.vb-prog');if(!el){el=document.createElement('div');el.className='vb-prog';var pl=cd.querySelector('.vb-play');cd.insertBefore(el,pl);}
       var r=prog(cd.dataset.universe);el.textContent=(r&&r.c)?('✅ '+r.c+(r.c===1?' nível':' níveis')+' · ⭐ '+r.st):'🆕 Ainda não jogaste';});}
     paintProg();if(us)new MutationObserver(function(){if(us.classList.contains('active'))paintProg();}).observe(us,{attributes:true,attributeFilter:['class']});
-    /* 5. continuar onde ficou */
-    var uk='vanbertos_universe_v1',last=null;try{if(uk)last=localStorage.getItem(uk);}catch(e){}
-    var card=last&&document.querySelector('.universe-card[data-universe="'+last+'"]'),grid=document.querySelector('.universe-grid');
-    if(card&&grid){var t=card.querySelector('.u-title'),k=document.createElement('div');k.id='vb-continue';k.className='show';k.setAttribute('role','button');k.tabIndex=0;
-      k.innerHTML='<span style="font-size:1.6rem">▶️</span><span>Continuar: '+(t?t.textContent:'')+'</span>';
-      k.onclick=function(){card.click();};k.onkeydown=function(e){if(e.key==='Enter')card.click();};grid.insertBefore(k,grid.firstChild);}
+
   });
   
 ;(function(){
@@ -229,5 +224,28 @@
   document.addEventListener('vb-app-ready',function(){
     build();var us=document.getElementById('universe-screen');
     if(us)new MutationObserver(function(){if(us.classList.contains('active'))build();}).observe(us,{attributes:true,attributeFilter:['class']});
+  });
+})();
+
+;(function(){
+  /* Continuar: só depois de escolher o universo, no ecrã dos ciclos */
+  var box=null;
+  function render(){
+    var ms=document.getElementById('menu-screen');if(!ms)return;
+    var R=window.vbApp&&window.vbApp.resume,inf=R&&R.info();
+    if(!box){box=document.createElement('div');box.id='vb-resume';var lay=ms.querySelector('.menu-layout');ms.insertBefore(box,lay||null);}
+    if(!inf){box.style.display='none';return;}
+    box.style.display='flex';box.innerHTML='';
+    var tx=document.createElement('div');tx.className='vb-resume-txt';
+    var h=document.createElement('strong');h.textContent='Continuar onde ficaste';
+    var s=document.createElement('span');s.textContent=inf.cycle+' · '+inf.emoji+' '+inf.theme+' · Nível '+inf.level+' de '+inf.total;
+    tx.appendChild(h);tx.appendChild(s);
+    var b=document.createElement('button');b.type='button';b.className='vb-resume-go';b.textContent='Continuar ▶';
+    b.onclick=function(){R.go(inf.ck,inf.tk);};
+    box.appendChild(tx);box.appendChild(b);
+  }
+  document.addEventListener('vb-app-ready',function(){
+    var ms=document.getElementById('menu-screen');if(!ms)return;
+    new MutationObserver(function(){if(ms.classList.contains('active'))render();}).observe(ms,{attributes:true,attributeFilter:['class']});
   });
 })();
