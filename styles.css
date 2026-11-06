@@ -1962,3 +1962,32 @@ body{max-width:100%;}
   .view-ctrls{margin-left:0;max-width:100%;justify-content:center;}
   .level-info .tag-row{min-width:0;}
 }
+
+/* ===== v15 · PC: cabeçalho de destaque "Hora do Código" + cartões dos jogos maiores ===== */
+.hdr-sub{display:none;font:700 1.05rem 'Fredoka','Nunito',sans-serif;color:#475569;letter-spacing:.3px;}
+@media(min-width:901px){
+  #app{max-width:1240px;}
+  body.vb-home header{flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;padding:26px 28px 18px;}
+  body.vb-home:not(.dark) header{background:linear-gradient(180deg,#fff 0,#fff4c9 100%);}
+  body.vb-home header>div:first-child{width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  body.vb-home header h1{justify-content:center;font-size:clamp(2.6rem,4.6vw,3.6rem);line-height:1.05;font-weight:700;letter-spacing:.5px;}
+  body.vb-home:not(.dark) header h1{text-shadow:3px 3px 0 var(--sun);}
+  body.vb-home header h1::before{content:'</>';margin-right:14px;color:var(--grape);font-size:.8em;}
+  body.vb-home .hdr-sub{display:block;}
+  body.vb-home header .badge-row{width:100%;justify-content:center;gap:8px;padding-top:12px;border-top:3px dashed rgba(30,27,75,.18);}
+  body.vb-home.dark header h1,body.vb-home.dark .hdr-sub{color:#e2e8f0!important;}
+  /* título da página inicial mais discreto, para o cabeçalho ser o destaque */
+  body.vb-home .universe-hero{padding-top:6px;}
+  body.vb-home .universe-hero h2{font-size:1.9rem;}
+  /* jogos: 3 por linha, cartões mais ricos */
+  .universe-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+  .universe-card{padding:20px!important;}
+  body:not(.dark) .universe-card{background:linear-gradient(180deg,color-mix(in srgb,var(--tile,#ffd23f) 38%,#fff) 0,#fff 130px)!important;}
+  .universe-card .u-icon{width:76px;height:76px;font-size:2.6rem;border-radius:20px;margin-bottom:14px;box-shadow:0 4px 0 var(--ink);}
+  .universe-card .u-title{font-size:1.35rem;margin-bottom:4px;}
+  .universe-card .u-desc{font-size:.92rem;-webkit-line-clamp:3;}
+  .universe-card .u-chip{font-size:.78rem;padding:3px 10px;}
+  .universe-card .vb-prog{font-size:.9rem;}
+  .universe-card:hover .u-icon{transform:scale(1.12) rotate(-6deg);}
+}
+@media(min-width:901px) and (max-width:1100px){.universe-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}

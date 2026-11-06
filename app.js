@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const LANG_STRINGS = {
   pt: {
     // Header & Navigation
-    appTitle: "VanBerto's Pensamento Computacional",
+    appTitle: "Hora do Código",
     teacherLabel: "Professora:",
     soundOn: "🔊 Som",
     soundOff: "🔇 Sem som",
@@ -248,7 +248,7 @@ const LANG_STRINGS = {
     groupEscapeRooms: "Escape Rooms",
   },
   en: {
-    appTitle: "VanBerto's Pensamento Computacional",
+    appTitle: "Hora do Código",
     teacherLabel: "Teacher:",
     soundOn: "🔊 Sound",
     soundOff: "🔇 Muted",
