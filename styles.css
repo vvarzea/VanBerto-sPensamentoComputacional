@@ -1991,3 +1991,8 @@ body{max-width:100%;}
   .universe-card:hover .u-icon{transform:scale(1.12) rotate(-6deg);}
 }
 @media(min-width:901px) and (max-width:1100px){.universe-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* Hero mais legível e conceito do nível */
+.universe-hero p{max-width:440px;text-wrap:balance;}
+.level-concept{font-size:.8rem;font-weight:800;color:#5b21b6;background:#f3e8ff;border:1px solid #ddd6fe;border-radius:10px;padding:5px 9px;margin:0 0 8px;line-height:1.4;}
+body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color:#5b4b86;}

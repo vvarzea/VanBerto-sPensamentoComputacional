@@ -25,7 +25,7 @@ const LANG_STRINGS = {
     sideTip: "💡 Pensa antes de agir!",
     // Universe screen
     chooseUniverse: "Escolhe o teu universo!",
-    universeDesc: "Programa o VanBerto's, explora temas reais e sobe de nível — do 1.º Ciclo ao Secundário. Escolhe um universo e depois o teu ciclo!",
+    universeDesc: "Programa o robô VanBerto's em desafios sobre temas reais. Escolhe um universo e depois o teu ciclo!",
     // Menu screen
     chooseYourCycle: "Escolhe o teu ciclo",
     cycleMenuDesc: "Começa pelo 1.º Ciclo e sobe de nível.",
@@ -265,7 +265,7 @@ const LANG_STRINGS = {
     sideProgressText: "⭐ {n} levels done",
     sideTip: "💡 Think before you act!",
     chooseUniverse: "Choose your universe!",
-    universeDesc: "Program VanBerto's, explore real topics and level up — from 1st Cycle to Secondary. Choose a universe, then pick your cycle!",
+    universeDesc: "Program the VanBerto's robot in challenges about real-world topics. Pick a universe, then your cycle!",
     chooseYourCycle: "Choose your cycle",
     cycleMenuDesc: "Start with the 1st Cycle and level up.",
     movements: "Moves: {n}",
@@ -2353,10 +2353,11 @@ function loadLevel(index){
   const le=$("level-emoji"); if(le) le.textContent=currentTheme.emoji;
   const ld=$("level-desc");
   if(ld){
-    ld.textContent=T('levelDesc',{n:currentLevelIndex+1,desc:base.desc});
+    ld.textContent=T('levelDesc',{n:currentLevelIndex+1,desc:levelDescFor(base,currentTheme)});
     if(isGenerated) ld.style.opacity="0.7";
     else ld.style.opacity="";
   }
+  showLevelConcept(base,currentTheme);
   const qb=$("queue-box"); const rq=$("btn-run-queue"); const uq=$("btn-undo-queue"); const cq=$("btn-clear-queue");
   const qMode=isQueueMode();
   if(qb) qb.classList.toggle("hidden",!qMode);
@@ -4273,6 +4274,68 @@ const LEVELS_VERSION = 2;
     });
   }catch(e){}
 })();
+
+
+/* ============================= CONCEITO DE CADA NÍVEL ============================= */
+/* Os níveis acrescentados (EXTRA_LEVELS) tinham uma descrição genérica. Aqui:
+   1) levelDescFor(): troca essa frase genérica por um objetivo claro;
+   2) showLevelConcept(): analisa a solução ótima (BFS do jogo) e diz o que o nível treina
+      (sequência, ciclos/REPETIR, planear a ordem, contornar obstáculos). */
+function levelDescFor(base,theme){
+  const d=base.desc||"";
+  if(!/^Mais (objetos|bloqueios)/.test(d)) return d;
+  const n=(base.items||[]).length, en=(typeof currentLang!=="undefined"&&currentLang==="en");
+  const name=theme&&theme.name?theme.name:"";
+  if(en) return (n>1?"Collect all "+n+" items":"Collect the item")+(name?" in \u201c"+name+"\u201d":"")+" and take "+(n>1?"them":"it")+" to the drop-off point.";
+  return (n>1?"Recolhe os "+n+" objetos":"Recolhe o objeto")+(name?" de \u201c"+name+"\u201d":"")+" e leva-"+(n>1?"os":"o")+" ao depósito.";
+}
+function analyseLevelConcept(base){
+  const path=computeSolutionPath(base);
+  if(!path||path.length<2) return null;
+  const dirs=[]; for(let i=1;i<path.length;i++){ dirs.push((path[i].r-path[i-1].r)+","+(path[i].c-path[i-1].c)); }
+  /* a reta é interrompida onde o robô tem de parar para apanhar/depositar */
+  const stops=new Set([].concat(base.items||[],base.deposit||[]).map(function(p){return p[0]+","+p[1];}));
+  let run=1,maxRun=1; for(let i=1;i<dirs.length;i++){ const stopHere=stops.has(path[i].r+","+path[i].c); run=(dirs[i]===dirs[i-1]&&!stopHere)?run+1:1; if(run>maxRun) maxRun=run; }
+  if(maxRun>9) maxRun=9;   // REPETIR aceita de 2 a 9
+  let stair=0; for(let i=0;i+5<dirs.length;i++){ if(dirs[i]!==dirs[i+1] && dirs[i]===dirs[i+2] && dirs[i+1]===dirs[i+3] && dirs[i]===dirs[i+4] && dirs[i+1]===dirs[i+5]){ stair=3; break; } }
+  const n=(base.items||[]).length, obs=(base.obstacles||[]).length;
+  const rd=base.deposit&&base.deposit[0]?base.deposit[0]:base.robot;
+  const manh=Math.abs(base.robot[0]-rd[0])+Math.abs(base.robot[1]-rd[1]);
+  const detour=(path.length-1)>manh+2*n && obs>0;
+  return {maxRun:maxRun,stair:stair,n:n,obs:obs,detour:detour,steps:path.length-1};
+}
+function conceptText(a){
+  const en=(typeof currentLang!=="undefined"&&currentLang==="en");
+  const parts=[];
+  if(a.stair){
+    parts.push(en?"Loops \u2014 a pattern repeats (e.g. forward + turn): use REPETIR to repeat both steps."
+                 :"Ciclos \u2014 um padr\u00e3o repete-se (por exemplo avan\u00e7ar + virar): usa REPETIR para repetir os dois passos.");
+  } else if(a.maxRun>=3){
+    parts.push(en?"Loops \u2014 there is a straight line of "+a.maxRun+" steps: try REPETIR "+a.maxRun+" VEZES."
+                 :"Ciclos \u2014 h\u00e1 uma reta de "+a.maxRun+" passos: experimenta REPETIR "+a.maxRun+" VEZES.");
+  }
+  if(a.n>=3) parts.push(en?"Planning \u2014 choose the best order to collect "+a.n+" items."
+                          :"Planeamento \u2014 escolhe a melhor ordem para apanhar os "+a.n+" objetos.");
+  if(a.detour) parts.push(en?"Problem solving \u2014 find the way around the obstacles."
+                            :"Resolu\u00e7\u00e3o de problemas \u2014 descobre o caminho para contornar os obst\u00e1culos.");
+  if(!parts.length) parts.push(en?"Sequence \u2014 the order of the commands matters."
+                                 :"Sequ\u00eancia \u2014 a ordem dos comandos \u00e9 importante.");
+  return (en?"\uD83E\uDDE0 Trains: ":"\uD83E\uDDE0 Treina: ")+parts.slice(0,2).join(" \u00b7 ");
+}
+function showLevelConcept(base,theme){
+  const ld=document.getElementById("level-desc"); if(!ld) return;
+  let el=document.getElementById("level-concept");
+  if(!el){ el=document.createElement("div"); el.id="level-concept"; el.className="level-concept"; ld.parentNode.insertBefore(el,ld.nextSibling); }
+  if(base._concept){ el.textContent=conceptText(base._concept); el.style.display=""; return; }
+  el.textContent=""; el.style.display="none";
+  const mine=base;
+  setTimeout(function(){
+    try{
+      mine._concept=analyseLevelConcept(mine)||{maxRun:1,stair:0,n:(mine.items||[]).length,obs:0,detour:false,steps:0};
+      if(levelState&&currentTheme===theme&&((currentTheme.levels||[])[currentLevelIndex]===mine)){ el.textContent=conceptText(mine._concept); el.style.display=""; }
+    }catch(e){}
+  }, base.size>=8?90:10);
+}
 
 /* ============================= INIT ============================= */
 // Always start at universe-screen — apply saved universe colours/data but let user pick again
