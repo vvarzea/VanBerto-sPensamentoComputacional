@@ -136,12 +136,12 @@
   /* Escape Rooms: cronómetro opcional (desligado por defeito no 1.º ciclo) */
   var K='vb_er_notimer_v1';
   Object.defineProperty(window,'vbErNoTimer',{configurable:true,
-    get:function(){var v=null;try{v=localStorage.getItem(K);}catch(e){}return v===null?!!(window.vbApp&&window.vbApp.cycle==='1c'):v==='1';},
+    get:function(){var v=null;try{v=localStorage.getItem(K);}catch(e){}return v===null?true:v==='1';},
     set:function(x){try{localStorage.setItem(K,x?'1':'0');}catch(e){}}});
   window.addEventListener('DOMContentLoaded',function(){
     var hero=document.querySelector('.er-hub-hero');if(!hero||document.getElementById('vb-er-timer'))return;
     var b=document.createElement('button');b.id='vb-er-timer';b.type='button';
-    function paint(){b.setAttribute('aria-pressed',window.vbErNoTimer);b.textContent=window.vbErNoTimer?'⏱️ Sem cronómetro (calmo)':'⏱️ Com cronómetro (10 min)';}
+    function paint(){b.setAttribute('aria-pressed',!window.vbErNoTimer);b.textContent=window.vbErNoTimer?'⏱️ Modo desafio (opcional): com cronómetro':'⏱️ Modo desafio ligado · 15 min';}
     b.onclick=function(){window.vbErNoTimer=!window.vbErNoTimer;try{localStorage.setItem(K,window.vbErNoTimer?'1':'0');}catch(e){}paint();};
     paint();hero.appendChild(b);
   });
@@ -175,7 +175,7 @@
 ;(function(){
   var ICON={MOVE:'⬆️',BACK:'⬇️',LEFT:'↩️',RIGHT:'↪️',COLLECT:'✋',DROP:'📥'},NAME={MOVE:'Avançar',BACK:'Recuar',LEFT:'Esquerda',RIGHT:'Direita',COLLECT:'Recolher',DROP:'Depositar'};
   var trail=[],box=null,list=null,lbl=null;
-  function mk(){if(box)return true;var q=document.getElementById('queue-box');if(!q||!q.parentNode)return false;
+  function mk(){if(box)return true;var q=document.querySelector('#game-screen .grid-wrapper')||document.getElementById('queue-box');if(!q||!q.parentNode)return false;
     box=document.createElement('div');box.id='vb-trail';box.className='qx-hidden';box.setAttribute('role','list');box.setAttribute('aria-label','O que fiz');
     box.innerHTML='<span class="vb-trail-lbl">📝 O que fiz:</span><div class="vb-trail-list"></div>';
     lbl=box.querySelector('.vb-trail-lbl');list=box.querySelector('.vb-trail-list');q.parentNode.insertBefore(box,q);return true;}
@@ -207,7 +207,7 @@
       var d=document.createElement('div');d.className='u-desc';d.textContent=r.desc;
       var ch=document.createElement('div');ch.className='u-chips';(r.chips||[]).slice(0,2).forEach(function(x){var s=document.createElement('span');s.className='u-chip';s.textContent=x;ch.appendChild(s);});
       var pr=document.createElement('div');pr.className='vb-prog';
-      pr.textContent=(done?'✅ '+done+'/'+total+' '+unit:'🆕 '+total+' '+unit)+' · '+(r.noTimer?'sem limite de tempo':'⏱️ 10 min');
+      pr.textContent=(done?'✅ '+done+'/'+total+' '+unit:'🆕 '+total+' '+unit)+' · '+((r.noTimer||window.vbErNoTimer)?'sem limite de tempo':'⏱️ 15 min');
       var pl=document.createElement('div');pl.className='vb-play';pl.textContent='Jogar! ▶';
       [ic,t,d,ch,pr,pl].forEach(function(x){c.appendChild(x);});
       function go(){A.open();A.game(r.id);}
@@ -217,14 +217,15 @@
     var row=document.querySelector('.vb-er-opts');if(!row){row=document.createElement('div');row.className='vb-er-opts';}
     var tm=document.getElementById('vb-er-timer');
     if(!tm){tm=document.createElement('button');tm.id='vb-er-timer';tm.type='button';
-      var paint=function(){tm.setAttribute('aria-pressed',window.vbErNoTimer);tm.textContent=window.vbErNoTimer?'⏱️ Sem cronómetro (calmo)':'⏱️ Com cronómetro (10 min)';};
-      tm.onclick=function(){window.vbErNoTimer=!window.vbErNoTimer;paint();};paint();}
+      var paint=function(){tm.setAttribute('aria-pressed',!window.vbErNoTimer);tm.textContent=window.vbErNoTimer?'⏱️ Modo desafio (opcional): com cronómetro':'⏱️ Modo desafio ligado · 15 min';};
+      tm.onclick=function(){window.vbErNoTimer=!window.vbErNoTimer;paint();if(window.vbBuildER)window.vbBuildER();};paint();}
     else if(tm.parentNode!==row){tm.parentNode&&tm.parentNode.removeChild(tm);}
     row.appendChild(tm);
     frag.appendChild(row);
     lbl.after(frag);
     if(lbl.getAttribute('aria-expanded')==='false'){var n=lbl.nextElementSibling;while(n&&!n.classList.contains('universe-group-label')){n.classList.add('vb-collapsed');n=n.nextElementSibling;}}
   }
+  window.vbBuildER=build;
   document.addEventListener('vb-app-ready',function(){
     build();var us=document.getElementById('universe-screen');
     if(us)new MutationObserver(function(){if(us.classList.contains('active'))build();}).observe(us,{attributes:true,attributeFilter:['class']});

@@ -1924,3 +1924,15 @@ body:not(.dark) .er-hint-btn{background:#ffd23f!important;color:#1e1b4b!importan
 .vb-er-card .u-icon{font-size:1.9rem;}
 /* 1.º ciclo: comandos imediatos, sem painel "Sequência" vazio */
 body.vb-c1 #queue-box{display:none!important;}
+
+/* "O que fiz": faixa de uma só linha por cima do tabuleiro; nunca cresce, por isso não empurra os botões */
+#vb-trail{box-sizing:border-box;min-height:52px;}
+#vb-trail .vb-trail-list{min-width:0;flex-wrap:nowrap;}
+#vb-trail .vb-trail-empty{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media(max-width:750px){
+  #vb-trail{height:46px;min-height:0;margin:4px 0;padding:3px 8px;gap:6px;border-width:2.5px;box-shadow:0 3px 0 #1e1b4b;}
+  #vb-trail .vb-trail-lbl{font-size:0;}
+  #vb-trail .vb-trail-lbl::before{content:'📝';font-size:1.2rem;}
+  #vb-trail .vb-step{width:32px;height:32px;font-size:1.1rem;border-radius:9px;}
+  #vb-trail .vb-trail-empty{font-size:.78rem;}
+}

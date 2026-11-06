@@ -194,7 +194,7 @@ const LANG_STRINGS = {
     themeCompleteMsg: "🎉 Tema concluído! Escolhe outro desafio.",
     // Escape Rooms module
     erNoTimer: "Sem limite de tempo",
-    erTimerDesc: "10 minutos · Resolve todas as portas!",
+    erTimerDesc: "Modo desafio · 15 minutos. Resolve todas as portas!",
     erDoorWord: "Porta",
     erRoomWord: "Sala",
     erLetsGo: "vamos lá! 💪",
@@ -420,7 +420,7 @@ const LANG_STRINGS = {
     themeCompleteMsg: "🎉 Theme complete! Choose another challenge.",
     // Escape Rooms module
     erNoTimer: "No time limit",
-    erTimerDesc: "10 minutes · Solve all doors!",
+    erTimerDesc: "Challenge mode · 15 minutes. Solve all doors!",
     erDoorWord: "Door",
     erRoomWord: "Room",
     erLetsGo: "let's go! 💪",
@@ -4296,7 +4296,7 @@ const ROOMS = {
   ims: {
     id:"ims", cssClass:"room-ims", group:"security",
     icon:"🛡️", title:"Internet Mais Segura",
-    desc:"Ciberbullying, privacidade e cidadania digital. 8 portas, 10 minutos.",
+    desc:"Ciberbullying, privacidade e cidadania digital. 8 portas.",
     chips:["🤝 Ciberbullying","🔐 Passwords","👁️ Privacidade"],
     missionTitle:"Missão: Proteger a Comunidade Online",
     robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos construir uma Internet mais segura e mais humana! 🛡️",
@@ -4353,7 +4353,7 @@ const ROOMS = {
   agua: {
     id:"agua", cssClass:"room-agua", group:"ambiente",
     icon:"💧", title:"A Aventura da Água",
-    desc:"Ciclo da água, consumo responsável e nascentes. 8 portas, 10 minutos.",
+    desc:"Ciclo da água, consumo responsável e nascentes. 8 portas.",
     chips:["☁️ Ciclo da Água","🚿 Poupar","🧮 Cálculo"],
     missionTitle:"Missão: Salvar a Fonte da Escola",
     robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos salvar a fonte da escola! 💧",
@@ -4410,7 +4410,7 @@ const ROOMS = {
   ar: {
     id:"ar", cssClass:"room-ar", group:"ambiente",
     icon:"🌬️", title:"A Aventura do Ar",
-    desc:"Qualidade do ar, poluição e mobilidade sustentável. 8 portas, 10 minutos.",
+    desc:"Qualidade do ar, poluição e mobilidade sustentável. 8 portas.",
     chips:["🌿 Ar limpo","🚲 Mobilidade","🏭 Poluição"],
     missionTitle:"Missão: Salvar o Ar da Escola",
     robotIntro:"Olá! Eu sou o VanBerto's.<br>Vamos melhorar o ar da escola! 🌬️",
@@ -4608,8 +4608,8 @@ function initERState(room){
     score:0, completed:Array(n).fill(false),
     triesTotal:0, triesPerDoor:Array(n).fill(0),
     hintsUsed:0,
-    timeTotalSec: (room.noTimer||window.vbErNoTimer) ? 0 : 10*60,
-    timeLeftSec:  (room.noTimer||window.vbErNoTimer) ? 0 : 10*60,
+    timeTotalSec: (room.noTimer||window.vbErNoTimer) ? 0 : 15*60,
+    timeLeftSec:  (room.noTimer||window.vbErNoTimer) ? 0 : 15*60,
     timeUp:false, timerRunning:false,
     teacherOpen:false
   };
@@ -4696,7 +4696,7 @@ function er_buildRoomsGrid(){
         <div class="er-room-desc">${room.desc}</div>
         <div class="er-chips" style="justify-content:center;">${room.chips.map(c=>`<span class="er-chip">${c}</span>`).join("")}</div>
         <div style="display:flex;justify-content:space-between;align-items:center;font-size:.71rem;color:var(--muted);margin-top:4px;width:100%;">
-          <span>${done}/${total} ${room.noTimer?"salas":"portas"}${room.noTimer?"":"  · ⏱️ 10 min"}</span>
+          <span>${done}/${total} ${room.noTimer?"salas":"portas"}${(room.noTimer||window.vbErNoTimer)?"":"  · ⏱️ 15 min"}</span>
           <span style="font-weight:700;">${pct}%</span>
         </div>
         <div class="er-prog-bar" style="width:100%;"><div class="er-prog-fill" style="width:${pct}%"></div></div>`;
@@ -4757,7 +4757,7 @@ function er_startRoom(roomId, keepProgress=false){
   document.getElementById("er-hub-robot").innerHTML=VANBERTO_POPUP_SVG();
   // reset panels
   document.getElementById("er-mission-title").textContent=T("chooseMission");
-  document.getElementById("er-mission-topic").textContent=r.noTimer?T("erNoTimer"):T("erTimerDesc");
+  document.getElementById("er-mission-topic").textContent=(r.noTimer||window.vbErNoTimer)?T("erNoTimer"):T("erTimerDesc");
   document.getElementById("er-mission-speech").innerHTML=r.robotIntro;
   document.getElementById("er-mission-content").innerHTML=`<div class="er-mini">Clica numa porta para ver o desafio.</div>`;
   erSetFeedback("info","Selecciona a primeira porta desbloqueada para começar!");
@@ -4778,7 +4778,7 @@ function er_startTimer(){
   if(erTimerInterval) clearInterval(erTimerInterval);
   // Preserve original total (600s) so the ring shows correctly even on resume
   if(!erState._timerTotalFixed){
-    erState.timeTotalSec = (erCurrentRoom && !erCurrentRoom.noTimer) ? 10*60 : 0;
+    erState.timeTotalSec = (erCurrentRoom && !erCurrentRoom.noTimer && !window.vbErNoTimer) ? 15*60 : 0;
     erState._timerTotalFixed = true;
   }
   erTimerInterval=setInterval(()=>{
@@ -4786,11 +4786,11 @@ function er_startTimer(){
     erState.timeLeftSec--;
     er_updateTimerUI();
     if(erState.timeLeftSec<=0){
-      erState.timeUp=true;
+      erState.overtime=true;
       clearInterval(erTimerInterval);
       er_saveRoomProgress(erCurrentRoom.id,erState);
-      document.getElementById("er-timeup-text").textContent=`Conseguiste abrir ${erState.completed.filter(Boolean).length} de ${erCurrentRoom.doors.length} portas.`;
-      document.getElementById("er-popup-timeup").classList.add("visible");
+      const sp=document.getElementById("er-mission-speech");
+      if(sp) sp.textContent="⏱️ O tempo do desafio acabou, mas podes continuar com calma!";
     }
   },1000);
 }
@@ -4962,7 +4962,7 @@ function erCompleteDoor(i){
 
   er_saveRoomProgress(erCurrentRoom.id,erState);
   if(erState.completed.every(Boolean)){
-    const bonus=(erCurrentRoom.noTimer||window.vbErNoTimer)?0:er_computeTimeBonus();
+    const bonus=0; /* sem pontos por velocidade: pensar primeiro */
     erState.score+=bonus;
     er_updateKPIs();
     er_stopTimer();
@@ -4995,7 +4995,7 @@ function er_showFinalPopup(bonus=0){
   const emoji=pct>=90?"🏆":pct>=65?"🎉":"😊";
   document.getElementById("er-final-emoji").textContent=emoji;
   document.getElementById("er-final-title").textContent=T("erMissionComplete")+" "+stars;
-  document.getElementById("er-final-text").textContent=erCurrentRoom.finalMessage;
+  document.getElementById("er-final-text").textContent=erCurrentRoom.finalMessage+((!erCurrentRoom.noTimer&&!window.vbErNoTimer&&!erState.overtime)?"  ⚡ Medalha de velocidade!":"");
   // Pedagogical summary
   const summaryEl=document.getElementById("er-final-summary");
   if(summaryEl){
