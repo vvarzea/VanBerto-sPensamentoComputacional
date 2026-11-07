@@ -5514,7 +5514,7 @@ function er_imsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   const digits=code.replace(/\D/g,"");
   let cfb="Código: (nº verdadeiras)(cada verdadeira).";
   if(digits.length!==3) cfb=`O código tem ${digits.length} dígito${digits.length!==1?"s":""} — deve ter 3.`;
-  else if(digits[0]!=="2") cfb="Há 2 verdadeiras (frases 1 e 4) → código: (2)(1.ª=1)(2.ª=4) = 214.";
+  else if(digits[0]!=="2") cfb="O primeiro dígito não está certo. Conta quantas frases marcaste como verdadeiras.";
   document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> ${cfb}</div>`;erSetFeedback("err","❌ Código não está certo.");erPlaySound("wrong");return;}
       document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Porta aberta! +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
     });
@@ -5603,8 +5603,8 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       erAddTry(0);
       const q1=document.getElementById("d1_q1").checked,q2=document.getElementById("d1_q2").checked,q3=document.getElementById("d1_q3").checked,q4=document.getElementById("d1_q4").checked;
       const code=erNormalize(document.getElementById("d1_code").value);
-      if(!(q1&&!q2&&q3&&q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Lê cada frase — 3 são verdadeiras. Cuidado com os mitos!</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
-      if(code!=="3134"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> 3 verdadeiras (frases 1, 3 e 4) → código é (nº verdadeiras)(1.ª)(2.ª)(3.ª).</div>`;erSetFeedback("err","❌ Código não está certo.");erPlaySound("wrong");return;}
+      if(!(q1&&!q2&&q3&&q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Há pelo menos uma frase mal marcada. Cuidado com os mitos!</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
+      if(code!=="3134"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erSetFeedback("err","❌ Código não está certo.");erPlaySound("wrong");return;}
       document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
     });
   } else if(idx===1){
@@ -5682,7 +5682,7 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       const q1=document.getElementById("d1_q1").checked,q2=document.getElementById("d1_q2").checked,q3=document.getElementById("d1_q3").checked,q4=document.getElementById("d1_q4").checked;
       const code=erNormalize(document.getElementById("d1_code").value);
       if(!(q1&&!q2&&q3&&!q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Cuidado — nem todos os factos populares são verdadeiros!</div>`;erPlaySound("wrong");return;}
-      if(code!=="213"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> 2 verdadeiras: a 1.ª e a 3.ª.</div>`;erPlaySound("wrong");return;}
+      if(code!=="213"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erPlaySound("wrong");return;}
       document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
     });
   } else if(idx===1){
@@ -5998,8 +5998,8 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
       const q1=document.getElementById("fn1_q1").checked,q2=document.getElementById("fn1_q2").checked,q3=document.getElementById("fn1_q3").checked,q4=document.getElementById("fn1_q4").checked;
       const code=erNormalize(document.getElementById("fn1_code").value);
       // True: q2 and q4 (NOT q1 - photos can be fake; NOT q3 - title not enough)
-      if(!(!q1&&q2&&!q3&&q4)){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Cuidado com os mitos: fotos podem ser manipuladas (deepfakes), e o título não chega para verificar uma notícia.</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
-      if(code!=="224"){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> 2 verdadeiras: qual o número da 1.ª e da 2.ª?</div>`;erSetFeedback("err","❌ Código incorreto.");erPlaySound("wrong");return;}
+      if(!(!q1&&q2&&!q3&&q4)){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Há pelo menos uma frase mal marcada. Lê cada uma com atenção.</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
+      if(code!=="224"){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erSetFeedback("err","❌ Código incorreto.");erPlaySound("wrong");return;}
       document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Porta aberta! +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
     });
   } else if(idx===1){
@@ -6023,7 +6023,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Correto!</b> Maiúsculas, emojis excessivos, "ninguém quer que saibas" — todos sinais de clickbait! +${D[2].points} ⭐</div>`;
         erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 3 concluída.");erCompleteDoor(2);
       } else {
-        document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Não é esse.</b> Procura o que usa linguagem exagerada, alarme e emojis em excesso.</div>`;
+        document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Não é esse.</b> Lê os títulos outra vez e tenta de novo.</div>`;
         erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");
       }
     });
@@ -6069,7 +6069,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Perfeito detetive!</b> Urgência + sem fonte + afirmação impossível = desinformação clássica! +${D[5].points} ⭐</div>`;
         erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 6 concluída.");erCompleteDoor(5);
       } else {
-        document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Procura os 3 sinais que provam que a mensagem não é de confiança.</div>`;
+        document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Confirma que marcaste exatamente 3 sinais de alerta.</div>`;
         erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");
       }
     });
