@@ -3835,6 +3835,25 @@ function showCertificate(ck,tk){
   ov.classList.remove("qx-hidden");
   const img=$("certImage"); if(img){ img.removeAttribute("src"); certWhenFontsReady(()=>{ try{ img.src=buildCertCanvas().toDataURL("image/png"); }catch(e){ console.error("certImage:",e); } }); }
 }
+/* 🎓 Certificado de Escape Room (usa o mesmo cartão e o mesmo desenho dos certificados dos temas) */
+function showRoomCertificate(room,st){
+  const ov=$("certificateOverlay"); if(!ov||!room||!st) return;
+  const set=(id,t)=>{ const e=$(id); if(e) e.textContent=Q(t); };
+  const total=room.doors.length, done=st.completed.filter(Boolean).length;
+  const max=room.doors.reduce((a,d)=>a+d.points,0), pct=max>0?Math.round(st.score/max*100):100;
+  set("certPlayerName",((typeof _getStudentName==="function"&&_getStudentName())||"").trim()||"Programador(a)");
+  set("certSubtitle","de Escape Room · VanBerto's");
+  set("certAchText","que, com atenção e espírito de equipa, abriu todas as portas da");
+  set("certHighlight",room.title);
+  set("certFinalText","ajudando o VanBerto's a concluir a missão com sucesso.");
+  set("certThemes",done+"/"+total); set("certStatLabel",room.noTimer?"salas":"portas");
+  set("certStars",st.score+"/"+max);
+  set("certMedal",certMedal(pct));
+  set("certDate",new Date().toLocaleDateString(currentLang==="en"?"en-GB":"pt-PT",{day:"numeric",month:"long",year:"numeric"}));
+  ov.dataset.slug="escape-"+room.id;
+  ov.classList.remove("qx-hidden");
+  const img=$("certImage"); if(img){ img.removeAttribute("src"); certWhenFontsReady(()=>{ try{ img.src=buildCertCanvas().toDataURL("image/png"); }catch(e){ console.error("certImage:",e); } }); }
+}
 function certAccent(){
   const u=(typeof ALL_UNIVERSES!=="undefined"&&ALL_UNIVERSES[currentUniverseId])||null, c=u&&u.colors;
   return c?{main:c.primary,dark:c.dark,rgb:c.rgb}:{main:CERT_ORG,dark:CERT_GOLD,rgb:"217,164,65"};
@@ -4647,8 +4666,17 @@ const ROOMS = {
 
 /* ═══════════════════ AUDIO ═══════════════════ */
 let erIsMuted=false;
+/* Sequência de notas: [[freq,dur,tipo?,vol?],…] com intervalo gapMs entre notas */
+function _chime(notes,gapMs){
+  (notes||[]).forEach(function(n,i){
+    setTimeout(function(){ try{ _beep(n[0],n[1],n[2]||'sine',n[3]||0.16); }catch(e){} }, i*(gapMs||80));
+  });
+}
 function erPlaySound(s){
   if(erIsMuted) return;
+  try{ _erPlaySound(s); }catch(e){}  /* o som nunca pode impedir a porta de concluir nem o popup final */
+}
+function _erPlaySound(s){
   const ctx=_getCtx(); if(!ctx) return;
   if(s==='correct') _chime([[523,0.08],[784,0.12]],80);
   else if(s==='wrong') _beep(220,0.18,'sawtooth',0.13);
@@ -5072,9 +5100,18 @@ function er_showFinalPopup(bonus=0){
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.completed.filter(Boolean).length}/${erCurrentRoom.doors.length}</div><div class="er-kpi-lbl">🔓 Portas abertas</div></div>
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.triesTotal}</div><div class="er-kpi-lbl">🔁 Tentativas</div></div>
     <div class="er-kpi-card"><div class="er-kpi-val">${(erCurrentRoom.noTimer||window.vbErNoTimer)?"—":er_formatTime(erState.timeLeftSec)}</div><div class="er-kpi-lbl">⏱️ Tempo restante</div></div>`;
-  erSpawnConfetti();
-  erPlaySound("victory");
   document.getElementById("er-popup-final").classList.add("visible");
+  try{ erSpawnConfetti(); }catch(e){}
+  erPlaySound("victory");
+  // botão 🎓 Certificado (criado uma vez, ao lado de "Jogar de novo")
+  try{
+    const btns=document.querySelector("#er-popup-final .er-popup-btns");
+    if(btns){
+      let cb=document.getElementById("er-btn-final-cert");
+      if(!cb){ cb=document.createElement("button"); cb.id="er-btn-final-cert"; cb.type="button"; cb.className="btn small"; cb.textContent="🎓 Certificado"; btns.insertBefore(cb,btns.firstChild); }
+      cb.onclick=function(){ showRoomCertificate(erCurrentRoom,erState); };
+    }
+  }catch(e){}
 }
 function erSpawnConfetti(){
   const w=document.getElementById("er-confetti-wrap"); if(!w) return;
@@ -5617,7 +5654,7 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   } else if(idx===6){
     er_anagramaDoor(7,"O T A V A L P   A U G A","AGUA POTAVEL","água tratada e segura para consumo humano — o que bebemos do cano em casa",CE,addTry,erCompleteDoor,D,setFeedback,playSound,true);
   } else if(idx===7){
-    er_livreDoor(8,"escreve 3 boas práticas para poupar água.","Ex: fechar torneira, duche curto, reparar fugas",D,addTry,erCompleteDoor,setFeedback,playSound,CE);
+    er_livreDoor(8,"escreve 3 boas práticas para poupar água.","Escreve 3 ideias, separadas por vírgulas",D,addTry,erCompleteDoor,setFeedback,playSound,CE);
   }
 }
 
@@ -5698,7 +5735,7 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   } else if(idx===6){
     er_anagramaDoor(7,"I R A   O P M I L","AR LIMPO","o que queremos respirar todos os dias — ar sem poluição",CE,addTry,erCompleteDoor,D,setFeedback,playSound,true);
   } else if(idx===7){
-    er_livreDoor(8,"escreve 3 boas práticas para proteger o ar.","Ex: ir a pé, plantar árvores, poupar energia",D,addTry,erCompleteDoor,setFeedback,playSound,CE);
+    er_livreDoor(8,"escreve 3 boas práticas para proteger o ar.","Escreve 3 ideias, separadas por vírgulas",D,addTry,erCompleteDoor,setFeedback,playSound,CE);
   }
 }
 
@@ -5954,7 +5991,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         <label class="er-choice"><input type="checkbox" id="fn1_q4"/> <div><b>4.</b> O facto-checking (verificação de factos) por organizações independentes é uma das melhores ferramentas contra desinformação.</div></label>
       </div>
       <div class="er-field"><label class="er-lbl-small" for="fn1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="fn1_code" inputmode="numeric" placeholder="Ex: 224" style="max-width:120px;"/><button class="btn sm" id="fn1_check">Abrir sala</button></div>
+        <div class="er-row"><input id="fn1_code" inputmode="numeric" placeholder="Ex: 213" style="max-width:120px;"/><button class="btn sm" id="fn1_check">Abrir sala</button></div>
         <div id="fn1_msg"></div></div>`;
     document.getElementById("fn1_check").addEventListener("click",()=>{
       erAddTry(0);

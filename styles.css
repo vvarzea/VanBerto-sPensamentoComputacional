@@ -1996,3 +1996,18 @@ body{max-width:100%;}
 .universe-hero p{max-width:440px;text-wrap:balance;}
 .level-concept{font-size:.8rem;font-weight:800;color:#5b21b6;background:#f3e8ff;border:1px solid #ddd6fe;border-radius:10px;padding:5px 9px;margin:0 0 8px;line-height:1.4;}
 body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color:#5b4b86;}
+
+/* ===== v17 · Telemóvel/tablet: o mesmo cabeçalho de destaque do PC no ecrã inicial ===== */
+@media(max-width:900px){
+  body.vb-home header{flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;padding:16px 12px 12px;}
+  body.vb-home:not(.dark) header{background:linear-gradient(180deg,#fff 0,#fff4c9 100%);}
+  body.vb-home header>div:first-child{width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;}
+  body.vb-home header h1{justify-content:center;flex-wrap:wrap;font-size:clamp(1.9rem,9vw,2.7rem);line-height:1.05;font-weight:700;letter-spacing:.3px;}
+  body.vb-home:not(.dark) header h1{text-shadow:2px 2px 0 var(--sun);}
+  body.vb-home header h1::before{content:'</>';margin-right:8px;color:var(--grape);font-size:.8em;}
+  body.vb-home .hdr-sub{display:block;font-size:.95rem;}
+  body.vb-home header .badge-row{width:100%;justify-content:center;gap:6px;padding-top:10px;margin-top:2px;border-top:3px dashed rgba(30,27,75,.18);}
+  body.vb-home.dark header h1,body.vb-home.dark .hdr-sub{color:#e2e8f0!important;}
+  body.vb-home .universe-hero{padding-top:4px;}
+  body.vb-home .universe-hero h2{font-size:1.45rem;}
+}
