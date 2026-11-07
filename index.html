@@ -2,615 +2,829 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
-    <meta name="theme-color" content="#ff9a3d" />
-  <meta name="mobile-web-app-capable" content="yes" />
+  <!-- Content-Security-Policy: só código e ficheiros do próprio jogo, sem ligações a outros sites.
+       Os 2 scripts inline estão autorizados pelo hash (sha256): se editares o texto desses scripts, o hash muda e o
+       jogo deixa de arrancar — corre «node _dev/check.mjs», que o verifica e diz o valor novo. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-tq0er9YgMj5AkKnbnJ71mtSdWXq0f/aPoTRiW0I1sjM=' 'sha256-RuAraqiv2FYLC8N/puUYLXADGlp3wvWWcwLwcx2Vc4c='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self'; connect-src 'self' data: blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+  <meta name="description" content="VanBerto's — A Revolução dos Cravos: jogo educativo sobre o 25 de Abril de 1974 e a conquista da liberdade." />
+  <meta name="theme-color" content="#c8231f" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="VanBerto's" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-  <title>Hora do Código · VanBerto's</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=17">
-  <script src="head.js?v=15"></script>
+  <title>VanBerto's — A Revolução dos Cravos</title>
+  <link rel="stylesheet" href="abril.css?v=20261107v3" />
 </head>
 <body>
-  <div class="bg-layer"></div>
-  <div class="wave-layer"></div>
-  <div id="universe-transition"></div>
 
-  <div id="app">
-    <header>
-      <div>
-        <h1><span class="logo-emoji" id="logo-robot"></span> Hora do Código</h1>
-        <div class="hdr-sub">VanBerto's · Pensamento Computacional</div>
+  <!-- ═══════════════════════════════════════════
+       ERRO INESPERADO — rede de segurança
+       Registada o mais cedo possível (antes do Phaser e do resto do jogo), para apanhar também
+       falhas durante o carregamento. Ver a explicação e os testes em abril.js / _dev/smoke.py.
+  ═══════════════════════════════════════════ -->
+  <div id="fatalErrorOverlay" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(7,29,16,0.92);align-items:center;justify-content:center;padding:16px;font-family:'Baloo 2',sans-serif;">
+    <div style="max-width:420px;width:100%;background:#11472a;border:3px solid #ffd700;border-radius:14px;padding:22px 24px;text-align:center;color:#ffffff;box-shadow:0 0 40px rgba(224,32,54,0.4);">
+      <div style="font-size:40px;margin-bottom:6px;">😵</div>
+      <h2 style="margin:0 0 8px;color:#ffd700;font-size:20px;">Ups, algo correu mal!</h2>
+      <p style="margin:0 0 6px;font-size:14px;line-height:1.5;">Não é culpa tua — o jogo encontrou um problema inesperado.</p>
+      <p style="margin:0 0 16px;font-size:13px;line-height:1.5;opacity:0.85;">O teu progresso já está guardado neste dispositivo. Tenta recarregar; se acontecer sempre, pede a um adulto para avisar quem fez o jogo.</p>
+      <button id="btnFatalReload" style="font:inherit;font-weight:800;font-size:15px;padding:10px 22px;border-radius:10px;border:2px solid #ffd700;background:linear-gradient(180deg,#ff3d4d,#ff3546);color:#ffffff;cursor:pointer;">🔄 Recarregar o jogo</button>
+      <p id="fatalErrorDetail" style="margin:14px 0 0;font-size:10px;opacity:0.5;word-break:break-word;"></p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var shown = false;
+      function showFatal(message) {
+        if (shown) return; shown = true; // só a 1.ª vez — evita várias sobrepostas se houver mais do que um erro
+        var ov = document.getElementById("fatalErrorOverlay");
+        if (!ov) { console.error("[VanBerto's] erro fatal, sem overlay para o mostrar:", message); return; }
+        ov.style.display = "flex";
+        var detail = document.getElementById("fatalErrorDetail");
+        if (detail && message) detail.textContent = String(message).slice(0, 200);
+      }
+      window.addEventListener("error", function (e) { showFatal(e.message || e.error); });
+      window.addEventListener("unhandledrejection", function (e) { showFatal((e.reason && e.reason.message) || e.reason); });
+      document.getElementById("btnFatalReload").addEventListener("click", function () { location.reload(); });
+      // Gancho para os testes (_dev/smoke.py) simularem um erro real sem mexer no resto do jogo.
+      window.__vb_triggerFatalError = function () { setTimeout(function () { throw new Error("erro de teste"); }); };
+    })();
+  </script>
+
+  <div id="game"></div>
+
+  <!-- ═══════════════════════════════════════════
+       MENU PRINCIPAL
+  ═══════════════════════════════════════════ -->
+  <div id="startOverlay" class="overlay">
+    <div class="card">
+      <div class="card-seal" aria-hidden="true">🌹</div>
+      <h1>🌹 VanBerto's — A Revolução dos Cravos</h1>
+      <p class="sub"><strong>Professora:</strong> Vanda Várzea</p>
+      <p class="desc">
+        Viaja no tempo com o VanBerto's e descobre a história do <strong>25 de Abril de 1974</strong>,
+        o dia em que Portugal conquistou a liberdade! Apanha cravos pelo caminho, evita os censores e chega à <strong>porta 🚪</strong>
+        para responder à pergunta.<br>
+        Tens dúvidas? Clica em <strong>"Como Jogar ❓"</strong>!
+      </p>
+      <div class="name-row">
+        <label for="playerName">O teu nome:</label>
+        <input type="text" id="playerName" maxlength="20" placeholder="Escreve (só neste dispositivo)" autocomplete="off" />
       </div>
-      <div class="badge-row">
-        <button class="btn secondary small" id="btn-hdr-profile">👤 Perfil</button>
-        <div class="badge" id="hdr-progress" title="Os teus níveis e estrelas">⭐ 0 · 🌟 0</div>
-        <!-- Saudação com nome do aluno — inspirada no Dia da Criança -->
-        <div id="vb-student-greeting">👤 <span id="vb-student-name-display"></span></div>
-        <!-- Botão Pausa Professor — tecla P -->
-        <button class="btn secondary small" id="btn-teacher-pause" title="Pausar jogo para a turma (P)">⏸️ Pausa</button>
-        <button class="btn secondary small" id="btn-reset-level-top">🔁 Reiniciar nível</button>
-        <button class="btn secondary small" id="btn-change-universe">🌍 Mudar universo</button>
-        <div class="hdr-more-wrap">
-          <button class="btn secondary small" id="btn-hdr-more" aria-haspopup="true" aria-expanded="false" aria-controls="hdr-more">⚙️ Mais</button>
-          <div class="hdr-more qx-hidden" id="hdr-more">
-            <button class="btn secondary small" id="btn-mute">🔊 Som</button>
-            <button class="btn secondary small" id="btn-dark-mode">🌙 Modo escuro</button>
-            <button class="btn secondary small" id="btn-lang">🇬🇧 English</button>
-            <button class="btn secondary small" id="btn-fullscreen" title="Ecrã inteiro">⛶ Ecrã</button>
-            <button class="btn secondary small" id="btn-reset-theme">🗑 Reset tema</button>
-          </div>
+
+      <!-- MENU PRINCIPAL — grelha de opções -->
+      <div class="main-menu-grid">
+        <button id="btnStart" class="btn primary menu-tile">🚀<span>Nova Aventura</span></button>
+        <button id="btnOpenMap" class="btn menu-tile">🗺️<span>Mapa</span></button>
+        <button id="btnAchievements" class="btn menu-tile">🏆<span>Conquistas</span></button>
+        <button id="btnAlbum" class="btn menu-tile">📖<span>Álbum da Memória</span></button>
+        <button id="btnStats" class="btn menu-tile">📊<span>Estatísticas</span></button>
+        <button id="btnOptions" class="btn menu-tile">⚙️<span>Opções</span></button>
+        <button id="btnHow" class="btn menu-tile">❓<span>Como Jogar</span></button>
+        <button id="btnExitGame" class="btn menu-tile">🚪<span>Sair</span></button>
+      </div>
+
+      <div class="row">
+        <button id="btnMute" class="btn">🔊 Som: ON</button>
+        <button id="btnTouchToggleStart" class="btn">📱 Botões: AUTO</button>
+        <button id="btnFullscreen" class="btn">⛶ Ecrã todo</button>
+      </div>
+      <p class="tiny">
+        <span class="hint-pc">PC: ← → para andar, ↑/Espaço para saltar e ↓/S para agachar.<br></span>
+        Tablet/telemóvel: mantém o dedo no lado esquerdo/direito para andar e faz um toque rápido para saltar.
+      </p>
+      <p class="tiny" id="versionTag" hidden aria-hidden="true" style="display:none !important;">Versão 20261107v3</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       NÍVEL DE DIFICULDADE — Fácil / Difícil
+       Pedido do Berto: o jogo era só para 1º/2º ciclo; este ano é preciso
+       também para 3º ciclo e secundário. Mostrado sempre que se clica em
+       "Nova Aventura" (ver btnStart em abril.js), antes de reiniciar
+       o progresso e abrir o mapa. Também pode ser mudado mais tarde em
+       Opções (optBtnDifficulty), sem ser preciso recomeçar tudo.
+  ═══════════════════════════════════════════ -->
+  <div id="difficultyOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Escolher nível de dificuldade">
+    <div class="card">
+      <h1>🎯 Escolhe o nível</h1>
+      <p class="desc">Isto ajusta as perguntas do quiz e o desafio dos censores/chefes.</p>
+      <div class="difficulty-options">
+        <button id="btnDiffFacil" class="btn difficulty-tile diff-facil">😊<span>Fácil</span></button>
+        <button id="btnDiffDificil" class="btn difficulty-tile diff-dificil">🎓<span>Difícil</span></button>
+        <button id="btnDiffExtremo" class="btn difficulty-tile diff-extremo">🔥<span>Extremo</span></button>
+      </div>
+      <p class="tiny">😊 Fácil — ritmo habitual.<br>🎓 Difícil — perguntas mais aprofundadas, censores/chefes mais rápidos e menos vidas.<br>🔥 Extremo — só 1 vida, censores/chefes ainda mais rápidos, quase sem cravo dourado.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       HISTÓRIA PRINCIPAL — introdução narrativa
+  ═══════════════════════════════════════════ -->
+  <div id="mainStoryOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="História principal">
+    <div class="card history-card main-story-card">
+      <div class="main-story-robot">
+        <img src="vanberto_real.png" alt="VanBerto's" class="main-story-robot-img" />
+        <div class="main-story-particles" aria-hidden="true"></div>
+      </div>
+      <div class="history-header">
+        <span class="history-icon">🌹</span>
+        <div>
+          <h2>Uma viagem a 1974</h2>
+          <p class="history-subtitle">A missão começa agora</p>
         </div>
       </div>
-    </header>
-
-    <main>
-      <div class="academy-shell">
-        <!-- SIDEBAR -->
-        <aside class="academy-side" aria-label="Navegação">
-          <div class="side-brand">
-            <div class="side-robot" id="side-robot"></div>
-            <div class="side-brand-text">
-              <div class="side-title">VanBerto's</div>
-              <div class="side-sub" id="side-sub-universe">Escolhe um universo</div>
-            </div>
-          </div>
-          <nav class="side-nav">
-            <button class="side-link" id="side-home">🏠 Início</button>
-            <button class="side-link" id="side-universes">🌍 Universos</button>
-            <button class="side-link" id="side-profile">👤 Perfil</button>
-            <div class="side-group" id="side-cycles-group" style="display:none;">
-              <div class="side-group-title">Ciclos</div>
-              <button class="side-link" id="side-1c">1.º Ciclo</button>
-              <button class="side-link" id="side-2c">2.º Ciclo</button>
-              <button class="side-link" id="side-3c" style="display:none;">3.º Ciclo</button>
-              <button class="side-link" id="side-sec" style="display:none;">Secundário</button>
-            </div>
-            <div class="side-group">
-              <div class="side-group-title">Progresso</div>
-              <div class="side-progress" id="side-progress">⭐ 0 níveis concluídos</div>
-            </div>
-          </nav>
-          <div class="side-footer">
-            <div class="side-tip">💡 Pensa antes de agir!</div>
-          </div>
-        </aside>
-
-        <!-- MAIN AREA -->
-        <section class="academy-main" id="academy-main">
-
-          <!-- ECRÃ UNIVERSO -->
-          <section id="universe-screen" class="screen active">
-            <div class="universe-hero">
-              <div class="hero-robot-wrap">
-                <div class="hero-glow"></div>
-                <div class="hero-robot" id="hero-robot"></div>
-              </div>
-              <h2>Escolhe o teu universo!</h2>
-              <p>Programa o VanBerto's e sobe de nível, do 1.º Ciclo ao Secundário.</p>
-            </div>
-            <div class="universe-grid">
-              <!-- ===== GRUPO: SEGURANÇA NA INTERNET ===== -->
-              <div class="universe-group-label" data-group="security"><span class="group-icon">🔒</span> Segurança na Internet</div>
-              <div class="universe-card u-ciberseg" data-universe="ciberseg">
-                <div class="u-icon">🔒</div>
-                <div class="u-title">Segurança na Internet</div>
-                <div class="u-desc">Protege dados, deteta phishing e cria palavras-passe invencíveis.</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Senhas</span>
-                  <span class="u-chip">Phishing</span>
-                  <span class="u-chip">Privacidade</span>
-                </div>
-              </div>
-              <div class="universe-card u-missoes" data-universe="ciberseguras">
-                <div class="u-icon">🛡️</div>
-                <div class="u-title">Missões CiberSeguras</div>
-                <div class="u-desc">Dentro do computador: combate malware fictício e protege a rede.</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Computador</span>
-                  <span class="u-chip">Firewall</span>
-                  <span class="u-chip">Passwords</span>
-                </div>
-              </div>
-              <div class="universe-card u-escape" data-universe="escape">
-                <div class="u-icon">🚪</div>
-                <div class="u-title">Escape da Internet Perigosa</div>
-                <div class="u-desc">Recolhe ficheiros suspeitos, leva-os à zona segura e responde ao quiz para fugir!</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Zona Segura</span>
-                  <span class="u-chip">Quiz Final</span>
-                  <span class="u-chip">Porta de Saída</span>
-                </div>
-              </div>
-              <!-- ===== GRUPO: AMBIENTE ===== -->
-              <div class="universe-group-label" data-group="environment"><span class="group-icon">🌍</span> Missões Ambientais</div>
-              <div class="universe-card u-ambiente" data-universe="ambiente">
-                <div class="u-icon">🌱</div>
-                <div class="u-title">Missões Ambientais</div>
-                <div class="u-desc">Cuida da floresta, recicla e ajuda a cidade sustentável a crescer.</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Oceanos</span>
-                  <span class="u-chip">Reciclagem</span>
-                  <span class="u-chip">Energia</span>
-                </div>
-              </div>
-              <div class="universe-card u-agua" data-universe="agua">
-                <div class="u-icon">💧</div>
-                <div class="u-title">Missões da Água</div>
-                <div class="u-desc">Limpa oceanos, repara fugas e protege as nascentes da nossa água.</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Oceano</span>
-                  <span class="u-chip">Torneira</span>
-                  <span class="u-chip">Nascente</span>
-                </div>
-              </div>
-              <div class="universe-card u-ar" data-universe="ar">
-                <div class="u-icon">🌬️</div>
-                <div class="u-title">Qualidade do Ar</div>
-                <div class="u-desc">Reduz a poluição, instala filtros e monitoriza a qualidade do ar.</div>
-                <div class="u-chips">
-                  <span class="u-chip">Todos os Ciclos</span>
-                  <span class="u-chip">Cidade</span>
-                  <span class="u-chip">Vento</span>
-                  <span class="u-chip">Mobilidade</span>
-                </div>
-              </div>
-              <!-- ===== VanBerto's Escape Rooms (Segurança + Ambiente) ===== -->
-              <div class="universe-group-label" data-group="escaperooms"><span class="group-icon">🔐</span> Escape Rooms</div>
-              <div class="universe-card u-escaperooms" data-universe="escaperooms">
-                <div class="u-icon">🔐</div>
-                <div class="u-title">VanBerto's Escape Rooms</div>
-                <div class="u-desc">5 salas temáticas com puzzles, anagramas e desafios. Internet, Água, Ar, Malware e Fake News!</div>
-                <div class="u-chips">
-                  <span class="u-chip">Internet</span>
-                  <span class="u-chip">Água</span>
-                  <span class="u-chip">Ar</span>
-                  <span class="u-chip">Fake News</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- MENU (ciclos) -->
-          <section id="menu-screen" class="screen hidden">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
-              <button class="btn secondary small" id="btn-back-universes-menu">🌍 Universos</button>
-              <button class="btn secondary small" id="btn-profile-mobile">👤 Perfil</button>
-            </div>
-            <div class="menu-layout">
-              <div class="hero">
-                <div class="hero-top">
-                  <div class="hero-text">
-                    <h2 id="menu-title">Programa o robô!</h2>
-                    <p id="menu-desc">Escolhe o teu ciclo e começa a missão.</p>
-                  </div>
-                  <div class="hero-robot-wrap">
-                    <div class="hero-glow"></div>
-                    <div class="hero-robot" id="hero-robot-menu"></div>
-                  </div>
-                </div>
-                <div class="hero-bottom">
-                  <span class="pill">💡 Pensa antes de agir.</span>
-                  <span class="pill">📥 Só 1 objeto de cada vez.</span>
-                  <span class="pill">⭐ Menos movimentos = mais estrelas.</span>
-                </div>
-              </div>
-              <div>
-                <div class="menu-header">
-                  <h2>Escolhe o teu ciclo</h2>
-                  <p id="menu-cycle-desc">Começa pelo 1.º Ciclo e sobe de nível.</p>
-                </div>
-                <div class="cycle-grid" id="cycle-grid">
-                  <!-- Filled dynamically -->
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- PERFIL -->
-          <section id="profile-screen" class="screen hidden">
-            <div class="back-row">
-              <button class="btn secondary small" id="btn-back-profile">← Voltar</button>
-              <span class="small-text">👤 O meu Perfil</span>
-            </div>
-
-            <!-- Nome + stats globais -->
-            <div style="background:rgba(238,242,255,0.6);border:1.5px solid rgba(199,210,254,0.6);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:14px;">
-              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                <div style="flex:1;min-width:180px;">
-                  <div style="font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:4px;">O teu nome</div>
-                  <input id="student-name-input" type="text" placeholder="Escreve o teu nome..." maxlength="40"
-                    style="width:100%;padding:8px 12px;border-radius:10px;border:1.5px solid #c7d2fe;font-size:.9rem;outline:none;">
-                </div>
-                <div id="overall-stats" style="font-size:.85rem;color:var(--muted);text-align:center;min-width:120px;"></div>
-              </div>
-            </div>
-
-            <!-- Grid: conquistas + progresso -->
-            <div id="profile-content-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
-              <div>
-                <h3 style="margin:0 0 8px;font-size:.95rem;">🏆 Conquistas</h3>
-                <div id="badge-grid"></div>
-              </div>
-              <div>
-                <h3 style="margin:0 0 8px;font-size:.95rem;">📊 Progresso por tema</h3>
-                <div id="theme-progress-list">
-                  <div id="profile-no-universe" style="font-size:.82rem;color:var(--muted);padding:8px;display:none;">Seleciona um universo para ver o teu progresso por tema.</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- TEMAS 1.º CICLO -->
-          <section id="themes-1c" class="screen hidden">
-            <div class="back-row">
-              <button class="btn secondary small" id="btn-back-menu-1c">← Voltar ao menu</button>
-              <span class="small-text" id="cycle-desc-1c">1.º Ciclo · Comandos imediatos.</span>
-            </div>
-            <div class="theme-grid" id="theme-grid-1c"></div>
-          </section>
-
-          <!-- TEMAS 2.º CICLO -->
-          <section id="themes-2c" class="screen hidden">
-            <div class="back-row">
-              <button class="btn secondary small" id="btn-back-menu-2c">← Voltar ao menu</button>
-              <span class="small-text" id="cycle-desc-2c">2.º Ciclo · Planeia a sequência.</span>
-            </div>
-            <div class="theme-grid" id="theme-grid-2c"></div>
-          </section>
-
-          <!-- TEMAS 3.º CICLO -->
-          <section id="themes-3c" class="screen hidden">
-            <div class="back-row">
-              <button class="btn secondary small" id="btn-back-menu-3c">← Voltar ao menu</button>
-              <span class="small-text" id="cycle-desc-3c">3.º Ciclo · Sequência e otimização.</span>
-            </div>
-            <div class="theme-grid" id="theme-grid-3c"></div>
-          </section>
-
-          <!-- TEMAS SECUNDÁRIO -->
-          <section id="themes-sec" class="screen hidden">
-            <div class="back-row">
-              <button class="btn secondary small" id="btn-back-menu-sec">← Voltar ao menu</button>
-              <span class="small-text" id="cycle-desc-sec">Secundário · Estratégia e eficiência.</span>
-            </div>
-            <div class="theme-grid" id="theme-grid-sec"></div>
-          </section>
-
-          <!-- ECRÃ JOGO -->
-          <section id="game-screen" class="screen hidden">
-            <div class="back-row">
-              <div class="breadcrumbs">
-                <button class="btn secondary small" id="btn-back-themes">← Temas</button>
-                <span> / <strong id="crumb-theme">Tema</strong> · <span id="crumb-level">Nível 1</span></span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <button class="btn secondary small" id="btn-main-menu">🏠 Menu</button>
-                <button class="btn secondary small" id="btn-show-tut" title="Rever tutorial" style="padding:4px 9px;">❓</button>
-                <span class="pill" id="pill-difficulty">Dificuldade: fácil</span>
-              </div>
-            </div>
-            <div class="game-layout">
-              <div>
-                <div class="level-info">
-                  <div class="level-title">
-                    <span id="level-title-text">Título</span>
-                    <span id="level-emoji">🌱</span>
-                  </div>
-                  <div class="level-desc" id="level-desc">Descrição do objetivo.</div>
-                  <div class="tag-row">
-                    <span class="tag">🧩 Recolhe todos e deposita no 📥.</span>
-                    <span class="tag">📥 Só <strong>1 objeto</strong> de cada vez.</span>
-                    <span class="tag">⭐ Ótimo = 3 estrelas.</span>
-                    <span class="tag" id="tag-optimal">🏁 Ótimo: —</span>
-                    <span class="view-ctrls" role="group" aria-label="Vista do tabuleiro">
-                    <button type="button" class="tag tag-btn" id="btn-3d" aria-pressed="true" title="Alternar tabuleiro 2D / 3D">🧊 3D</button>
-                    <button type="button" class="tag tag-btn" id="btn-cam-l" title="Rodar o tabuleiro para a esquerda" aria-label="Rodar o tabuleiro para a esquerda">⟲</button>
-                    <button type="button" class="tag tag-btn" id="btn-cam-r" title="Rodar o tabuleiro para a direita" aria-label="Rodar o tabuleiro para a direita">⟳</button>
-                    <button type="button" class="tag tag-btn" id="btn-tilt" title="Mudar a inclinação da vista" aria-label="Mudar a inclinação da vista">📐 Média</button>
-                    <button type="button" class="tag tag-btn" id="btn-follow" aria-pressed="false" title="A câmara segue o robô" aria-label="A câmara segue o robô">🎥 Seguir</button>
-                    <button type="button" class="tag tag-btn" id="btn-cam-reset" title="Recentrar a vista (também: duplo clique no tabuleiro)" aria-label="Recentrar a vista">🎯 Recentrar</button>
-                    </span>
-                  </div>
-                </div>
-                <div class="grid-wrapper">
-                  <div id="grid" class="grid"></div>
-                </div>
-              </div>
-              <div>
-                <div class="tag-row" style="margin-bottom:6px;">
-                  <span class="tag">🎮 Comandos do robô</span>
-                </div>
-                <div class="dpad-wrap" role="group" aria-label="Comandos do robô">
-                  <button class="dpad-btn cmd-btn dp-move" id="btn-cmd-move" data-cmd="MOVE" aria-label="Avançar o robô"><span class="dpad-arrow">⬆️</span><span class="dpad-label">Avançar</span></button>
-                  <button class="dpad-btn cmd-btn dp-left" id="btn-cmd-left" data-cmd="LEFT" aria-label="Rodar à esquerda"><span class="dpad-arrow">↩️</span><span class="dpad-label">Esq.</span></button>
-                  <div class="dpad-center"><div class="dpad-compass" id="dpad-compass" role="img" aria-label="Direção do robô" title="Direção do robô">
-                    <svg class="compass-needle" id="compass-needle" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polygon points="12,1.5 19,20.5 12,16.4 5,20.5"/><polygon class="tail" points="12,16.4 19,20.5 12,22.5 5,20.5"/></svg>
-                  </div></div>
-                  <button class="dpad-btn cmd-btn dp-right" id="btn-cmd-right" data-cmd="RIGHT" aria-label="Rodar à direita"><span class="dpad-arrow">↪️</span><span class="dpad-label">Dir.</span></button>
-                  <button class="dpad-btn cmd-btn dp-back" id="btn-cmd-back" data-cmd="BACK" aria-label="Recuar o robô"><span class="dpad-arrow">⬇️</span><span class="dpad-label">Recuar</span></button>
-                  <button class="dpad-btn cmd-btn dpad-action-btn dp-collect" id="btn-cmd-collect" data-cmd="COLLECT" aria-label="Recolher objeto"><span class="dpad-arrow">✋</span><span class="dpad-label">Recolher</span></button>
-                  <button class="dpad-btn cmd-btn dpad-action-btn dp-drop" id="btn-cmd-drop" data-cmd="DROP" aria-label="Depositar objeto"><span class="dpad-arrow">📥</span><span class="dpad-label">Depositar</span></button>
-                </div>
-                <div id="queue-box" class="queue-box hidden">
-                  <span id="queue-label" style="margin-right:4px;font-size:.78rem;font-weight:600;">Sequência:</span>
-                  <div class="queue-mode-tabs qx-hidden" id="queue-mode-tabs" role="group" aria-label="Como queres programar o robô?">
-                    <button type="button" class="btn small" id="tab-blocks" aria-pressed="true">🧩 Blocos</button>
-                    <button type="button" class="btn secondary small" id="tab-write" aria-pressed="false">✍️ Escrever</button>
-                  </div>
-                  <div id="queue-commands" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
-                  <pre id="queue-pseudo" class="qx-hidden" aria-label="O teu programa em pseudocódigo"></pre>
-                  <div class="queue-blocks-toolbar qx-hidden" id="queue-blocks-toolbar">
-                    <button class="btn secondary small" id="btn-block-repeat" title="Repete os passos que escolheres N vezes">🔁 Repetir</button>
-                    <button class="btn secondary small qx-hidden" id="btn-pseudo-toggle" aria-pressed="false" title="Mostra a tua sequência escrita em pseudocódigo">👁️ Pseudocódigo</button>
-                    <div class="queue-repeat-picker qx-hidden" id="queue-repeat-picker">
-                      <span class="queue-blocks-hint">Quantas vezes?</span>
-                      <button class="btn small times-btn" data-times="2">2×</button>
-                      <button class="btn small times-btn" data-times="3">3×</button>
-                      <button class="btn small times-btn" data-times="4">4×</button>
-                      <button class="btn small times-btn" data-times="5">5×</button>
-                      <button class="btn secondary small" id="btn-repeat-cancel">❌</button>
-                    </div>
-                    <div class="queue-group-active qx-hidden" id="queue-group-active">
-                      <span class="queue-blocks-hint" id="queue-group-hint"></span>
-                      <button class="btn small" id="btn-group-close">✅ Fechar</button>
-                      <button class="btn secondary small" id="btn-group-cancel">❌ Cancelar</button>
-                    </div>
-                  </div>
-                  <div class="write-panel qx-hidden" id="write-panel">
-                    <div class="write-tools">
-                      <button type="button" class="btn secondary small" id="wr-repeat" title="Escreve uma linha REPETIR — os passos a repetir vão por baixo, mais para dentro">🔁 REPETIR</button>
-                      <button type="button" class="btn secondary small" id="wr-indent" title="Põe a linha mais para dentro (Tab)">⇥ Indentar</button>
-                      <button type="button" class="btn secondary small" id="wr-outdent" title="Põe a linha mais para fora (Shift+Tab)">⇤ Desindentar</button>
-                    </div>
-                    <pre id="write-demo" class="qx-hidden" aria-label="Demonstração: o programa a ser escrito e executado"></pre>
-                    <textarea id="write-code" rows="8" wrap="off" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"
-                      aria-label="Escreve o teu programa em pseudocódigo, um comando por linha"
-                      placeholder="// Um comando por linha. Por exemplo:&#10;AVANÇAR&#10;REPETIR 2 VEZES&#10;    VIRAR À DIREITA&#10;    AVANÇAR"></textarea>
-                    <div class="write-msg" id="write-msg" role="status" aria-live="polite"></div>
-                    <div class="qx-actions">
-                      <button type="button" class="btn small" id="wr-run">▶️ Executar</button>
-                      <button type="button" class="btn secondary small" id="wr-clear">🧹 Limpar</button>
-                      <button type="button" class="btn secondary small" id="wr-to-blocks" title="Converte o que escreveste em blocos (substitui os blocos que lá estiverem)">🧩 Ver em blocos</button>
-                    </div>
-                    <details class="write-help">
-                      <summary>📖 Que palavras posso usar?</summary>
-                      <div>
-                        Um comando por linha: <code>AVANÇAR</code> · <code>RECUAR</code> · <code>VIRAR À ESQUERDA</code> · <code>VIRAR À DIREITA</code> · <code>APANHAR</code> · <code>DEPOSITAR</code><br>
-                        Para repetir: <code>REPETIR 3 VEZES</code> e, nas linhas de baixo, os passos a repetir <b>mais para dentro</b> (tecla Tab ou 4 espaços). Podes pôr um REPETIR dentro de outro (até 2 níveis).<br>
-                        Comentários começam por <code>//</code>. Maiúsculas, minúsculas e acentos não importam.<br>
-                        Ao carregar em ▶️ Executar, o nível recomeça sempre do início. Os botões de direção e as teclas W A S D E F também escrevem a linha por ti. (Esc e depois Tab sai da caixa de texto.)
-                      </div>
-                    </details>
-                  </div>
-                </div>
-                <div class="feedback-box" id="feedback"></div>
-                <div class="controls-row">
-                  <button class="btn small" id="btn-run-queue">▶️ Executar</button>
-                  <button class="btn secondary small" id="btn-undo-queue">↩ Apagar</button>
-                  <button class="btn secondary small" id="btn-clear-queue">🧹 Limpar</button>
-                  <button class="btn secondary small" id="btn-reset-level">↺ Reiniciar</button>
-                  <button class="btn secondary small qx-hidden" id="btn-demo" title="Mostra uma forma de resolver este nível">🎬 Demonstração</button>
-                  <button class="btn secondary small qx-hidden" id="btn-pseudo-challenge" title="Perguntas para ler pseudocódigo e prever o que o robô faz">🧠 Desafio de Pseudocódigo</button>
-                  <button class="btn secondary small qx-hidden" id="btn-cert-theme" title="Certificado deste tema">🎓 Certificado</button>
-                  <button class="btn secondary small qx-hidden" id="btn-cert-cycle" title="Certificado de todo o ciclo">🎓 Ciclo</button>
-                </div>
-                <div class="status-bar">
-                  <div class="moves" id="moves">Movimentos: 0</div>
-                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <div class="small-text" id="hint-text"></div>
-                    <button id="btn-show-solution">💡 Ver solução</button>
-                    <span class="attempt-counter" id="attempt-counter"></span>
-                  </div>
-                  <div class="small-text kbd-hint" id="kbd-hint">⌨️ W/↑ avançar · S/↓ recuar · A/← esq · D/→ dir · E recolher · F depositar</div>
-                </div>
-                <div id="solution-banner">
-                  <span id="solution-banner-text">🗺️ Caminho ótimo mostrado na grelha.</span>
-                  <button id="solution-banner-hide" onclick="hideSolutionPath()">Esconder</button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-        </section><!-- /academy-main -->
-      </div><!-- /academy-shell -->
-    </main>
-    <div id="app-footer">© Prof.ª Vanda Várzea</div>
-  </div>
-
-  <!-- POPUP QUIZ ESCAPE -->
-  <div class="popup" id="popup-escape-quiz">
-    <div class="popup-inner" id="popup-escape-quiz-inner" style="max-width:430px;text-align:left;">
-    </div>
-  </div>
-
-  <!-- POPUP NÍVEL CONCLUÍDO -->
-  <div class="popup" id="popup-complete">
-    <div class="popup-inner">
-      <div class="popup-confetti" id="popup-confetti"></div>
-      <!-- VanBerto + bubble -->
-      <div class="popup-vb-row">
-        <div class="popup-vb-avatar" id="popup-vb-avatar"></div>
-        <div class="popup-vb-bubble" id="popup-vb-msg">Ótimo trabalho! 🎉</div>
-      </div>
-      <h3 id="popup-title">Nível concluído!</h3>
-      <div class="popup-stars">
-        <span class="popup-star" id="popup-star1">⭐</span>
-        <span class="popup-star" id="popup-star2">⭐</span>
-        <span class="popup-star" id="popup-star3">⭐</span>
-      </div>
-      <div class="popup-divider"></div>
-      <p id="popup-text"></p>
-      <div class="popup-btns" id="popup-btns">
-        <button class="btn small" id="popup-next">Continuar ➡️</button>
-        <button class="btn secondary small" id="popup-share" hidden>📋 Copiar resultado</button>
-        <button class="btn secondary small qx-hidden" id="popup-cert-btn">🎓 Certificado do tema</button>
-        <button class="btn secondary small qx-hidden" id="popup-cert-cycle-btn">🎓 Certificado do ciclo</button>
+      <p class="history-text">Olá! Eu sou o VanBerto's! Descobri uma máquina do tempo e vamos viajar até aos anos da ditadura, até à noite de 24 para 25 de abril de 1974 e à construção da democracia! Em cada nível vais apanhar cravos, evitar os censores e responder a perguntas. Assim vamos recuperar, uma a uma, as memórias de Abril, para que ninguém se esqueça de como se conquistou a liberdade!</p>
+      <div class="row">
+        <button id="btnMainStoryContinue" class="btn primary">Vamos lá! 🗺️ ▶</button>
       </div>
     </div>
   </div>
 
-  <!-- CERTIFICADO (por tema e por ciclo) -->
-  <div class="cert-overlay qx-hidden" id="certificateOverlay" role="dialog" aria-modal="true" aria-label="Certificado">
-    <div class="certificate-card">
-      <img id="certImage" class="cert-image" alt="Certificado" />
-      <div class="cert-src" aria-hidden="true" style="display:none">
+  <!-- ═══════════════════════════════════════════
+       MAPA DA AVENTURA
+  ═══════════════════════════════════════════ -->
+  <div id="mapOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Mapa da Aventura">
+    <div class="card map-card">
+      <div class="card-seal" aria-hidden="true">🗺️</div>
+      <h2>🗺️ Mapa da Aventura</h2>
+      <p class="map-progress-line">
+        <span id="mapProgressPct">0%</span> concluído ·
+        <span id="mapStarsTotal">0</span> ⭐ obtidas
+      </p>
+      <div class="map-progress-track"><div id="mapProgressFill" class="map-progress-fill"></div></div>
+
+      <div id="mapRegionsGrid" class="map-regions-grid"><!-- preenchido via JS --></div>
+
+      <p class="tiny map-hint">💡 Toca numa região desbloqueada para começar esse troço da aventura.</p>
+      <div class="row">
+        <button id="btnCloseMap" class="btn primary">Fechar</button>
+        <button id="btnMapMenu" class="btn">🏠 Menu principal</button>
+        <button id="btnMapExit" class="btn">🚪 Sair do jogo</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="worldMapOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Mapa do Mundo">
+    <div class="world-map-panel" id="worldMapPanel">
+      <button type="button" id="btnBackToMap" class="world-map-back" aria-label="Voltar ao mapa">← Mundos</button>
+      <div class="world-map-title">
+        <div class="world-map-icon" id="worldMapIcon" aria-hidden="true"></div>
+        <div class="world-map-text">
+          <h2 id="worldMapName"></h2>
+          <p id="worldMapSub"></p>
+        </div>
+      </div>
+      <div class="world-map-progress" id="worldMapProgress"></div>
+      <div id="worldMapNodes" class="world-map-nodes"><!-- preenchido via JS --></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CONQUISTAS
+  ═══════════════════════════════════════════ -->
+  <div id="achievementsOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Conquistas">
+    <div class="card achievements-card">
+      <div class="card-seal" aria-hidden="true">🏆</div>
+      <h2>🏆 Conquistas</h2>
+      <p class="map-progress-line">
+        Desbloqueadas: <span id="achievementsCounter" style="color:#ffd700;">0/7</span>
+      </p>
+      <div id="achievementsGrid" class="achievements-grid"><!-- preenchido via JS --></div>
+      <div class="row">
+        <button id="btnCloseAchievements" class="btn primary">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ÁLBUM DOS DIREITOS
+  ═══════════════════════════════════════════ -->
+  <div id="albumOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Álbum da Memória">
+    <div class="card album-card-outer">
+      <div class="card-seal" aria-hidden="true">📖</div>
+      <h2>📖 Álbum da Memória</h2>
+      <p class="map-progress-line">
+        Coleção: <span id="albumProgressPct" style="color:#ffd700;">0%</span> concluída
+      </p>
+      <div class="map-progress-track"><div id="albumProgressFill" class="map-progress-fill"></div></div>
+      <div id="albumGrid" class="album-grid"><!-- preenchido via JS --></div>
+      <div class="row">
+        <button id="btnCloseAlbum" class="btn primary">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ESTATÍSTICAS
+  ═══════════════════════════════════════════ -->
+  <div id="statsOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Estatísticas">
+    <div class="card stats-card">
+      <div class="card-seal" aria-hidden="true">📊</div>
+      <h2>📊 As Tuas Estatísticas</h2>
+      <div id="statsContent" class="stats-content" tabindex="0" role="region" aria-label="Lista de estatísticas"><!-- preenchido via JS --></div>
+      <p class="stats-note">🔒 O teu nome e o teu progresso ficam só neste dispositivo. «Limpar tudo» apaga-os.</p>
+      <div class="row">
+        <button id="btnCloseStats" class="btn primary">Fechar</button>
+        <button id="btnResetStats" class="btn stats-reset-btn">🗑️ Limpar tudo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       OPÇÕES
+  ═══════════════════════════════════════════ -->
+  <div id="optionsOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Opções">
+    <div class="card options-card">
+      <div class="card-seal" aria-hidden="true">⚙️</div>
+      <h2>⚙️ Opções</h2>
+
+      <div id="optionsScroll" class="options-scroll" tabindex="0" role="region" aria-label="Lista de opções">
+      <div class="options-section">
+        <p class="options-section-title">🔊 Áudio</p>
+        <label class="options-toggle-row">
+          <span>Som do jogo</span>
+          <button id="optBtnSound" class="option-toggle-btn">🔊 ON</button>
+        </label>
+      </div>
+
+      <div class="options-section">
+        <p class="options-section-title">🎯 Dificuldade</p>
+        <label class="options-toggle-row">
+          <span>Nível (perguntas do quiz e desafio de censores/chefes)</span>
+          <button id="optBtnDifficulty" class="option-toggle-btn">😊 Fácil</button>
+        </label>
+        <p class="tiny">Só faz efeito a partir do próximo nível/combate — não interrompe o que já estás a jogar.</p>
+      </div>
+
+      <div class="options-section">
+        <p class="options-section-title">♿ Acessibilidade</p>
+        <label class="options-toggle-row">
+          <span>Alto Contraste (também tecla <kbd>H</kbd>)</span>
+          <button id="optBtnHC" class="option-toggle-btn">⬛ OFF</button>
+        </label>
+        <label class="options-toggle-row">
+          <span>Botões tácteis (móvel)</span>
+          <button id="optBtnTouch" class="option-toggle-btn">📱 AUTO</button>
+        </label>
+      </div>
+
+      <div class="options-section" id="optionsOfflineSection" style="display:none">
+        <p class="options-section-title">📶 Jogar sem rede</p>
+        <label class="options-toggle-row">
+          <span>Guarda o jogo neste aparelho, para funcionar sem internet</span>
+          <button id="optBtnDownloadAll" class="option-toggle-btn">⬇️ Guardar tudo</button>
+        </label>
+        <p class="tiny" id="offlineDownloadStatus"></p>
+      </div>
+
+      <div class="options-section">
+        <p class="options-section-title">🖥️ Ecrã</p>
+        <label class="options-toggle-row">
+          <span>Ecrã completo (também tecla <kbd>F</kbd>)</span>
+          <button id="optBtnFS" class="option-toggle-btn">⛶ Entrar</button>
+        </label>
+      </div>
+
+      <div class="options-section">
+        <p class="options-section-title">📋 Atalhos de teclado</p>
+        <div class="options-keys-grid">
+          <span><kbd>← →</kbd></span><span>Mover o VanBerto's</span>
+          <span><kbd>↑</kbd> / <kbd>Espaço</kbd></span><span>Saltar</span>
+          <span><kbd>↓</kbd> / <kbd>S</kbd></span><span>Agachar</span>
+          <span><kbd>H</kbd></span><span>Alto Contraste</span>
+          <span><kbd>F</kbd></span><span>Ecrã completo</span>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="row">
+        <button id="btnCloseOptions" class="btn primary">Guardar e Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CERTIFICADO FINAL
+  ═══════════════════════════════════════════ -->
+  <div id="certificateOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Certificado">
+    <div class="card certificate-card">
       <div class="certificate-header">
         <div class="certificate-seal">🏛️</div>
-        <h2 class="certificate-title">Certificado Oficial</h2>
-        <p class="certificate-subtitle" id="certSubtitle">de Pensamento Computacional</p>
+        <h2 class="certificate-title" id="certTitle">Certificado Oficial</h2>
+        <p class="certificate-subtitle" id="certSubtitle">de Guardião da Liberdade</p>
       </div>
-      <div class="certificate-robot"><span class="certificate-bot" aria-hidden="true">🤖</span><div class="certificate-brand">VanBerto's</div></div>
+      <div class="certificate-robot">
+        <img src="vanberto_real.png" alt="VanBerto's" class="certificate-robot-img" />
+      </div>
       <div class="certificate-body">
         <p class="certificate-text">Este certificado é atribuído a</p>
-        <p class="certificate-name" id="certPlayerName">Programador(a)</p>
-        <p class="certificate-text" id="certAchText"></p>
-        <p class="certificate-highlight" id="certHighlight"></p>
-        <p class="certificate-text" id="certFinalText"></p>
+        <p class="certificate-name" id="certPlayerName">Historiador de Abril</p>
+        <p class="certificate-text" id="certIntro2">que, com coragem, atenção e sabedoria, concluiu a missão das</p>
+        <p class="certificate-highlight" id="certHighlight">20 Memórias de Abril</p>
+        <p class="certificate-text" id="certOutro">tornando-se oficialmente Guardião da Liberdade.</p>
       </div>
       <div class="certificate-stats">
-        <div class="cert-stat"><span class="cert-stat-icon">📚</span><strong id="certThemes">0/0</strong><span id="certStatLabel">níveis</span></div>
-        <div class="cert-stat"><span class="cert-stat-icon">⭐</span><strong id="certStars">0/0</strong><span>estrelas</span></div>
+        <div class="cert-stat"><span class="cert-stat-icon">🌟</span><strong id="certScore">0</strong><span>pontos</span></div>
+        <div class="cert-stat"><span class="cert-stat-icon">✅</span><strong id="certCorrect">—</strong><span>acertos</span></div>
+        <div class="cert-stat"><span class="cert-stat-icon">⭐</span><strong id="certStars">—</strong><span>estrelas</span></div>
         <div class="cert-stat"><span class="cert-stat-icon">🏆</span><strong id="certMedal">—</strong><span>medalha</span></div>
       </div>
       <p class="certificate-date" id="certDate"></p>
-      <div class="certificate-signature"><div class="cert-sig-line"></div><p class="cert-sig-name">Prof.ª Vanda Várzea</p></div>
+      <div class="certificate-signature">
+        <div class="cert-sig-line"></div>
+        <p class="cert-sig-name">✦ © Prof.ª Vanda Várzea ✦</p>
+        <p class="cert-sig-role">Professora de Tecnologias de Informação e Comunicação</p>
       </div>
-      <div class="cert-btns">
-        <button class="btn secondary small" id="btnCertBack">← Voltar</button>
-        <button class="btn small" id="btnCertPrint">🖨️ Imprimir</button>
-        <button class="btn small" id="btnCertPng">🖼️ Guardar PNG</button>
-      </div>
-    </div>
-  </div>
-
-  <audio id="soundMove"    src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-  <audio id="soundSuccess" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-  <audio id="soundError"   src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
-  <audio id="soundBump"    src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
-  <audio id="soundVictory" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-
-<!-- ── MASCOTE ÚNICA: robô flutuante no canto inferior direito (escondida no ecrã de jogo) ── -->
-<div id="fixed-robot-wrap">
-  <div class="fixed-bubble" id="fixedRobotBubble" role="status" aria-live="polite">Olá! 😊</div>
-  <canvas class="fixed-robot" id="fixed-robot-cv" width="96" height="96" role="button" tabindex="0" aria-label="Robô VanBerto's — clica para falar"></canvas>
-  <div class="fixed-glow"></div>
-</div>
-
-<script src="app.js?v=17"></script>
-
-  <!-- ===== ESCAPE ROOMS OVERLAY ===== -->
-  <div id="er-overlay">
-    <div class="er-bg-glow"></div>
-    <div id="er-app">
-      <!-- Header -->
-      <div class="er-header">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span id="er-logo-robot" style="width:36px;height:36px;display:block;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(99,102,241,.25));"></span>
-          <div>
-            <h1>VanBerto's <em>Escape Rooms</em></h1>
-          </div>
-        </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;">
-          <button class="btn secondary small" id="er-btn-mute">🔊 Som</button>
-          <button class="btn secondary small" id="er-btn-hub">🏠 Escolher sala</button>
-          <button class="btn secondary small" id="er-btn-universe">🌍 Mudar universo</button>
-          <button class="btn secondary small" id="er-btn-back">← Voltar ao jogo</button>
-        </div>
-      </div>
-
-      <!-- HUB screen -->
-      <div id="er-hub-screen" style="background:rgba(249,250,251,.97);border-radius:16px;border:1px solid #e5e7eb;box-shadow:0 4px 18px rgba(148,163,184,.2);padding:18px;">
-        <div class="er-hub-hero">
-          <div class="er-float" id="er-hub-robot" style="width:70px;height:70px;margin:0 auto 10px;"></div>
-          <h2>Escolhe a tua missão!</h2>
-          <p>5 Escape Rooms temáticos. Abre todas as portas, resolve os puzzles e ajuda o VanBerto's a salvar o mundo digital e o ambiente!</p>
-        </div>
-        <div class="er-rooms-grid" id="er-rooms-grid"></div>
-      </div>
-
-      <!-- GAME screen -->
-      <div id="er-game-screen" style="display:none;">
-        <div class="er-game-wrap" id="er-game-wrap">
-          <div id="er-topbar" class="er-topbar"></div>
-          <div class="er-progress-strip"><div class="er-progress-fill" id="er-progress-fill" style="width:0%"></div></div>
-          <div class="er-body">
-            <div class="er-sidebar" id="er-doors-sidebar"></div>
-            <div class="er-panel" id="er-mission-panel">
-              <div>
-                <div class="er-mission-title" id="er-mission-title">Escolhe uma porta</div>
-                <div style="font-size:.75rem;color:#64748b;" id="er-mission-topic">Começa na Porta 1</div>
-              </div>
-              <div class="er-speech">
-                <span id="er-speech-robot" style="width:26px;height:26px;flex-shrink:0;"></span>
-                <span id="er-mission-speech">Olá! Escolhe a primeira porta para começar!</span>
-              </div>
-              <div class="er-puzzle" id="er-mission-content"><div class="er-mini">Clica numa porta para ver o desafio.</div></div>
-              <div class="er-feedback info" id="er-feedback">Selecciona uma porta desbloqueada para começar.</div>
-              <div id="er-hint-area"></div>
-              <div id="er-teacher-area"></div>
-            </div>
-          </div>
-          <div class="er-bottombar">
-            <div style="display:flex;gap:6px;">
-              <button class="btn secondary small" id="er-btn-prev">◀ Anterior</button>
-              <button class="btn secondary small" id="er-btn-next">Próxima ▶</button>
-            </div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <button class="btn secondary small" id="er-btn-hint">💡 Pista</button>
-              <button class="btn secondary small" id="er-btn-teacher">🔒 Notas professora</button>
-              <button class="btn secondary small" id="er-btn-restart">↺ Recomeçar</button>
-            </div>
-          </div>
-        </div>
+      <div class="row" style="margin-top:14px;">
+        <button id="btnCertBack" class="btn">← Voltar</button>
+        <button id="btnCertPrint" class="btn">🖨️ Imprimir</button>
+        <button id="btnCertRestart" class="btn primary">🔄 Jogar de novo</button>
       </div>
     </div>
   </div>
 
-  <!-- ER POPUP FINAL -->
-  <div class="er-popup" id="er-popup-final">
-    <div class="er-popup-inner">
-      <div class="er-conf-wrap" id="er-confetti-wrap"></div>
-      <div style="font-size:2.2rem;margin-bottom:4px;" id="er-final-emoji">🎉</div>
-      <h3 id="er-final-title">Missão concluída!</h3>
-      <p id="er-final-text"></p>
-      <div id="er-final-summary"></div>
-      <div class="er-kpi-grid" id="er-final-kpis"></div>
-      <div class="er-popup-btns">
-        <button class="btn small" id="er-btn-final-restart">🔁 Jogar de novo</button>
-        <button class="btn secondary small" id="er-btn-final-hub">🏠 Escolher sala</button>
+  <!-- ═══════════════════════════════════════════
+       "DIREITO RECUPERADO!" — popup curto
+  ═══════════════════════════════════════════ -->
+  <div id="rightRecoveredOverlay" aria-hidden="true">
+    <div id="rightRecoveredPanel">
+      <div class="rr-icon">✅</div>
+      <p class="rr-title">Memória recuperada!</p>
+      <p class="rr-name" id="rrName"></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MENSAGEM DINÂMICA (feedback contextual)
+  ═══════════════════════════════════════════ -->
+  <div id="dynamicMsgOverlay" aria-hidden="true">
+    <div id="dynamicMsgPanel">
+      <p id="dynamicMsgText"></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       COMO JOGAR
+  ═══════════════════════════════════════════ -->
+  <div id="howOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Como jogar">
+    <div class="card" style="max-height:88dvh;overflow-y:auto;padding:18px 20px;">
+      <h2 style="margin-bottom:4px;">Como jogar</h2>
+      <p style="font-size:11px;color:#ffd970;margin:0 0 12px;font-style:italic;">Lê com atenção antes de começar!</p>
+
+      <!-- OBJETIVO -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 4px;">🎯 Objetivo</p>
+      <p style="font-size:12px;color:#ffd0d4;margin:0 0 10px;line-height:1.6;">
+        Chega à <strong>porta 🚪</strong> no fim de cada nível. Quando chegares, aparece uma <strong>pergunta</strong> sobre o 25 de Abril — responde corretamente para avançar! O jogo tem <strong>20 níveis</strong>.
+      </p>
+
+      <!-- DIFICULDADE -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">🎯 Nível de Dificuldade</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <div style="background:rgba(0,160,0,0.12);border:1px solid rgba(80,200,80,0.3);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          😊 <strong>Fácil</strong><br>
+          <span style="color:#b8ffb8;">Ritmo habitual — ideal para aprender a história.</span>
+        </div>
+        <div style="background:rgba(255,53,70,0.14);border:1px solid rgba(255,80,95,0.3);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          🎓 <strong>Difícil</strong><br>
+          <span style="color:#ffd700;">Perguntas mais aprofundadas, censores/chefes mais rápidos, menos vidas.</span>
+        </div>
+        <div style="background:rgba(255,30,30,0.14);border:1px solid rgba(255,80,80,0.35);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          🔥 <strong>Extremo</strong><br>
+          <span style="color:#ffb0b0;">Só 1 vida, censores/chefes ainda mais rápidos, quase sem cravo dourado.</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#ffd970;margin:0 0 10px;font-style:italic;">
+        💡 Podes escolher ou mudar isto a qualquer momento em Opções.
+      </p>
+
+      <!-- VILÕES -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">🔴 Os Censores — cuidado com cada tipo!</p>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+        <div style="background:rgba(255,30,0,0.12);border:1px solid rgba(255,80,80,0.3);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          🔴 <strong>Carimbo</strong> — pequeno (o mais fácil)<br>
+          <span style="color:#ffa0a8;">Patrulha uma zona pequena em vai-e-vem. Lenta e previsível — boa para treinar!</span>
+        </div>
+        <div style="background:rgba(0,60,220,0.14);border:1px solid rgba(80,130,255,0.3);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          🔵 <strong>Lápis Azul</strong> — médio<br>
+          <span style="color:#b0c8ff;">Patrulha horizontalmente e salta de vez em quando. Mantém distância!</span>
+        </div>
+        <div style="background:rgba(0,160,0,0.12);border:1px solid rgba(80,200,80,0.3);border-radius:8px;padding:7px 10px;font-size:12px;color:#ffd0d4;line-height:1.5;">
+          🟢 <strong>Informador</strong> — grande (o mais perigoso)<br>
+          <span style="color:#a0ffb0;">Salta frequentemente e dirige-se ao jogador. Aparece nos níveis mais avançados — muito cuidado!</span>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#ffd970;margin:0 0 10px;font-style:italic;">
+        💡 Se apanhares o cravo dourado 🌟, podes atropelar qualquer censor durante 8 segundos!
+      </p>
+
+      <!-- ITENS -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">🎁 O que apanhar</p>
+      <ul style="margin:0 0 10px;padding-left:18px;font-size:12px;color:#ffd0d4;line-height:1.9;">
+        <li>🌟 <strong>Cravo dourado</strong> — ativa o <strong>super modo por 8s</strong>: atropela censores e ganha pontos!</li>
+        <li>✊ <strong>Punho cerrado</strong> — fica maior e <strong>invencível por 8s</strong>; absorve um golpe de censor</li>
+        <li>🕊️ <strong>Asas da pomba</strong> — permite <strong>saltar duas vezes</strong> no ar durante 10s (muito útil em plataformas altas!)</li>
+        <li>❤️ <strong>Coração</strong> — ganha <strong>+1 vida</strong> (máximo 5 vidas)</li>
+        <li>🌹 <strong>Cravos / 📰 Jornais / 📻 Rádios</strong> — valem <strong>pontos bónus</strong></li>
+        <li>❓ <strong>Ponto de interrogação</strong> — esconde um item surpresa! Passa por cima para revelar</li>
+      </ul>
+      <p style="font-size:11px;color:#ffd970;margin:0 0 10px;font-style:italic;">
+        💡 Se perderes uma vida, <strong>todos os itens voltam a aparecer</strong> — podes apanhá-los de novo!
+      </p>
+
+      <!-- PLATAFORMAS ESPECIAIS -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">🟡 Plataformas especiais</p>
+      <ul style="margin:0 0 10px;padding-left:18px;font-size:12px;color:#ffd0d4;line-height:1.9;">
+        <li>↔ <strong>Setas horizontais</strong> — a plataforma move-se da esquerda para a direita</li>
+        <li>↕ <strong>Setas verticais</strong> — a plataforma sobe e desce</li>
+        <li>🟠 <strong>Trampolim</strong> — catapulta-te muito mais alto que um salto normal!</li>
+      </ul>
+
+      <!-- CANOS -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">🚇 Canos</p>
+      <ul style="margin:0 0 10px;padding-left:18px;font-size:12px;color:#ffd0d4;line-height:1.9;">
+        <li>Chega-te perto de um cano e carrega <strong>↓</strong> (ou <strong>S</strong>) para tentares um atalho!</li>
+        <li>🎁 Alguns levam a uma <strong>sala secreta</strong>, com uma recompensa e uma curiosidade à espera</li>
+        <li>Nem todos os canos são de entrar — alguns são só obstáculos, tens de lhes saltar por cima!</li>
+      </ul>
+
+      <!-- PONTUAÇÃO -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">⭐ Pontuação</p>
+      <ul style="margin:0 0 10px;padding-left:18px;font-size:12px;color:#ffd0d4;line-height:1.9;">
+        <li>✅ Resposta certa à primeira → <strong>+100 pontos por nível</strong></li>
+        <li>🥇 Nível sem perder nenhuma vida → <strong>bónus +50 pontos</strong></li>
+        <li>💥 Atropelar censor com o cravo dourado → <strong>+50 pontos por censor</strong></li>
+      </ul>
+
+      <!-- ESTRELAS COLECIONÁVEIS -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 6px;">⭐ Estrelas Colecionáveis (por nível)</p>
+      <ul style="margin:0 0 10px;padding-left:18px;font-size:12px;color:#ffd0d4;line-height:1.9;">
+        <li>⭐ 1ª estrela — encontraste segredos escondidos no nível</li>
+        <li>⭐ 2ª estrela — completaste sem perder nenhuma vida</li>
+        <li>⭐ 3ª estrela — acertaste a pergunta à primeira tentativa</li>
+      </ul>
+
+      <!-- CONTROLOS -->
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:8px 0 4px;">🖥️ Controlos — PC / Teclado</p>
+      <p style="margin:2px 0 8px;font-size:12px;color:#ffd0d4;">← → para andar &nbsp;|&nbsp; ↑ ou Espaço para saltar &nbsp;|&nbsp; ↓ ou S para agachar &nbsp;|&nbsp; <strong style="color:#ffd700;">P</strong> — pausa &nbsp;|&nbsp; <strong style="color:#ffd700;">H</strong> — alto contraste &nbsp;|&nbsp; <strong style="color:#ffd700;">F</strong> — ecrã todo</p>
+      <p style="font-weight:700;font-size:13px;color:#ff3546;margin:4px 0 4px;">📱 Tablet / Telemóvel</p>
+      <p style="margin:2px 0 14px;font-size:12px;color:#ffd0d4;">Mantém o dedo no lado esquerdo/direito para andar · Toque rápido para saltar</p>
+
+      <button id="btnCloseHow" class="btn primary" style="width:100%;">Entendido — vamos jogar! ▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MODAL PERGUNTA
+  ═══════════════════════════════════════════ -->
+  <div id="quizOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="quizQuestion">
+    <div class="card">
+      <div class="card-seal" aria-hidden="true">🌹</div>
+      <p id="quizQuestion" class="q" aria-live="polite"></p>
+      <div id="quizAnswers" class="answers" role="group" aria-label="Opções de resposta"></div>
+      <p id="quizFeedback" class="feedback" aria-live="assertive"></p>
+      <p id="quizExplanation" class="explanation hidden"></p>
+      <button id="btnCloseQuiz" class="btn hidden">Continuar</button>
+    </div>
+  </div>
+
+  <!-- CONTROLO DO PROFESSOR — botão ☰ único durante o jogo -->
+  <div id="teacherControls" style="position:fixed;top:10px;right:10px;z-index:9500;">
+    <!-- NOME DO JOGADOR — HUD HTML (ao lado do ☰, para não tapar o texto do HUD do jogo, à esquerda) -->
+    <div id="playerNameHtml" style="
+      display:none; align-self:center; margin-right:8px;
+      font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:900;
+      color:#ffd700; text-shadow:0 0 8px rgba(0,0,0,0.9), 0 2px 4px rgba(0,0,0,0.8);
+      pointer-events:none; letter-spacing:0.3px;
+      background:rgba(7,29,16,0.55); border-radius:8px; padding:4px 10px;
+      border:1px solid rgba(255,215,0,0.25); white-space:nowrap;
+    "></div>
+    <button id="btnTeacherMenu" class="btn" aria-label="Menu do jogo" title="Menu">☰ Menu</button>
+    <!-- Botões fantasma — usados internamente pelo JS para compatibilidade -->
+    <button id="btnFullscreenGame" style="display:none"></button>
+    <button id="btnTouchToggle"    style="display:none"></button>
+    <button id="btnPause"          style="display:none"></button>
+    <button id="btnInGameMap"      style="display:none"></button>
+    <button id="btnInGameAchievements" style="display:none"></button>
+    <button id="btnInGameAlbum"    style="display:none"></button>
+    <button id="btnInGameStats"    style="display:none"></button>
+    <button id="btnInGameOptions"  style="display:none"></button>
+    <button id="btnInGameHow"      style="display:none"></button>
+    <button id="btnRestartLevel"   style="display:none"></button>
+    <button id="btnGoToLevel"      style="display:none"></button>
+    <button id="btnRestartGame"    style="display:none"></button>
+  </div>
+
+  <!-- MENU SUSPENSO — acessível durante o jogo via botão ☰ -->
+  <div id="teacherMenuPanel">
+    <p class="tmenu-section">📋 Ver</p>
+    <button id="mBtnMap"          class="btn">🗺️ Mapa da Aventura</button>
+    <button id="mBtnAchievements" class="btn">🏆 Conquistas</button>
+    <button id="mBtnAlbum"        class="btn">📖 Álbum da Memória</button>
+    <button id="mBtnStats"        class="btn">📊 Estatísticas</button>
+    <button id="mBtnErrors"       class="btn">🧠 Rever Erros</button>
+    <button id="mBtnCertificate"  class="btn">🏅 Certificado</button>
+    <button id="mBtnHow"          class="btn">❓ Como Jogar</button>
+
+    <p class="tmenu-section">⚙️ Jogo</p>
+    <button id="mBtnPause"        class="btn">⏸ Pausa / Continuar</button>
+    <button id="mBtnOptions"      class="btn">⚙️ Opções</button>
+    <button id="mBtnFullscreen"   class="btn">⛶ Ecrã todo</button>
+    <button id="mBtnTouch"        class="btn">📱 Botões tácteis</button>
+
+    <p class="tmenu-section">🔄 Nível</p>
+    <button id="mBtnLevel"        class="btn">🔄 Reiniciar este nível</button>
+    <button id="mBtnGoToLevel"    class="btn">🎯 Ir para nível…</button>
+    <button id="mBtnRestart"      class="btn">🔁 Recomeçar do início</button>
+
+    <p class="tmenu-section">🚪 Sair</p>
+    <button id="mBtnExit"         class="btn tmenu-exit-btn">🚪 Menu Inicial</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MODAL HISTÓRIA (entre níveis)
+  ═══════════════════════════════════════════ -->
+  <div id="historyOverlay" class="overlay hidden">
+    <div class="card history-card">
+      <div class="history-header">
+        <span class="history-icon">🌹</span>
+        <div>
+          <h2>25 de Abril de 1974</h2>
+          <p class="history-subtitle">Sabias que…?</p>
+        </div>
+      </div>
+      <p id="historyText" class="history-text"></p>
+      <div class="row">
+        <button id="btnHistory" class="btn primary">Continuar ▶</button>
       </div>
     </div>
   </div>
 
-  <!-- ER POPUP TIMEOUT -->
-  <div class="er-popup" id="er-popup-timeup">
-    <div class="er-popup-inner">
-      <div style="font-size:1.8rem;margin-bottom:5px;">⏰</div>
-      <h3>O tempo esgotou!</h3>
-      <p id="er-timeup-text">Não conseguiste abrir todas as portas a tempo. Tenta de novo!</p>
-      <div class="er-popup-btns">
-        <button class="btn small" id="er-btn-timeup-restart">🔁 Tentar de novo</button>
-        <button class="btn secondary small" id="er-btn-timeup-hub">🏠 Escolher sala</button>
+  <!-- ═══════════════════════════════════════════
+       GAME OVER
+  ═══════════════════════════════════════════ -->
+  <div id="gameOverOverlay" class="overlay hidden">
+    <div class="card gameover-card">
+      <h2>Missão Falhada!</h2>
+      <div class="gameover-robot-stage" aria-hidden="true">
+        <div class="gameover-tears">💧&nbsp;💧</div>
+        <img class="gameover-robot-img" src="vanberto_real.png" alt="" />
+        <div class="gameover-robot-shadow"></div>
+      </div>
+      <p class="sub">Ficaste sem vidas! A liberdade conquista-se com persistência — não desistas!</p>
+      <button id="btnReviewModeGO" class="btn" style="display:none;width:100%;margin-bottom:10px;">📋 Ver erros</button>
+      <div class="row">
+        <button id="btnRetry" class="btn primary">🔄 Tentar de novo</button>
+        <button id="btnExit" class="btn">🏠 Menu</button>
       </div>
     </div>
   </div>
 
-  <audio id="er-sndCorrect" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-  <audio id="er-sndWrong"   src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
-  <audio id="er-sndDoor"    src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
-  <audio id="er-sndVictory" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <!-- ═══════════════════════════════════════════
+       VITÓRIA FINAL
+  ═══════════════════════════════════════════ -->
+  <div id="winOverlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="card win-card">
+      <div class="win-icon">🏆</div>
+      <h2>Missão Concluída!</h2>
+      <p class="win-name">Parabéns, <span id="winPlayerName">Historiador de Abril</span>!</p>
 
+      <div class="win-robot-stage" aria-hidden="true">
+        <img class="win-robot-img" src="vanberto_real.png" alt="VanBerto's" />
+        <div class="win-robot-shadow"></div>
+        <div class="win-robot-notes">🎵<span>🎶</span>🎵</div>
+      </div>
+
+      <div class="win-stats">
+        <div class="win-stat">⭐ <strong id="winScore">0</strong> pontos</div>
+        <div class="win-stat">✅ Respostas certas: <strong id="winPct">—</strong></div>
+        <div class="win-stat win-medal" id="winMedal">🥇 Excelente!</div>
+      </div>
+
+      <!-- TABS -->
+      <div id="winTabs" class="win-tabs">
+        <button class="win-tab active" data-panel="winPanelReport">📋 Relatório</button>
+        <button class="win-tab" data-panel="winPanelRights">🏅 Memórias</button>
+      </div>
+      <!-- PAINEL RELATÓRIO -->
+      <div id="winPanelReport" class="win-panel active">
+        <div id="winThemeErrors" style="display:none;margin:10px 0;">
+          <p style="font-weight:700;font-size:12px;color:#ffd700;margin:0 0 6px;">📊 Erros por tema</p>
+          <table id="winThemeTable" style="width:100%;border-collapse:collapse;font-size:11px;color:#ffd0d4;"></table>
+        </div>
+        <button id="btnReviewMode" class="btn" style="display:none;margin-top:6px;">📋 Ver erros</button>
+      </div>
+      <!-- PAINEL COMPETÊNCIAS CONQUISTADAS -->
+      <div id="winPanelRights" class="win-panel">
+        <p style="font-size:11px;color:#ff606d;margin:4px 0 8px;text-align:center;">🏅 As 20 Memórias que recuperaste</p>
+        <div id="winRightsGrid" class="win-rights-grid"></div>
+      </div>
+      <!-- BOTÕES -->
+      <div class="row" style="margin-top:12px;">
+        <button id="btnWinRestart" class="btn">🔄 Jogar de novo</button>
+        <button id="btnWinCertificate" class="btn primary">🎓 Certificado</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PAUSA — overlay informativo
+  ═══════════════════════════════════════════ -->
+  <div id="pauseInfoOverlay" class="hidden">
+    <div class="pause-card">
+      <p class="pause-title"><span>⏸</span> PAUSA</p>
+      <div class="pause-robot-wrap" aria-hidden="true">
+        <img class="pause-robot-img" src="vanberto_real.png" alt="" />
+      </div>
+      <div class="pause-info-grid">
+        <div class="pause-info-box">
+          <strong>🎮 Nível</strong>
+          <span class="pause-info-val" id="pauseLevel">—</span>
+        </div>
+        <div class="pause-info-box">
+          <strong>⭐ Pontos</strong>
+          <span class="pause-info-val" id="pauseScore">0</span>
+        </div>
+        <div class="pause-info-box">
+          <strong>❤️ Vidas</strong>
+          <span class="pause-info-val" id="pauseLives">3</span>
+        </div>
+        <div class="pause-info-box">
+          <strong>🏁 Progresso</strong>
+          <span class="pause-info-val" id="pauseProgress">—</span>
+        </div>
+      </div>
+      <div class="pause-tip" id="pauseTip">
+        💡 <b>Dica:</b> Apanha o cravo dourado 🌟 para ativar o <b>super modo</b> e atropelar censores durante 8 segundos!
+      </div>
+      <p class="pause-controls-hint">← → andar &nbsp;|&nbsp; ↑ / Espaço saltar &nbsp;|&nbsp; ↓ / S agachar &nbsp;|&nbsp; Prima ▶ Continuar para retomar</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       TRANSIÇÃO DE NÍVEL
+  ═══════════════════════════════════════════ -->
+  <div id="levelTransitionOverlay" aria-hidden="true" style="
+    display:none; position:fixed; inset:0; z-index:9000;
+    align-items:center; justify-content:center;
+    pointer-events:auto;
+  ">
+    <div id="levelTransitionPanel" style="
+      background:rgba(0,0,0,0.42);
+      border:2px solid rgba(255,255,255,0.25);
+      border-radius:18px;
+      padding:32px 40px;
+      text-align:center;
+      min-width:320px; max-width:88vw;
+      font-family:'Baloo 2',sans-serif;
+    ">
+      <p id="ltNum"    style="margin:0 0 6px;font-size:15px;font-weight:800;letter-spacing:1px;opacity:0.85;"></p>
+      <p id="ltTitle"  style="margin:0 0 14px;font-size:32px;font-weight:900;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,0.6);"></p>
+      <p id="ltPhrase" style="margin:0 0 16px;font-size:20px;font-weight:800;opacity:0.95;"></p>
+      <p id="ltName"   style="margin:0 0 20px;font-size:17px;font-weight:900;opacity:0.90;"></p>
+      <p id="ltTap"    style="margin:0;font-size:13px;font-weight:700;opacity:0.55;letter-spacing:0.5px;">toca para continuar ▶</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ARTEFACTO DESBLOQUEADO — popup épico
+  ═══════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════
+       NÍVEL CONCLUÍDO — celebração, antes da revelação do artefacto
+  ═══════════════════════════════════════════ -->
+  <div id="levelCompleteOverlay" aria-hidden="true">
+    <div id="levelCompletePanel">
+      <div id="lcConfettiLayer" class="lc-confetti-layer"></div>
+      <img id="lcVanberto" class="lc-vanberto" src="vanberto_real.png" alt="" />
+      <p id="lcTitle" class="lc-title">Conseguiste!</p>
+      <p id="lcLevelName" class="lc-level-name">Nível 1 — A Ditadura de Salazar</p>
+      <div id="lcStars" class="lc-stars">
+        <div class="lc-star-item">
+          <span class="lc-star" data-i="0">★</span>
+          <span class="lc-star-label" data-label-i="0"></span>
+        </div>
+        <div class="lc-star-item">
+          <span class="lc-star" data-i="1">★</span>
+          <span class="lc-star-label" data-label-i="1"></span>
+        </div>
+        <div class="lc-star-item">
+          <span class="lc-star" data-i="2">★</span>
+          <span class="lc-star-label" data-label-i="2"></span>
+        </div>
+      </div>
+      <p id="lcUnlock" class="lc-unlock" style="display:none"></p>
+      <button id="lcContinue" class="lc-continue-btn">Continuar ▶</button>
+    </div>
+  </div>
+
+  <div id="artefactRevealOverlay" aria-hidden="true">
+    <div id="artefactRevealPanel">
+      <p class="ar-label">✨ Memória Recuperada! ✨</p>
+      <div id="arRevParticles" class="ar-particles"></div>
+      <div id="arRevEmoji"  class="ar-emoji">🌹</div>
+      <p  id="arRevName"   class="ar-name">Nome do Artefacto</p>
+      <p  id="arRevShort"  class="ar-short">Memória</p>
+      <!-- Novos campos de enriquecimento -->
+      <div id="arRevArticle" class="ar-article" style="display:none"></div>
+      <div id="arRevCurio"   class="ar-curio"   style="display:none"></div>
+      <div id="arRevStats"   class="ar-stats"   style="display:none"></div>
+      <p  id="arRevSpeech" class="ar-speech">"Fala do VanBerto!"</p>
+      <button id="arRevClose" class="ar-close-btn">Continuar ▶</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       BÓNUS DE CONJUNTO
+  ═══════════════════════════════════════════ -->
+  <div id="setBonusOverlay" aria-hidden="true">
+    <div id="setBonusPanel">
+      <p id="sbIcon"  class="sb-icon">📜</p>
+      <p class="sb-label">Conjunto Completo!</p>
+      <p id="sbName"  class="sb-name">Nome do Conjunto</p>
+      <p id="sbBonus" class="sb-bonus">+150 pontos</p>
+      <p id="sbMsg"   class="sb-msg">Fantástico!</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       GALERIA FINAL DE ARTEFACTOS
+  ═══════════════════════════════════════════ -->
+  <div id="artefactGalleryOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Galeria da Memória">
+    <div class="card ag-card">
+      <div class="card-seal" aria-hidden="true">🏆</div>
+      <h2>✨ As tuas Memórias Recuperadas ✨</h2>
+      <p id="agPct" class="ag-pct">0/20 memórias recuperadas</p>
+      <div id="agGrid" class="ag-grid"></div>
+      <div class="row">
+        <button id="btnAgContinue" class="btn primary">🏆 Ver resultado final ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFETIS + EFEITOS -->
+  <div id="confetti" class="confetti hidden" aria-hidden="true"></div>
+  <div id="celebrationBurst" class="celebration-burst hidden" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════
+       TOAST DE CONQUISTA
+  ═══════════════════════════════════════════ -->
+  <div id="achievementToastHost" class="achievement-toast-host" aria-live="polite"></div>
+
+  <!-- ═══════════════════════════════════════════
+       BOTÕES TOUCH
+  ═══════════════════════════════════════════ -->
+  <div id="touchControls">
+    <div class="tc-left">
+      <div class="tc-btn-wrap"><button id="btnLeft"  class="touch-btn" aria-label="Mover esquerda">◀</button><span class="tc-label">Esq</span></div>
+      <div class="tc-btn-wrap"><button id="btnRight" class="touch-btn" aria-label="Mover direita">▶</button><span class="tc-label">Dir</span></div>
+    </div>
+    <div class="tc-right">
+      <div class="tc-btn-wrap"><button id="btnJump" class="touch-btn touch-jump" aria-label="Saltar">↑</button><span class="tc-label">Saltar</span></div>
+      <div class="tc-btn-wrap"><button id="btnCrouch" class="touch-btn touch-crouch" aria-label="Agachar">↓</button><span class="tc-label">Agachar</span></div>
+    </div>
+  </div>
+
+  <!-- INDICADOR DE ALTO CONTRASTE -->
+  <div id="hc-indicator" aria-live="polite">⬛ ALTO CONTRASTE ATIVO — prima H para desativar</div>
+
+  <div id="vbSpeech" aria-live="polite" aria-atomic="true">
+    <img id="vbSpeechAvatar" src="vanberto_real.png" alt="VanBerto's" />
+    <div id="vbSpeechBubble"><p id="vbSpeechText"></p><div id="vbSpeechTail"></div></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MODO REVISÃO
+  ═══════════════════════════════════════════ -->
+  <div id="reviewOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Revisão das perguntas erradas">
+    <div class="card" style="max-height:88dvh;overflow-y:auto;padding:18px 20px;">
+      <h2 style="margin-bottom:4px;">📋 Modo Revisão</h2>
+      <p style="font-size:12px;color:#ffd970;margin:0 0 14px;font-style:italic;">As perguntas que erraste — com a resposta certa e a explicação completa.</p>
+      <div id="reviewList"></div>
+      <div class="row">
+        <button id="btnCloseReview" class="btn primary" style="width:100%;">✅ Entendido — fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modo offline: o service worker (sw.js) guarda o jogo depois da 1.ª visita.
+    // Para o desligar num dispositivo: abrir o jogo com «?nosw» no endereço.
+    if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+      if (/[?&]nosw\b/.test(location.search)) {
+        navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); });
+        caches.keys().then(function (ks) { ks.filter(function (k) { return k.indexOf("vanbertos-") === 0; }).forEach(function (k) { caches.delete(k); }); });
+      } else {
+        window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+      }
+    }
+  </script>
+  <script src="phaser.min.js?v=20261107v3"></script>
+  <script type="module" src="abril.js?v=20261107v3"></script>
 </body>
 </html>
