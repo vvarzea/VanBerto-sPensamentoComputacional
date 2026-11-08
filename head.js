@@ -146,15 +146,29 @@
   window.addEventListener('DOMContentLoaded',function(){
     /* grupos de universos retráteis */
     var K='vb_groups_v1',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){}
+    var groups=[];
     document.querySelectorAll('.universe-group-label').forEach(function(l){
       var id=l.dataset.group||l.textContent.trim();
       function getCards(){var out=[],n=l.nextElementSibling;while(n&&!n.classList.contains('universe-group-label')){if(n.classList.contains('universe-card')||n.classList.contains('vb-er-opts'))out.push(n);n=n.nextElementSibling;}return out;}
       l.setAttribute('role','button');l.tabIndex=0;
       function set(open){l.setAttribute('aria-expanded',open);getCards().forEach(function(c){c.classList.toggle('vb-collapsed',!open);});}
-      function tog(){var o=l.getAttribute('aria-expanded')!=='false';set(!o);st[id]=!o?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
+      groups.push({id:id,l:l,set:set});
+      /* acordeão: abrir um fecha os outros */
+      function tog(){
+        var o=l.getAttribute('aria-expanded')!=='false';
+        if(o){set(false);st[id]=0;}
+        else{
+          groups.forEach(function(g){if(g.l!==l){g.set(false);st[g.id]=0;}});
+          set(true);st[id]=1;
+          setTimeout(function(){try{l.scrollIntoView({block:'start',behavior:(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)?'auto':'smooth'});}catch(e){}},60);
+        }
+        try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}
+      }
       l.addEventListener('click',tog);l.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog();}});
       set(st[id]!==0);
     });
+    /* ao arrancar fica aberto só o primeiro grupo que estava aberto */
+    groups.filter(function(g){return g.l.getAttribute('aria-expanded')!=='false';}).slice(1).forEach(function(g){g.set(false);st[g.id]=0;});
     /* menu "Mais" abre sempre dentro do ecrã */
     var more=document.getElementById('hdr-more'),btn=document.getElementById('btn-hdr-more');
     if(more&&btn){

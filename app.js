@@ -1844,6 +1844,8 @@ function updateSideProgress(){
 /* ============================= SCREEN NAVIGATION ============================= */
 const ALL_SCREENS = ["universe-screen","menu-screen","profile-screen","themes-1c","themes-2c","themes-3c","themes-sec","game-screen"];
 function showScreen(id){
+  /* nunca ficar sem ecrã: um destino inválido (ex.: "themes-null") volta ao menu/início */
+  if(!ALL_SCREENS.includes(id) || !$(id)) id=currentUniverseId?"menu-screen":"universe-screen";
   ALL_SCREENS.forEach(sid=>{
     const s=$(sid);
     if(!s) return;
@@ -1996,6 +1998,7 @@ $("btn-change-universe").addEventListener("click",()=>showScreen("universe-scree
 
 /* ============================= THEMES ============================= */
 function showThemesFor(ck){
+  if(!ck||!$(`themes-${ck}`)){ showScreen(currentUniverseId?"menu-screen":"universe-screen"); return; }
   updateThemeProgressUI();
   showScreen(`themes-${ck}`);
   animateCards($(`themes-${ck}`));
@@ -6373,7 +6376,8 @@ if(typeof applyQxStatic==="function") applyQxStatic();
     newPNBtn.addEventListener('click',()=>{
       // Esconder popup de vitória
       const p=document.getElementById('popup-complete');
-      if(p) p.classList.remove('visible');
+      if(!p||!p.classList.contains('visible')) return;   // toque fantasma: não há nível concluído
+      p.classList.remove('visible');
       const lvls=levelsFor(currentCycleKey,currentTheme);
       const isLastLevel=!currentTheme||!lvls||currentLevelIndex>=lvls.length-1;
 

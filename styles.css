@@ -2011,3 +2011,7 @@ body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color
   body.vb-home .universe-hero{padding-top:4px;}
   body.vb-home .universe-hero h2{font-size:1.45rem;}
 }
+
+/* ===== v18 · Popups escondidos nunca apanham toques (o botão "Continuar" invisível bloqueava os universos) ===== */
+.popup:not(.visible),.popup:not(.visible) *{pointer-events:none!important;}
+.universe-group-label{scroll-margin-top:8px;}
