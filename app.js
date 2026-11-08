@@ -1523,7 +1523,7 @@ const THEME_TIPS = {
   "ciberseguras_risco":    "💡 Risco = Probabilidade × Impacto. Trata primeiro os riscos com maior impacto.",
   "ciberseguras_estrategia":"💡 Defesa em profundidade: junta firewall, antivírus, autenticação em dois fatores e backups — se uma falhar, as outras protegem."
 };
-function getTipForTheme(themeKey){
+function _baseTipForTheme(themeKey){
   // Try universe-specific tip first (prevents wrong universe tips)
   const uKey = (currentUniverseId||"") + "_" + themeKey;
   if(THEME_TIPS[uKey]) return THEME_TIPS[uKey];
@@ -1535,6 +1535,31 @@ function getTipForTheme(themeKey){
   // Fuzzy match (no underscores to avoid cross-universe hits)
   const k=Object.keys(THEME_TIPS).find(t=>!t.includes("_")&&(themeKey.includes(t)||t.includes(themeKey)));
   return k?THEME_TIPS[k]:"💡 Pensa no caminho mais curto antes de começar a programar o robô!";
+}
+
+/* Dicas extra por tema (universo "ambiente"): cada nível mostra uma dica diferente, sempre sobre o tema.
+   Chave = universo_tema. Nível 1 usa a dica base (THEME_TIPS); os seguintes usam estas, em rotação. */
+const THEME_TIPS_EXTRA = {
+  ambiente_robo: ["💡 As folhas caídas podem ir para a compostagem: em alguns meses transformam-se em adubo natural para o jardim.", "💡 Em Portugal, o ecoponto azul é para papel e cartão, o amarelo para plástico e metal e o verde para vidro.", "💡 Já existem drones que plantam árvores e robôs que limpam rios e praias. A tecnologia também ajuda o ambiente!", "💡 Uma árvore adulta pode absorver cerca de 22 kg de CO₂ por ano e liberta o oxigénio que respiramos."],
+  ambiente_oceanos: ["💡 Uma garrafa de plástico pode demorar cerca de 450 anos a decompor-se no mar.", "💡 As tartarugas confundem os sacos de plástico com alforrecas e podem morrer ao comê-los.", "💡 Os recifes de coral ocupam menos de 1% do fundo do mar, mas são casa de cerca de 25% das espécies marinhas.", "💡 Os oceanos cobrem cerca de 71% da superfície da Terra e produzem grande parte do oxigénio que respiramos."],
+  ambiente_cidade: ["💡 Em Portugal, cada pessoa produz cerca de 500 kg de resíduos urbanos por ano. Reduzir começa em casa!", "💡 O vidro pode ser reciclado vezes sem conta sem perder qualidade.", "💡 Os telhados verdes arrefecem os edifícios, captam a água da chuva e dão casa a insetos e aves.", "💡 Ir a pé, de bicicleta ou de transportes públicos reduz o trânsito, o ruído e a poluição da cidade."],
+  ambiente_natal: ["💡 As luzes LED gastam até cerca de 80% menos energia do que as lâmpadas antigas e duram muito mais.", "💡 Podes embrulhar prendas com jornal, tecido ou papel reutilizado. O papel plastificado ou com purpurinas não se recicla.", "💡 Uma árvore natural pode ser replantada ou transformada em composto depois das festas.", "💡 Cerca de um terço dos alimentos produzidos no mundo é desperdiçado. Planear as quantidades da ceia evita sobras."],
+  ambiente_reciclagem: ["💡 Não precisas de lavar as embalagens: basta esvaziá-las bem antes de as pôr no ecoponto.", "💡 Reciclar alumínio poupa cerca de 95% da energia necessária para o produzir de raiz.", "💡 Uma lata de alumínio pode voltar a ser uma lata nova em cerca de 60 dias.", "💡 O óleo alimentar usado não vai para o lavatório: leva-se ao oleão e pode transformar-se em biodiesel ou sabão."],
+  ambiente_energia: ["💡 Uma lâmpada LED gasta cerca de 80% menos energia do que uma incandescente.", "💡 Numa hora, o Sol envia para a Terra mais energia do que toda a humanidade usa num ano.", "💡 Os carregadores ligados à tomada, mesmo sem telemóvel, continuam a gastar um pouco de energia.", "💡 Em Portugal, em muitos anos mais de metade da eletricidade já vem de fontes renováveis."],
+  ambiente_floresta: ["💡 Uma floresta saudável dá casa a milhares de espécies: aves, insetos, mamíferos, fungos e muito mais.", "💡 As raízes das árvores seguram o solo e ajudam a evitar deslizamentos de terras e cheias.", "💡 Os incêndios destroem habitats. Nunca faças lume na natureza em dias de risco!", "💡 Um tronco caído também é uma casa: serve de abrigo e alimento a insetos, musgos e pequenos animais."],
+  ambiente_floresta3c: ["💡 As florestas guardam carbono. Quando ardem ou são cortadas, esse carbono volta para a atmosfera.", "💡 As árvores libertam vapor de água pelas folhas e ajudam a formar nuvens e chuva.", "💡 Plantar árvores ajuda, mas proteger as florestas que já existem é ainda mais eficaz.", "💡 À sombra das árvores faz menos calor: as florestas ajudam a manter a temperatura local mais estável."],
+  ambiente_oceano3c: ["💡 Os oceanos absorvem cerca de um quarto do CO₂ que emitimos, e isso torna a água mais ácida.", "💡 A pesca excessiva faz diminuir as populações de peixes. Escolher peixe de pesca sustentável ajuda.", "💡 Já foram encontrados microplásticos desde a superfície até às fossas mais profundas do oceano.", "💡 Quanto mais espécies houver num ecossistema, mais resistente ele é a mudanças e doenças."],
+  ambiente_energia3c: ["💡 Os painéis fotovoltaicos transformam a luz do Sol em eletricidade sem emitir CO₂ enquanto funcionam.", "💡 Nos Açores, a energia geotérmica fornece uma parte importante da eletricidade da ilha de São Miguel.", "💡 As baterias guardam a energia do sol e do vento para usar quando não há sol nem vento.", "💡 Os aerogeradores aproveitam o vento e há também equipamentos que produzem eletricidade com as ondas do mar."],
+  ambiente_clima: ["💡 O CO₂ e o metano retêm calor na atmosfera. É o efeito de estufa, e quando aumenta o planeta aquece.", "💡 O nível do mar sobe porque o gelo derrete e a água, ao aquecer, ocupa mais espaço.", "💡 Com o clima a aquecer, as ondas de calor, as secas e as tempestades fortes tornam-se mais frequentes.", "💡 Cada pequeno gesto conta: poupar energia, andar a pé e evitar desperdício reduzem as emissões de CO₂."],
+  ambiente_sustentabilidade: ["💡 Reparar um telemóvel em vez de o trocar reduz o lixo eletrónico, um dos resíduos que mais cresce no mundo.", "💡 Os telemóveis têm metais valiosos, como cobre, prata e ouro, que se podem recuperar na reciclagem.", "💡 Partilhar, alugar, trocar e doar objetos faz parte da economia circular.", "💡 Na natureza não existe lixo: o que uns seres deitam fora serve de alimento a outros. A economia circular imita isso."],
+  ambiente_politica: ["💡 A União Europeia definiu como meta ser neutra em carbono até 2050.", "💡 Em Portugal, os sacos de plástico leves passaram a ser pagos em 2015 para reduzir o seu uso.", "💡 A Agenda 2030 da ONU tem 17 Objetivos de Desenvolvimento Sustentável para todos os países.", "💡 As leis ambientais só funcionam se todos as cumprirem: empresas, governos e cidadãos."]
+};
+function getTipForTheme(themeKey, levelIdx){
+  const base=_baseTipForTheme(themeKey);
+  const extra=THEME_TIPS_EXTRA[(currentUniverseId||"")+"_"+themeKey];
+  if(!extra||typeof levelIdx!=="number"||levelIdx<0) return base;
+  const list=[base].concat(extra);
+  return list[levelIdx%list.length];
 }
 
 /* ============================= EXPORT / IMPORT PROGRESS ============================= */
@@ -2955,7 +2980,7 @@ function openEscapeQuiz(){
         setTimeout(()=>SFX.starMelody(),300);
         if(fb){ fb.style.color="#16a34a"; fb.textContent=currentLang==='en'?"✅ Correct! The door opens!":"✅ Certo! A porta abre-se! 🎉"; }
         // ── Dica temática após resposta correta ──
-        const tip=getTipForTheme(currentThemeKey||"");
+        const tip=getTipForTheme(currentThemeKey||"",currentLevelIndex);
         if(tipBox&&tip){
           tipBox.style.display="block";
           tipBox.textContent=tip;
@@ -3150,7 +3175,7 @@ function _handleLevelCompleteNow(){
 
   // Pedagogical tip
   const existingTip=document.getElementById("popup-tip-el"); if(existingTip) existingTip.remove();
-  const tipText=getTipForTheme(currentThemeKey||"");
+  const tipText=getTipForTheme(currentThemeKey||"",currentLevelIndex);
   const tipEl=document.createElement("div"); tipEl.id="popup-tip-el"; tipEl.className="popup-tip";
   tipEl.innerHTML=`<span class="popup-tip-icon">💡</span><span class="popup-tip-text">${tipText.replace(/^💡\s*/,'')}</span>`;
   const pbEl=$("popup-btns"); if(pbEl) pbEl.parentNode.insertBefore(tipEl,pbEl);
@@ -6320,7 +6345,7 @@ if(typeof applyQxStatic==="function") applyQxStatic();
   function showDidacticFact(onDone){
     if(!currentTheme||!currentUniverseId){ onDone&&onDone(); return; }
     const fact=_pickDidacticFact();
-    const tip=getTipForTheme(currentThemeKey||'');
+    const tip=getTipForTheme(currentThemeKey||'',currentLevelIndex+1);
     const sName=_getStudentName();
 
     const titleEl=document.getElementById('vb-didactic-title');
