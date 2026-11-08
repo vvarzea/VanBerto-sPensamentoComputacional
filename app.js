@@ -560,7 +560,7 @@ function applyLangToDOM() {
     'er-btn-prev': T('erPrev'),
     'er-btn-next': T('erNext'),
     'er-btn-hint': T('erHint'),
-    'er-btn-teacher': sessionStorage.getItem("vb_teacher_pin")==="ok" ? "🔓 Notas professora" : T('erTeacher'),
+    'er-btn-teacher': T('erTeacher'),
     'er-btn-restart': T('erRestart'),
     'er-btn-final-restart': T('erPlayAgain'),
     'er-btn-final-hub': T('erChooseRoom'),
@@ -4411,15 +4411,7 @@ const ROOMS = {
        "Porta 8: elimina as opções que claramente violam direitos ou propagam desinformação.",
        "Porta 8: corretas são 1 (respeito), 3 (não partilhar dados) e 5 (pedir ajuda)."]
     ],
-    teacherNotes:`<h4>📋 Notas para a Professora</h4>
-<b>Porta 1</b> — Verdadeiras: <b>1 e 4</b>; código <b>214</b>. (Frase 2: passwords iguais são perigosas. Frase 3: nunca enviar fotos a desconhecidos.)<br>
-<b>Porta 2</b> — Corretas: <b>2, 3, 5, 6</b> (apoiar em privado, guardar provas, bloquear, avisar adulto). Erradas: 1 (ignorar não é solução) e 4 (comentar publicamente pode escalar o conflito).<br>
-<b>Porta 3</b> — Ordem: Parar → Apoiar vítima em privado → Guardar provas → Bloquear/denunciar → Avisar adulto.<br>
-<b>Porta 4</b> — Anagrama: <b>CIBERCONDUTA</b> (12 letras).<br>
-<b>Porta 5</b> — Resposta: <b>Xk#9!mPq3@Lr</b> (aleatória, longa, sem palavras reais). Erradas: Portugal2024 (palavra+ano fácil de adivinhar), 12345678! (sequência numérica), pedro1234! (nome próprio+números previsível).<br>
-<b>Porta 6</b> — Resposta: <b>ir ao site oficial</b> (apagar o email e ir diretamente ao site oficial do banco sem usar o link). A urgência falsa é a técnica central do phishing — nunca clicar em links de emails suspeitos.<br>
-<b>Porta 7</b> — Anagrama: <b>IDENTIDADE DIGITAL</b> (2 palavras, 17 letras sem acentos).<br>
-<b>Porta 8</b> — Corretas: <b>1, 3, 5</b> (tratar com respeito, não partilhar dados pessoais, pedir ajuda a adulto/professor).`,
+    
     doors:[
       {id:1,icon:"🧩",title:"Porta 1 · Código dos Direitos",topic:"Verdadeiro/Falso + código",points:10},
       {id:2,icon:"🤝",title:"Porta 2 · Anti-Ciberbullying",topic:"Selecciona as boas acções",points:10},
@@ -4468,15 +4460,7 @@ const ROOMS = {
        "Porta 8: pensa em: torneira, duche, máquina, rega, fuga...",
        "Porta 8: ex. fechar torneira ao escovar dentes, duche curto, regar ao fim do dia."]
     ],
-    teacherNotes:`<h4>📋 Notas para a Professora</h4>
-<b>Porta 1</b> — Verdadeiras: 1, 3 e 4; código <b>3134</b>. (Frase 2 é mito: torneira a pingar desperdiça ~5500L/ano.)<br>
-<b>Porta 2</b> — Corretas: 1, 3, 4, 6. Erradas: 2 (banheira usa ~120L vs duche 5min=40L), 5 (torneira aberta ao ensaboar desperdiça ~8L).<br>
-<b>Porta 3</b> — Ordem: Evaporação → Condensação → Precipitação → Infiltração.<br>
-<b>Porta 4</b> — Anagrama: <b>PRECIPITACAO</b>.<br>
-<b>Porta 5</b> — Resposta: duche de 4 min (duche 4min×4pessoas×7dias + lava-loiças 1x/dia = ~980L/semana, o mais eficiente).<br>
-<b>Porta 6</b> — Resposta: avisar adulto e fechar a torneira se for seguro.<br>
-<b>Porta 7</b> — Anagrama: <b>AGUA POTAVEL</b>.<br>
-<b>Porta 8</b> — Resposta livre: ≥ 3 práticas de poupança de água.`,
+    
     doors:[
       {id:1,icon:"🧩",title:"Porta 1 · Código das Verdades",topic:"Verdadeiro/Falso + código",points:10},
       {id:2,icon:"🚿",title:"Porta 2 · Poupar ou Desperdiçar",topic:"Selecciona as boas acções",points:10},
@@ -4525,15 +4509,7 @@ const ROOMS = {
        "Porta 8: pensa em: transporte, energia, vegetação, ventilação...",
        "Porta 8: ex. ir a pé/bicicleta, plantar árvores, não queimar resíduos."]
     ],
-    teacherNotes:`<h4>📋 Notas para a Professora</h4>
-<b>Porta 1</b> — Verdadeiras: 1 e 3; código <b>213</b>. (Frase 2: carros elétricos têm impacto na produção de energia. Frase 4: ozono estratosférico protege-nos.)<br>
-<b>Porta 2</b> — Corretas: 1, 2, 4, 6. Erradas: 3 (velas produzem partículas finas), 5 (hora de ponta = mais poluição).<br>
-<b>Porta 3</b> — Resposta: <b>muitas pessoas sem ventilação</b> (muitas pessoas sem ventilação — acumulação de CO₂ e humidade).<br>
-<b>Porta 4</b> — Anagrama: <b>POLUICAO</b> (8 letras, sem acento).<br>
-<b>Porta 5</b> — Resposta: comboio (15×2×5×14g = 2.100g = 2,1kg CO₂/semana).<br>
-<b>Porta 6</b> — Resposta: abrir janelas + avisar adulto.<br>
-<b>Porta 7</b> — Anagrama: <b>AR LIMPO</b>.<br>
-<b>Porta 8</b> — Resposta livre: ≥ 3 boas práticas (mínimo 4 caracteres cada) para proteger o ar.`,
+    
     doors:[
       {id:1,icon:"🧩",title:"Porta 1 · Código das Verdades",topic:"Verdadeiro/Falso + código",points:10},
       {id:2,icon:"🚲",title:"Porta 2 · Boas Escolhas",topic:"Selecciona as boas acções",points:10},
@@ -4583,15 +4559,7 @@ const ROOMS = {
        "Sala 8: antivírus, não clicar em links suspeitos e backups são as 3 mais eficazes.",
        "Sala 8: corretas: 1 (antivírus atualizado), 3 (não clicar em links) e 5 (backups)."]
     ],
-    teacherNotes:`<h4>📋 Notas para a Professora</h4>
-<b>Porta 1</b> — Anagrama: <b>RANSOMWARE</b> (10 letras, palavra em inglês).<br>
-<b>Porta 2</b> — Corretas: <b>1, 3, 5</b> (infecta ficheiros, multiplica-se ao executar, precisa de hospedeiro). Erradas: 2 (espalha-se também pela internet), 4 (antivírus desligado é mais vulnerável), 6 (não se apaga sozinho).<br>
-<b>Porta 3</b> — Ordem: Entra pelo sistema → Copia-se para memória → Propaga-se pela rede → Causa danos.<br>
-<b>Porta 4</b> — Anagrama: <b>ENGENHARIA SOCIAL</b> (2 palavras, 16 letras).<br>
-<b>Porta 5</b> — Ligações corretas: Spyware↔espia o que fazes, Keylogger↔regista teclas, Adware↔mostra anúncios, Rootkit↔esconde-se no sistema e dá acesso ao atacante.<br>
-<b>Porta 6</b> — Resposta: <b>RESGATE</b> (tradução de "ransom" — o que os criminosos exigem para devolver os ficheiros).<br>
-<b>Porta 7</b> — 4 sinais de phishing: <b>1</b> (domínio .xyz suspeito), <b>3</b> (urgência: "24h", "URGENTE"), <b>5</b> (erros ortográficos: "supeita", "daods"), <b>6</b> (pedido de dados pessoais via link).<br>
-<b>Porta 8</b> — Corretas: <b>1, 3, 5</b> (antivírus atualizado, não clicar em links suspeitos, fazer backups regulares).`,
+    
     doors:[
       {id:1,icon:"🔤",title:"Sala 1 · Código Secreto",topic:"Anagrama",points:15},
       {id:2,icon:"🧬",title:"Sala 2 · Como age um Vírus?",topic:"Selecciona as afirmações corretas",points:10},
@@ -4641,15 +4609,7 @@ const ROOMS = {
        "Sala 8: verificar fonte, usar facto-checkers e não partilhar sem confirmar são as essenciais.",
        "Sala 8: corretas: verificar fonte, consultar sites de facto-checking e não partilhar na dúvida."]
     ],
-    teacherNotes:`<h4>📋 Notas para a Professora</h4>
-<b>Porta 1</b> — Verdadeiras: <b>2 e 4</b> (fotos podem ser deepfakes; fact-checking é ferramenta essencial); código <b>224</b>. Erradas: 1 (fotos podem ser manipuladas), 3 (título não chega para verificar).<br>
-<b>Porta 2</b> — Anagrama: <b>DESINFORMACAO</b> (13 letras, sem acentos).<br>
-<b>Porta 3</b> — Clickbait: o título <b>alarmista</b> (maiúsculas, emojis excessivos, linguagem alarmante sem fonte).<br>
-<b>Porta 4</b> — Ordem: Parar → Verificar quem publicou → Comparar com outras fontes → Só partilhar com certeza.<br>
-<b>Porta 5</b> — Ligações: Urgência extrema↔manipulação, Sem fonte/autor↔informação inventada, Erros ortográficos↔não revisto, Emojis/maiúsculas↔clickbait.<br>
-<b>Porta 6</b> — 3 sinais corretos: <b>1</b> (urgência extrema), <b>3</b> (sem fonte/data/autor), <b>5</b> (afirmação chocante impossível de verificar). Errados: 2 (estar em WhatsApp não é sinal) e 4 (emojis de limão não são sinal).<br>
-<b>Porta 7</b> — Resposta: <b>não partilhar</b> (e procurar em fontes oficiais e verificar se é deepfake).<br>
-<b>Porta 8</b> — Corretas: <b>1, 3, 5</b> (verificar a fonte, comparar com outros sites confiáveis, falar com adulto quando há dúvidas).`,
+    
     doors:[
       {id:1,icon:"🧩",title:"Sala 1 · Código da Verdade",topic:"Verdadeiro/Falso + código",points:15},
       {id:2,icon:"🔤",title:"Sala 2 · Palavra Chave",topic:"Anagrama",points:15},
@@ -4693,13 +4653,19 @@ let erCurrentRoom=null;
 let erState={};
 let erTimerInterval=null;
 
+/* garante os campos novos em progressos guardados por versões anteriores */
+function er_fixState(room){
+  const n=room.doors.length;
+  if(!Array.isArray(erState.hintMax)) erState.hintMax=Array(n).fill(0);
+  if(!Array.isArray(erState.earnedPerDoor)) erState.earnedPerDoor=room.doors.map((d,i)=>erState.completed&&erState.completed[i]?d.points:0);
+}
 function initERState(room){
   const n=room.doors.length;
   return {
     unlockedIndex:0, currentIndex:null, robotDoorIndex:0,
     score:0, completed:Array(n).fill(false),
     triesTotal:0, triesPerDoor:Array(n).fill(0),
-    hintsUsed:0,
+    hintsUsed:0, hintMax:Array(n).fill(0), earnedPerDoor:Array(n).fill(0),
     timeTotalSec: (room.noTimer||window.vbErNoTimer) ? 0 : 15*60,
     timeLeftSec:  (room.noTimer||window.vbErNoTimer) ? 0 : 15*60,
     timeUp:false, timerRunning:false,
@@ -4719,6 +4685,14 @@ function erShowHub(){
   document.getElementById("er-hub-screen").style.display="block";
   if(erTimerInterval){ clearInterval(erTimerInterval); erTimerInterval=null; }
   er_buildRoomsGrid();
+  try{
+    const hub=document.getElementById("er-hub-screen");
+    if(hub&&!document.getElementById("er-btn-hub-export")){
+      const w=document.createElement("div"); w.style.cssText="text-align:center;margin:14px 0 4px;";
+      w.innerHTML='<button type="button" class="btn secondary small" id="er-btn-hub-export">📤 Enviar resultados à professora</button>';
+      hub.appendChild(w); w.firstChild.addEventListener("click",()=>vbShareResults());
+    }
+  }catch(e){}
 }
 function erShowGame(roomId){
   document.getElementById("er-hub-screen").style.display="none";
@@ -4820,6 +4794,9 @@ function er_startRoom(roomId, keepProgress=false){
   } else {
     erState=initERState(r);
   }
+
+  er_fixState(r);
+  if(window.vbErTeacherSync) vbErTeacherSync();
 
   // build topbar
   const tb=document.getElementById("er-topbar");
@@ -4997,6 +4974,10 @@ function er_renderHintBtn(doorIdx,asEl){
       const nextAvail=tries>=3?2:tries>=1?1:0;
       btn.textContent=nextAvail>0?`💡 Ver pista (nível 1)`:"💡 Ver pista";
     }
+    if(erState&&box.classList.contains("visible")){
+      if(!Array.isArray(erState.hintMax)) erState.hintMax=[];
+      erState.hintMax[doorIdx]=Math.max(erState.hintMax[doorIdx]||0,Math.min(shownLevel,maxLevel)+1);
+    }
   };
   const wrap=document.createElement("div"); wrap.appendChild(btn); wrap.appendChild(box);
   return asEl?wrap:wrap.outerHTML;
@@ -5027,10 +5008,29 @@ function er_moveRobot(delta){
 }
 
 /* ═══════════════════ COMPLETE DOOR ═══════════════════ */
+/* Pontos ganhos numa porta: cada tentativa a mais custa 1 "degrau" (20%), ver a pista que dá a resposta custa outro.
+   Nunca desce abaixo de 40% — quem insiste e consegue fica sempre com algo. */
+function er_earnedFor(i){
+  const pts=erCurrentRoom.doors[i].points, step=Math.max(1,Math.round(pts*0.2));
+  const extra=Math.max(0,(erState.triesPerDoor[i]||0)-1);
+  const hintPen=((erState.hintMax&&erState.hintMax[i])||0)>=3?step:0;
+  return Math.max(Math.ceil(pts*0.4),pts-extra*step-hintPen);
+}
 function erCompleteDoor(i){
   if(erState.completed[i]) return;
   erState.completed[i]=true;
-  erState.score+=erCurrentRoom.doors[i].points;
+  const _pts=erCurrentRoom.doors[i].points, _earned=er_earnedFor(i);
+  if(!Array.isArray(erState.earnedPerDoor)) erState.earnedPerDoor=[];
+  erState.earnedPerDoor[i]=_earned;
+  erState.score+=_earned;
+  if(_earned!==_pts){
+    try{
+      const pan=document.getElementById("er-mission-content");
+      if(pan) pan.querySelectorAll(".er-msgbox.ok").forEach(m=>{
+        m.innerHTML=m.innerHTML.replace(/\+\s*\d+\s*⭐/,"+"+_earned+" ⭐")+` <small style="opacity:.75">(−${_pts-_earned} por tentativas ou pista)</small>`;
+      });
+    }catch(e){}
+  }
   if(i===erState.unlockedIndex&&i<erCurrentRoom.doors.length-1) erState.unlockedIndex++;
   er_updateKPIs(); er_renderDoorsSidebar();
   erPlaySound("correct");
@@ -5095,6 +5095,16 @@ function er_showFinalPopup(bonus=0){
       summaryEl.innerHTML=`<div style="background:linear-gradient(135deg,rgba(99,102,241,0.07),rgba(34,211,238,0.06));border:1.5px solid rgba(99,102,241,0.2);border-radius:12px;padding:12px 15px;font-size:.8rem;color:#1e293b;text-align:left;line-height:1.6;margin:10px 0 4px;font-weight:600;">${erCurrentRoom.pedagogicalSummary}</div>`;
     } else { summaryEl.innerHTML=""; }
   }
+  // o que rever (portas com mais tentativas ou pontos perdidos)
+  try{
+    const weak=erCurrentRoom.doors.map((d,i)=>({d,t:erState.triesPerDoor[i]||0,e:(erState.earnedPerDoor&&erState.earnedPerDoor[i])||d.points}))
+      .filter(x=>x.t>=3||x.e<x.d.points).sort((a,b)=>b.t-a.t).slice(0,3);
+    const box='background:linear-gradient(135deg,rgba(245,158,11,0.10),rgba(255,255,255,0));border:1.5px solid rgba(245,158,11,0.35);border-radius:12px;padding:10px 14px;font-size:.8rem;color:#1e293b;text-align:left;line-height:1.55;margin:8px 0 4px;font-weight:600;';
+    const html=weak.length
+      ?`<div style="${box}"><b>🔁 Para rever</b><ul style="margin:4px 0 0 18px;padding:0;">${weak.map(x=>`<li>${x.d.title.replace(/^(Porta|Sala)\s*\d+\s*·\s*/,"")} — ${x.d.topic} <small>(${x.t} tentativa${x.t!==1?"s":""})</small></li>`).join("")}</ul></div>`
+      :`<div style="${box}">🌟 Quase tudo à primeira — não há nada a rever!</div>`;
+    const sm=document.getElementById("er-final-summary"); if(sm) sm.innerHTML+=html;
+  }catch(e){}
   document.getElementById("er-final-kpis").innerHTML=`
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.score}</div><div class="er-kpi-lbl">⭐ Pontos totais</div></div>
     <div class="er-kpi-card"><div class="er-kpi-val">${erState.completed.filter(Boolean).length}/${erCurrentRoom.doors.length}</div><div class="er-kpi-lbl">🔓 Portas abertas</div></div>
@@ -5110,9 +5120,45 @@ function er_showFinalPopup(bonus=0){
       let cb=document.getElementById("er-btn-final-cert");
       if(!cb){ cb=document.createElement("button"); cb.id="er-btn-final-cert"; cb.type="button"; cb.className="btn small"; cb.textContent="🎓 Certificado"; btns.insertBefore(cb,btns.firstChild); }
       cb.onclick=function(){ showRoomCertificate(erCurrentRoom,erState); };
+      let xb=document.getElementById("er-btn-final-export");
+      if(!xb){ xb=document.createElement("button"); xb.id="er-btn-final-export"; xb.type="button"; xb.className="btn secondary small"; xb.textContent="📤 Enviar à professora"; btns.appendChild(xb); }
+      xb.onclick=function(){ vbShareResults(); };
     }
   }catch(e){}
 }
+/* ═══════════════════ RESULTADOS PARA A PROFESSORA ═══════════════════ */
+function vbBuildResults(){
+  const name=((typeof _getStudentName==="function"&&_getStudentName())||"").trim()||"Aluno";
+  const rooms={};
+  Object.values(ROOMS).forEach(r=>{
+    const p=er_loadRoomProgress(r.id); if(!p||!p.completed) return;
+    rooms[r.id]={title:r.title,doors:r.doors.map(d=>({t:d.title,p:d.points})),completed:p.completed,score:p.score||0,
+      max:r.doors.reduce((a,d)=>a+d.points,0),tries:p.triesPerDoor||[],hintMax:p.hintMax||[],earned:p.earnedPerDoor||[],
+      finished:p.completed.every(Boolean)};
+  });
+  const levels={};
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i); if(!k||!k.startsWith(STORAGE_PREFIX)) continue;
+      const all=JSON.parse(localStorage.getItem(k)||"{}"); let c=0,st=0;
+      Object.values(all).forEach(bt=>bt&&typeof bt==="object"&&Object.values(bt).forEach(d=>d&&d.levels&&Object.values(d.levels).forEach(l=>{ if(l&&l.completed){c++;st+=(l.stars||l.lastStars||1);} })));
+      if(c) levels[k.slice(STORAGE_PREFIX.length)]={levels:c,stars:st};
+    }
+  }catch(e){}
+  return {kind:"vb-results",v:1,name,exportedAt:new Date().toISOString(),rooms,levels};
+}
+async function vbShareResults(){
+  const data=vbBuildResults();
+  const slug=(data.name||"aluno").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"aluno";
+  const fname="resultados-"+slug+".json";
+  const file=new File([JSON.stringify(data)],fname,{type:"application/json"});
+  try{ if(navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:"Resultados VanBerto's"}); return; } }
+  catch(e){ if(e&&e.name==="AbortError") return; }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(file); a.download=fname; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ try{URL.revokeObjectURL(a.href);}catch(e){} a.remove(); },600);
+}
+window.vbShareResults=vbShareResults; window.vbBuildResults=vbBuildResults;
+
 function erSpawnConfetti(){
   const w=document.getElementById("er-confetti-wrap"); if(!w) return;
   w.innerHTML="";
@@ -5144,60 +5190,20 @@ document.getElementById("er-btn-hint").addEventListener("click",()=>{
   erState.hintsPerDoor=erState.hintsPerDoor||{};
   const _u=erState.hintsPerDoor[idx]||0; erState.hintsPerDoor[idx]=_u+1;
   const levelIdx=Math.min(_u,maxLevel,levels.length-1);
+  if(!Array.isArray(erState.hintMax)) erState.hintMax=[];
+  erState.hintMax[idx]=Math.max(erState.hintMax[idx]||0,levelIdx+1);
   const levelLabel=levelIdx===0?"geral":levelIdx===1?"específica":"resposta";
   const ha=document.getElementById("er-hint-area");
   ha.innerHTML=`<div class="er-hint-panel">💡 <span><b>Pista ${levelIdx+1} (${levelLabel}):</b> ${levels[levelIdx]||"Lê bem o enunciado e pensa com calma."}</span></div>`;
 });
-document.getElementById("er-btn-teacher").addEventListener("click",()=>{
-  if(!erCurrentRoom) return;
-  // Check if already unlocked this session
-  const unlocked=sessionStorage.getItem("vb_teacher_pin")==="ok";
-  if(unlocked){
-    erState.teacherOpen=!erState.teacherOpen;
-    const ta=document.getElementById("er-teacher-area");
-    ta.innerHTML=erState.teacherOpen?`<div class="er-teacher-box">${erCurrentRoom.teacherNotes}</div>`:"";
-    document.getElementById("er-btn-teacher").textContent=erState.teacherOpen?"🔓 Fechar notas":"🔓 Notas professora";
-    return;
-  }
-  // Show PIN dialog
-  const overlay=document.createElement("div");
-  overlay.style.cssText="position:fixed;inset:0;background:rgba(15,23,42,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(4px);";
-  overlay.innerHTML=`
-    <div style="background:#fff;border-radius:18px;padding:28px 32px;text-align:center;max-width:300px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);font-family:'Nunito Sans',sans-serif;">
-      <div style="font-size:2rem;margin-bottom:8px;">🔐</div>
-      <div style="font-weight:900;font-size:1.05rem;color:#1e1b4b;font-family:'Nunito',sans-serif;margin-bottom:4px;">Área da Professora</div>
-      <div style="font-size:.82rem;color:#64748b;margin-bottom:16px;">Introduz o código de acesso</div>
-      <input id="pin-input" type="password" inputmode="numeric" maxlength="4"
-        style="width:100%;padding:10px;border-radius:10px;border:2px solid #c7d2fe;font-size:1.4rem;text-align:center;letter-spacing:.4em;outline:none;font-family:'Nunito',sans-serif;font-weight:900;color:#1e1b4b;"
-        placeholder="••••" autocomplete="off"/>
-      <div id="pin-msg" style="min-height:20px;font-size:.78rem;color:#dc2626;margin-top:6px;"></div>
-      <div style="display:flex;gap:8px;margin-top:14px;">
-        <button id="pin-ok" style="flex:1;padding:10px;background:linear-gradient(135deg,#6366f1,#0891b2);color:#fff;border:none;border-radius:999px;font-weight:800;font-size:.9rem;cursor:pointer;font-family:'Nunito',sans-serif;">Entrar</button>
-        <button id="pin-cancel" style="flex:1;padding:10px;background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;border-radius:999px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:'Nunito',sans-serif;">Cancelar</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-  const pinInput=overlay.querySelector("#pin-input");
-  setTimeout(()=>pinInput.focus(),50);
-  const tryPin=()=>{
-    const val=pinInput.value.trim();
-    if(val==="7576"){
-      sessionStorage.setItem("vb_teacher_pin","ok");
-      overlay.remove();
-      erState.teacherOpen=true;
-      const ta=document.getElementById("er-teacher-area");
-      ta.innerHTML=`<div class="er-teacher-box">${erCurrentRoom.teacherNotes}</div>`;
-      document.getElementById("er-btn-teacher").textContent="🔓 Notas professora";
-    } else {
-      overlay.querySelector("#pin-msg").textContent="❌ Código incorreto. Tenta de novo.";
-      pinInput.value="";pinInput.focus();
-    }
-  };
-  overlay.querySelector("#pin-ok").onclick=tryPin;
-  overlay.querySelector("#pin-cancel").onclick=()=>overlay.remove();
-  pinInput.addEventListener("keydown",e=>{ if(e.key==="Enter") tryPin(); });
-  overlay.addEventListener("click",e=>{ if(e.target===overlay) overlay.remove(); });
-});
+/* Notas da professora: vivem em professora.html (fora do jogo dos alunos). O botão só aparece em equipamentos marcados como "modo professora". */
+(function(){
+  const b=document.getElementById("er-btn-teacher"); if(!b) return;
+  const on=()=>{ try{ return localStorage.getItem("vb_teacher_mode")==="1"; }catch(e){ return false; } };
+  window.vbErTeacherSync=function(){ b.style.display=on()?"":"none"; };
+  b.addEventListener("click",()=>{ if(erCurrentRoom) window.open("professora.html#"+erCurrentRoom.id,"_blank"); });
+  vbErTeacherSync();
+})();
 document.getElementById("er-btn-final-restart").addEventListener("click",()=>{ document.getElementById("er-popup-final").classList.remove("visible"); if(erCurrentRoom) er_startRoom(erCurrentRoom.id); });
 document.getElementById("er-btn-final-hub").addEventListener("click",()=>{ document.getElementById("er-popup-final").classList.remove("visible"); erShowHub(); });
 document.getElementById("er-btn-timeup-restart").addEventListener("click",()=>{ document.getElementById("er-popup-timeup").classList.remove("visible"); if(erCurrentRoom) er_startRoom(erCurrentRoom.id); });
@@ -5256,6 +5262,39 @@ function er_mcRoom(data,idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
     });
     btn.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")btn.click();});
     AA.appendChild(btn);
+  });
+}
+
+/* ── Verdadeiro/Falso + código: a ordem das frases muda em cada jogo, por isso o código também ── */
+function er_tfCodeDoor(cfg){
+  const CE=cfg.CE, D=cfg.D, items=cfg.items.slice();
+  for(let j=items.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[items[j],items[k]]=[items[k],items[j]];}
+  const truePos=items.map((it,p)=>it.v?p+1:0).filter(Boolean);
+  const expected=String(truePos.length)+truePos.join("");
+  CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> ${cfg.intro} Depois escreve o <b>código</b>: (nº de verdadeiras)(nº de cada verdadeira, por ordem).</div>
+    <div class="er-field">${items.map((it,p)=>`<label class="er-choice"><input type="checkbox" id="tf_q${p}"/> <div><b>${p+1}.</b> ${it.t}</div></label>`).join("")}</div>
+    <div class="er-field"><label class="er-lbl-small" for="tf_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
+      <div class="er-row"><input id="tf_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="tf_check">Abrir porta</button></div>
+      <div id="tf_msg"></div></div>`;
+  document.getElementById("tf_check").addEventListener("click",()=>{
+    erAddTry(0);
+    const msg=document.getElementById("tf_msg");
+    const wrongN=items.filter((it,p)=>document.getElementById("tf_q"+p).checked!==it.v).length;
+    if(wrongN){
+      msg.innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Tens ${wrongN} frase${wrongN!==1?"s":""} mal marcada${wrongN!==1?"s":""}. Lê com atenção: algumas parecem verdadeiras mas são mitos.</div>`;
+      erSetFeedback("err","❌ Há frases mal marcadas."); erPlaySound("wrong"); return;
+    }
+    const digits=erNormalize(document.getElementById("tf_code").value).replace(/\D/g,"");
+    if(digits!==expected){
+      let fb="Os dígitos a seguir ao primeiro são os números das frases verdadeiras, por ordem crescente.";
+      if(!digits) fb="Falta escrever o código.";
+      else if(digits.length!==expected.length) fb=`O código tem ${digits.length} dígito${digits.length!==1?"s":""} — deve ter ${expected.length}.`;
+      else if(digits[0]!==expected[0]) fb="O 1.º dígito é quantas frases verdadeiras marcaste.";
+      msg.innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> ${fb}</div>`;
+      erSetFeedback("err","❌ Código incorreto."); erPlaySound("wrong"); return;
+    }
+    msg.innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Porta aberta! +${D[0].points} ⭐</div>`;
+    erLockPuzzle(CE); erSetFeedback("ok","✔ Porta 1 concluída."); erCompleteDoor(0);
   });
 }
 
@@ -5495,29 +5534,7 @@ function er_imsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
   }
   // EN language notice — puzzles are in Portuguese as language-learning context
   if(idx===0){
-    CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as afirmações <u>verdadeiras</u>. Depois escreve o <b>código de 3 dígitos</b>: (nº verdadeiras)(nº de cada verdadeira, em ordem).</div>
-      <div class="er-field">
-        <label class="er-choice"><input type="checkbox" id="d1_q1"/> <div><b>1.</b> Os meus dados pessoais (morada, escola, nº de telefone) pertencem-me e não devo partilhá-los com desconhecidos online.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q2"/> <div><b>2.</b> Posso usar a mesma palavra-passe em todos os sites porque é mais fácil de lembrar.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q3"/> <div><b>3.</b> Se alguém online me pedir uma foto pessoal, devo enviar — afinal é só uma imagem.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> Se receber uma mensagem estranha de um amigo a pedir dinheiro, devo confirmar por telefone antes de responder.</div></label>
-      </div>
-      <div class="er-field"><label class="er-lbl-small" for="d1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
-        <div id="d1_msg"></div></div>`;
-    document.getElementById("d1_check").addEventListener("click",()=>{
-      erAddTry(0);
-      const q1=document.getElementById("d1_q1").checked,q2=document.getElementById("d1_q2").checked,q3=document.getElementById("d1_q3").checked,q4=document.getElementById("d1_q4").checked;
-      const code=erNormalize(document.getElementById("d1_code").value);
-      if(!(q1&&!q2&&!q3&&q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Só as frases verdadeiras devem estar marcadas — lê cada uma com atenção.</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
-      if(code!=="214"){
-  const digits=code.replace(/\D/g,"");
-  let cfb="Código: (nº verdadeiras)(cada verdadeira).";
-  if(digits.length!==3) cfb=`O código tem ${digits.length} dígito${digits.length!==1?"s":""} — deve ter 3.`;
-  else if(digits[0]!=="2") cfb="O primeiro dígito não está certo. Conta quantas frases marcaste como verdadeiras.";
-  document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> ${cfb}</div>`;erSetFeedback("err","❌ Código não está certo.");erPlaySound("wrong");return;}
-      document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Porta aberta! +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
-    });
+    er_tfCodeDoor({CE,D,intro:"marca as afirmações <u>verdadeiras</u>.",items:[{t:"Os meus dados pessoais (morada, escola, nº de telefone) pertencem-me e não devo partilhá-los com desconhecidos online.",v:true},{t:"Posso usar a mesma palavra-passe em todos os sites porque é mais fácil de lembrar.",v:false},{t:"Se alguém online me pedir uma foto pessoal, devo enviar — afinal é só uma imagem.",v:false},{t:"Se receber uma mensagem estranha de um amigo a pedir dinheiro, devo confirmar por telefone antes de responder.",v:true}]});
   } else if(idx===1){
     CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as acções <u>corretas</u> face a ciberbullying. Cuidado — há opções que parecem certas mas não são!</div>
       <div class="er-field">
@@ -5589,24 +5606,7 @@ function er_aguaRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
     if(!nb){const n=document.createElement("div");n.className="er-en-notice";n.style.cssText="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:7px 11px;font-size:.74rem;color:#78350f;font-weight:600;margin-bottom:8px;";n.textContent="⚠️ The puzzle content below is in Portuguese — this is intentional for language learning. The hints are in Portuguese too.";CE.prepend(n);}
   }
   if(idx===0){
-    CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as afirmações <u>verdadeiras</u>. Depois escreve o <b>código</b>: (nº verdadeiras)(nº de cada verdadeira, em ordem).</div>
-      <div class="er-field">
-        <label class="er-choice"><input type="checkbox" id="d1_q1"/> <div><b>1.</b> Apenas 3% da água da Terra é doce — e grande parte está em glaciares inacessíveis.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q2"/> <div><b>2.</b> Uma torneira a pingar não representa grande desperdício — são apenas algumas gotas.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q3"/> <div><b>3.</b> Uma máquina de lavar a roupa a funcionar sempre com carga completa poupa mais água do que lavagens a meias.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> Um duche de 5 minutos usa menos água do que um banho de banheira completa.</div></label>
-      </div>
-      <div class="er-field"><label class="er-lbl-small" for="d1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
-        <div id="d1_msg"></div></div>`;
-    document.getElementById("d1_check").addEventListener("click",()=>{
-      erAddTry(0);
-      const q1=document.getElementById("d1_q1").checked,q2=document.getElementById("d1_q2").checked,q3=document.getElementById("d1_q3").checked,q4=document.getElementById("d1_q4").checked;
-      const code=erNormalize(document.getElementById("d1_code").value);
-      if(!(q1&&!q2&&q3&&q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Há pelo menos uma frase mal marcada. Cuidado com os mitos!</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
-      if(code!=="3134"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erSetFeedback("err","❌ Código não está certo.");erPlaySound("wrong");return;}
-      document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
-    });
+    er_tfCodeDoor({CE,D,intro:"marca as afirmações <u>verdadeiras</u>.",items:[{t:"Apenas 3% da água da Terra é doce — e grande parte está em glaciares inacessíveis.",v:true},{t:"Uma torneira a pingar não representa grande desperdício — são apenas algumas gotas.",v:false},{t:"Uma máquina de lavar a roupa a funcionar sempre com carga completa poupa mais água do que lavagens a meias.",v:true},{t:"Um duche de 5 minutos usa menos água do que um banho de banheira completa.",v:true}]});
   } else if(idx===1){
     CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as acções que <u>realmente</u> poupam água. Cuidado — algumas parecem poupar mas não tanto quanto pensas!</div>
       <div class="er-field">
@@ -5667,24 +5667,7 @@ function er_arRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
     if(!nb){const n=document.createElement("div");n.className="er-en-notice";n.style.cssText="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:7px 11px;font-size:.74rem;color:#78350f;font-weight:600;margin-bottom:8px;";n.textContent="⚠️ The puzzle content below is in Portuguese — this is intentional for language learning. The hints are in Portuguese too.";CE.prepend(n);}
   }
   if(idx===0){
-    CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as afirmações <u>verdadeiras</u> sobre qualidade do ar. Código: (nº verdadeiras)(nº 1.ª verdadeira)(nº 2.ª verdadeira).</div>
-      <div class="er-field">
-        <label class="er-choice"><input type="checkbox" id="d1_q1"/> <div><b>1.</b> Ventilar uma sala de aula durante 10 minutos reduz o CO₂ acumulado e melhora a concentração.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q2"/> <div><b>2.</b> Os carros elétricos não produzem qualquer impacto ambiental — são 100% limpos.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q3"/> <div><b>3.</b> Fazer 5 km de bicicleta (ida e volta) em vez de carro poupa cerca de 1 kg de CO₂.</div></label>
-        <label class="er-choice"><input type="checkbox" id="d1_q4"/> <div><b>4.</b> O ozono junto ao solo e o ozono na estratosfera têm exatamente o mesmo efeito na nossa saúde.</div></label>
-      </div>
-      <div class="er-field"><label class="er-lbl-small" for="d1_code">Código</label>
-        <div class="er-row"><input id="d1_code" inputmode="numeric" placeholder="Só números" style="max-width:120px;"/><button class="btn sm" id="d1_check">Abrir porta</button></div>
-        <div id="d1_msg"></div></div>`;
-    document.getElementById("d1_check").addEventListener("click",()=>{
-      erAddTry(0);
-      const q1=document.getElementById("d1_q1").checked,q2=document.getElementById("d1_q2").checked,q3=document.getElementById("d1_q3").checked,q4=document.getElementById("d1_q4").checked;
-      const code=erNormalize(document.getElementById("d1_code").value);
-      if(!(q1&&!q2&&q3&&!q4)){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Cuidado — nem todos os factos populares são verdadeiros!</div>`;erPlaySound("wrong");return;}
-      if(code!=="213"){document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erPlaySound("wrong");return;}
-      document.getElementById("d1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
-    });
+    er_tfCodeDoor({CE,D,intro:"marca as afirmações <u>verdadeiras</u> sobre qualidade do ar.",items:[{t:"Ventilar uma sala de aula durante 10 minutos reduz o CO₂ acumulado e melhora a concentração.",v:true},{t:"Os carros elétricos não produzem qualquer impacto ambiental — são 100% limpos.",v:false},{t:"Fazer 5 km de bicicleta (ida e volta) em vez de carro poupa cerca de 1 kg de CO₂.",v:true},{t:"O ozono junto ao solo e o ozono na estratosfera têm exatamente o mesmo efeito na nossa saúde.",v:false}]});
   } else if(idx===1){
     CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as acções que <u>realmente</u> melhoram a qualidade do ar. Cuidado — algumas parecem ajudar mas têm impacto contrário!</div>
       <div class="er-field">
@@ -5826,24 +5809,67 @@ function er_radioDoor(doorN,question,options,correct,D,dIdx,addTry,erCompleteDoo
 /* ── HELPER: Checkboxes exactly-N door ── */
 function er_checkboxes3Door(doorN,instruction,items,correctIdxs,D,addTry,erCompleteDoor,setFeedback,playSound,CE){
   const i=doorN-1;
+  const order=items.map((_,k)=>k);
+  for(let a=order.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[order[a],order[b]]=[order[b],order[a]];}
+  const need=correctIdxs.length;
   CE.innerHTML=`<div class="er-mini"><b>Desafio final:</b> ${instruction}</div>
-    <div class="er-field">${items.map((it,ii)=>`<label class="er-choice"><input type="checkbox" id="cb${ii}"/> <div><b>${ii+1}.</b> ${it}</div></label>`).join("")}</div>
-    <div class="er-row"><button class="btn sm" id="cb_check">Concluir</button></div><div id="cb_msg"></div>`;
-  document.getElementById("cb_check").addEventListener("click",()=>{
+    <div class="er-field">${order.map((o,p)=>`<label class="er-choice"><input type="checkbox" id="cb3_${p}"/> <div><b>${p+1}.</b> ${items[o]}</div></label>`).join("")}</div>
+    <div class="er-row"><button class="btn sm" id="cb3_check">Concluir</button></div><div id="cb3_msg"></div>`;
+  document.getElementById("cb3_check").addEventListener("click",()=>{
     erAddTry(i);
-    const picked=items.map((_,ii)=>document.getElementById("cb"+ii).checked);
-    const ok=picked.every((_,ii)=>picked[ii]===correctIdxs.includes(ii));
-    if(!ok){document.getElementById("cb_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Escolhe exactamente 3 regras certas.</div>`;erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");return;}
-    document.getElementById("cb_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Concluído!</b> +${D[i].points} ⭐</div>`;
-    // Lock inputs and button
-    CE.querySelectorAll("input[type=checkbox]").forEach(c=>{c.disabled=true;});
-    CE.querySelectorAll(".er-choice").forEach(l=>l.classList.add("answered"));
-    document.getElementById("cb_check").classList.add("answered");
-    erLockPuzzle(CE);erSetFeedback("ok",`✔ Porta ${doorN} concluída.`);erCompleteDoor(i);
+    const picked=order.map((o,p)=>document.getElementById("cb3_"+p).checked);
+    const n=picked.filter(Boolean).length;
+    const msg=document.getElementById("cb3_msg");
+    if(n!==need){ msg.innerHTML=`<div class="er-msgbox err"><b>❌ Escolhe exatamente ${need}.</b> Tens ${n} marcada${n!==1?"s":""}.</div>`; erPlaySound("wrong"); return; }
+    const wrong=picked.filter((v,p)=>v!==correctIdxs.includes(order[p])).length/2;
+    if(wrong>0){
+      msg.innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Tens ${wrong} escolha${wrong!==1?"s":""} por trocar. Pensa em qual é o efeito de cada uma.</div>`;
+      erSetFeedback("err","❌ Tenta outra vez."); erPlaySound("wrong"); return;
+    }
+    msg.innerHTML=`<div class="er-msgbox ok"><b>✅ Concluído!</b> +${D[i].points} ⭐</div>`;
+    erLockPuzzle(CE); erSetFeedback("ok",`✔ Porta ${doorN} concluída.`); erCompleteDoor(i);
   });
 }
 
 /* ── HELPER: Resposta livre ── */
+/* Conceitos aceites na resposta livre (sem acentos, minúsculas). Cada conceito conta uma vez, mesmo que o aluno o repita. */
+const ER_LIVRE={
+  agua:[["fechar a torneira",["torneira","fechar","escov","lavar os dentes","lavar dentes"]],
+    ["duches curtos",["duche","banho","chuveiro","banheira"]],
+    ["reparar fugas",["fuga","reparar","pingar","vazamento","autoclismo","cisterna","descarga","canos"]],
+    ["regar com cuidado",["regar","rega ","regue","jardim","mangueira","horta","plantas"]],
+    ["reutilizar ou recolher água",["reutiliz","chuva","balde","recolher","apanhar","aproveitar"]],
+    ["máquinas com carga cheia",["maquina","louca","carga","programa eco","eletrodomestico"]],
+    ["não desperdiçar",["poupar","desperdi","gastar menos","consumo"]]],
+  ar:[["andar a pé ou de bicicleta",[" a pe ","bicicleta","bici ","caminh","pedonal","trotinete","patins"]],
+    ["transportes públicos ou partilhar carro",["transporte","publico","comboio","autocarro","metro","boleia","partilh","carpool"]],
+    ["plantar árvores",["arvore","planta","floresta","jardim","espacos verdes"]],
+    ["poupar energia",["energia","luz","desligar","lampada","standby"]],
+    ["não queimar nem fumar",["queim","fumo","tabaco","lareira","fogueira","cigarro","fumar"]],
+    ["ventilar e arejar",["janela","ventil","arejar"]],
+    ["reciclar e reduzir resíduos",["reciclar","residuo","lixo","reduzir"]],
+    ["carros menos poluentes",["carro eletrico","veiculo eletrico","hibrido","menos o carro","menos carro","usar menos carro"]],
+    ["reduzir a poluição",["poluic","emiss","aquecimento","gases"]]]
+};
+function er_lev(a,b){ if(Math.abs(a.length-b.length)>2) return 9; const m=[]; for(let i=0;i<=a.length;i++){m[i]=[i];} for(let j=1;j<=b.length;j++) m[0][j]=j;
+  for(let i=1;i<=a.length;i++) for(let j=1;j<=b.length;j++) m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return m[a.length][b.length]; }
+function er_livreConcepts(roomId,raw){
+  const groups=ER_LIVRE[roomId]; if(!groups) return null;
+  const txt=" "+erNormalize(raw).toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ")+" ";
+  const tokens=txt.trim().split(" ").filter(Boolean);
+  const hit=[];
+  groups.forEach(([label,kws])=>{
+    const ok=kws.some(k=>{
+      if(txt.includes(k)) return true;
+      const w=k.trim(); if(w.length<5||w.includes(" ")) return false;
+      const tol=w.length>=9?2:1;
+      return tokens.some(t=>t.length>=4&&er_lev(t.slice(0,w.length+1),w)<=tol);
+    });
+    if(ok) hit.push(label);
+  });
+  return hit;
+}
 function er_livreDoor(doorN,instr,placeholder,D,addTry,erCompleteDoor,setFeedback,playSound,CE){
   const i=doorN-1;
   CE.innerHTML=`<div class="er-mini"><b>💬 Desafio final:</b> ${instr}<br><span style="color:var(--muted);font-size:.78rem;">Escreve cada prática numa linha ou separadas por vírgula. 3 práticas diferentes.</span></div>
@@ -5854,18 +5880,17 @@ function er_livreDoor(doorN,instr,placeholder,D,addTry,erCompleteDoor,setFeedbac
   document.getElementById("livre_check").addEventListener("click",()=>{
     erAddTry(i);
     const raw=(document.getElementById("livre_in").value||"");
-    const KW={agua:/torneira|duche|banho|fuga|reg(a|ar|ue)|reutiliz|louca|maquina|lavar|balde|poupar|fechar|reparar|chuva|jardim|escov|carga|autoclismo|descarga|cisterna|mangueira|pingar|reciclar/,
-      ar:/\ba pe\b|bicicleta|bici|arvore|planta|transporte|publico|comboio|autocarro|partilh|carro|boleia|janela|ventil|queim|energia|eletric|fumo|tabaco|reciclar|pedonal|caminh|residuos|lareira|aquecimento|poluic|trotinete/};
-    const all=[...new Set(raw.split(/[\n,;]/).map(s=>s.trim()).filter(s=>s.length>=4))];
-    const _kw=KW[erCurrentRoom.id];
-    const items=_kw?all.filter(s=>_kw.test(erNormalize(s).toLowerCase())):all;
-    const _bad=all.length-items.length;
-    if(items.length<3){
-      const found=items.length;
-      document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Só ${found} prática${found!==1?"s":""} válida${found!==1?"s":""}.</b> Escreve 3 práticas diferentes e concretas${_bad?` (não reconheci ${_bad} — usa ações reais do dia a dia)`:""}.</div>`;
-      erPlaySound("wrong");return;
+    const found=er_livreConcepts(erCurrentRoom.id,raw);
+    if(found===null){
+      const all=[...new Set(raw.split(/[\n,;]/).map(s=>s.trim()).filter(s=>s.length>=4))];
+      if(all.length<3){ document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Só ${all.length} prática${all.length!==1?"s":""}.</b> Escreve 3 práticas diferentes.</div>`; erPlaySound("wrong"); return; }
+    } else if(found.length<3){
+      const n=found.length;
+      document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Reconheci ${n} prática${n!==1?"s":""} diferente${n!==1?"s":""}${n?` (${found.join(", ")})`:""}.</b> Faltam ${3-n}. Escreve ações concretas do dia a dia, cada uma diferente das outras.</div>`;
+      erPlaySound("wrong"); return;
     }
-    document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Muito bem!</b> Registaste ${items.length} boas práticas. +${D[i].points} ⭐</div>`;
+    const items=found||[1,2,3];
+    document.getElementById("livre_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Muito bem!</b> Registaste ${items.length>=3?items.length:3} boas práticas. +${D[i].points} ⭐</div>`;
     const el=document.getElementById("livre_in"); if(el) el.disabled=true;
     document.getElementById("livre_check").classList.add("answered");
     erLockPuzzle(CE);erSetFeedback("ok",`✔ Porta ${doorN} concluída.`);erCompleteDoor(i);
@@ -5982,26 +6007,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
     if(!nb){const n=document.createElement("div");n.className="er-en-notice";n.style.cssText="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:7px 11px;font-size:.74rem;color:#78350f;font-weight:600;margin-bottom:8px;";n.textContent="⚠️ The puzzle content below is in Portuguese — this is intentional for language learning. The hints are in Portuguese too.";CE.prepend(n);}
   }
   if(idx===0){
-    // True/False + code (like IMS room 1)
-    CE.innerHTML=`<div class="er-mini"><b>Instruções:</b> marca as afirmações <u>verdadeiras</u>. Cuidado — algumas afirmações parecem certas mas são mitos! Código: (nº verdadeiras)(cada verdadeira).</div>
-      <div class="er-field">
-        <label class="er-choice"><input type="checkbox" id="fn1_q1"/> <div><b>1.</b> Uma notícia com foto realista é sempre verdadeira — fotos não mentem.</div></label>
-        <label class="er-choice"><input type="checkbox" id="fn1_q2"/> <div><b>2.</b> A desinformação pode ser espalhada mesmo por pessoas bem-intencionadas que não verificaram a fonte.</div></label>
-        <label class="er-choice"><input type="checkbox" id="fn1_q3"/> <div><b>3.</b> Ler apenas o título de uma notícia antes de partilhar é suficiente para saber se é verdadeira.</div></label>
-        <label class="er-choice"><input type="checkbox" id="fn1_q4"/> <div><b>4.</b> O facto-checking (verificação de factos) por organizações independentes é uma das melhores ferramentas contra desinformação.</div></label>
-      </div>
-      <div class="er-field"><label class="er-lbl-small" for="fn1_code">Código <span style="color:var(--muted);font-weight:400">(nº verdadeiras)(cada verdadeira)</span></label>
-        <div class="er-row"><input id="fn1_code" inputmode="numeric" placeholder="Ex: 213" style="max-width:120px;"/><button class="btn sm" id="fn1_check">Abrir sala</button></div>
-        <div id="fn1_msg"></div></div>`;
-    document.getElementById("fn1_check").addEventListener("click",()=>{
-      erAddTry(0);
-      const q1=document.getElementById("fn1_q1").checked,q2=document.getElementById("fn1_q2").checked,q3=document.getElementById("fn1_q3").checked,q4=document.getElementById("fn1_q4").checked;
-      const code=erNormalize(document.getElementById("fn1_code").value);
-      // True: q2 and q4 (NOT q1 - photos can be fake; NOT q3 - title not enough)
-      if(!(!q1&&q2&&!q3&&q4)){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Há pelo menos uma frase mal marcada. Lê cada uma com atenção.</div>`;erSetFeedback("err","❌ Há uma frase mal marcada.");erPlaySound("wrong");return;}
-      if(code!=="224"){document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Código errado.</b> Confirma as instruções e tenta outra vez.</div>`;erSetFeedback("err","❌ Código incorreto.");erPlaySound("wrong");return;}
-      document.getElementById("fn1_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Certo!</b> Porta aberta! +${D[0].points} ⭐</div>`;erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 1 concluída.");erCompleteDoor(0);
-    });
+    er_tfCodeDoor({CE,D,intro:"marca as afirmações <u>verdadeiras</u>.",items:[{t:"Uma notícia com foto realista é sempre verdadeira — fotos não mentem.",v:false},{t:"A desinformação pode ser espalhada mesmo por pessoas bem-intencionadas que não verificaram a fonte.",v:true},{t:"Ler apenas o título de uma notícia antes de partilhar é suficiente para saber se é verdadeira.",v:false},{t:"O facto-checking (verificação de factos) por organizações independentes é uma das melhores ferramentas contra desinformação.",v:true}]});
   } else if(idx===1){
     // Anagram: DESINFORMACAO
     er_anagramaDoor(2,"D E S I N F O R M A C A O","DESINFORMACAO","informação falsa criada intencionalmente para enganar — combina DES + INFORMAÇÃO",CE,addTry,erCompleteDoor,D,setFeedback,playSound);
@@ -6023,7 +6029,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Correto!</b> Maiúsculas, emojis excessivos, "ninguém quer que saibas" — todos sinais de clickbait! +${D[2].points} ⭐</div>`;
         erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 3 concluída.");erCompleteDoor(2);
       } else {
-        document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Não é esse.</b> Lê os títulos outra vez e tenta de novo.</div>`;
+        document.getElementById("cbt_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Não é esse.</b> Procura o que usa linguagem exagerada, alarme e emojis em excesso.</div>`;
         erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");
       }
     });
@@ -6069,7 +6075,7 @@ function er_fakenewsRoom(idx,CE,addTry,erCompleteDoor,S,setFeedback,playSound){
         document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox ok"><b>✅ Perfeito detetive!</b> Urgência + sem fonte + afirmação impossível = desinformação clássica! +${D[5].points} ⭐</div>`;
         erLockPuzzle(CE);erSetFeedback("ok","✔ Porta 6 concluída.");erCompleteDoor(5);
       } else {
-        document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Confirma que marcaste exatamente 3 sinais de alerta.</div>`;
+        document.getElementById("wa_msg").innerHTML=`<div class="er-msgbox err"><b>❌ Ainda não.</b> Procura os 3 sinais que provam que a mensagem não é de confiança.</div>`;
         erSetFeedback("err","❌ Tenta outra vez.");erPlaySound("wrong");
       }
     });

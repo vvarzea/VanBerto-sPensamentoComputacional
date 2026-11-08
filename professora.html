@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Área da Professora · VanBerto's</title>
+<style>
+:root{--ink:#1e1b4b;--muted:#64748b;--bg:#fff8eb;--card:#fff;--line:#e2e8f0;--acc:#6366f1;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+@media(prefers-color-scheme:dark){:root{--ink:#e2e8f0;--muted:#94a3b8;--bg:#0f172a;--card:#1e293b;--line:#334155;--acc:#818cf8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Segoe UI",system-ui,sans-serif;line-height:1.5;padding:max(14px,env(safe-area-inset-top)) 14px 40px}
+main{max-width:980px;margin:0 auto}h1{font-size:1.6rem;margin:6px 0}h2{font-size:1.15rem;margin:0 0 8px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin:14px 0;box-shadow:0 4px 0 var(--ink)}
+.muted{color:var(--muted);font-size:.85rem}.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:#fde047;color:#1e1b4b;border-radius:999px;padding:8px 16px;cursor:pointer}
+.btn.sec{background:var(--card);color:var(--ink)}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;white-space:nowrap}th{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.ok{color:var(--ok);font-weight:800}.warn{color:var(--warn);font-weight:800}.bad{color:var(--bad);font-weight:800}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:800}
+textarea{width:100%;min-height:70px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px;font:inherit}
+.alert{background:#fef3c7;color:#78350f;border:1px solid #f59e0b;border-radius:12px;padding:8px 12px;font-size:.85rem}
+</style></head><body><main>
+<h1>👩‍🏫 Área da Professora</h1>
+<p class="muted">Notas das Escape Rooms e resultados da turma. Os resultados ficam <b>só neste computador</b>: os ficheiros dos alunos são lidos aqui, no browser, e não são enviados para lado nenhum.</p>
+<div class="alert">Para as respostas não ficarem ao alcance dos alunos, <b>não publiques esta página no mesmo site do jogo</b>: guarda-a no teu computador e abre-a daí.</div>
+
+<section class="card"><h2>📥 Resultados da turma</h2>
+<p class="muted">Pede aos alunos que carreguem em <b>📤 Enviar à professora</b> (no fim da sala ou no menu das Escape Rooms) e recebe os ficheiros <code>resultados-nome.json</code> por e-mail, Teams, etc. Escolhe-os todos de uma vez.</p>
+<div class="row"><input type="file" id="files" accept=".json,application/json" multiple>
+<button class="btn sec" id="paste-toggle">Colar texto</button><button class="btn sec" id="clear">Limpar</button><button class="btn" id="csv" disabled>⬇️ Exportar CSV</button></div>
+<div id="paste" hidden style="margin-top:8px"><textarea id="paste-ta" placeholder='Cola aqui o conteúdo de um ficheiro de resultados'></textarea><button class="btn sec" id="paste-add" style="margin-top:6px">Adicionar</button></div>
+<div id="msg" class="muted" style="margin-top:8px"></div>
+<div id="dash"></div></section>
+
+<section class="card"><h2>📋 Notas por sala</h2><div id="notes"></div></section>
+
+<section class="card"><h2>⚙️ Neste dispositivo</h2>
+<label class="row"><input type="checkbox" id="tmode"> <span>Mostrar o botão <b>Notas professora</b> dentro das Escape Rooms</span></label>
+<p class="muted">Só funciona se esta página estiver no mesmo site do jogo. Em equipamentos de alunos deixa desligado.</p></section>
+</main>
+<script>
+const ROOMS=[{"id": "ims", "title": "Internet Mais Segura", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e, por isso, o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: dados pessoais não se partilham com desconhecidos; confirmar por telefone mensagens estranhas de amigos. Falsas: a mesma palavra-passe em todo o lado (perigoso); enviar fotos a quem não se conhece.<br>\n<b>Porta 2<\/b> — Corretas: <b>2, 3, 5, 6<\/b> (apoiar em privado, guardar provas, bloquear, avisar adulto). Erradas: 1 (ignorar não é solução) e 4 (comentar publicamente pode escalar o conflito).<br>\n<b>Porta 3<\/b> — Ordem: Parar → Apoiar vítima em privado → Guardar provas → Bloquear/denunciar → Avisar adulto.<br>\n<b>Porta 4<\/b> — Anagrama: <b>CIBERCONDUTA<\/b> (12 letras).<br>\n<b>Porta 5<\/b> — Resposta: <b>Xk#9!mPq3@Lr<\/b> (aleatória, longa, sem palavras reais). Erradas: Portugal2024 (palavra+ano fácil de adivinhar), 12345678! (sequência numérica), pedro1234! (nome próprio+números previsível).<br>\n<b>Porta 6<\/b> — Resposta: <b>ir ao site oficial<\/b> (apagar o email e ir diretamente ao site oficial do banco sem usar o link). A urgência falsa é a técnica central do phishing — nunca clicar em links de emails suspeitos.<br>\n<b>Porta 7<\/b> — Anagrama: <b>IDENTIDADE DIGITAL<\/b> (2 palavras, 17 letras sem acentos).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (tratar com respeito, não partilhar dados pessoais, pedir ajuda a adulto/professor)."}, {"id": "agua", "title": "A Aventura da Água", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: só 3% da água é doce; máquina sempre com carga completa poupa água; duche de 5 min gasta menos que um banho. Falsa: uma torneira a pingar desperdiça ~5500 L/ano.<br>\n<b>Porta 2<\/b> — Corretas: 1, 3, 4, 6. Erradas: 2 (banheira usa ~120L vs duche 5min=40L), 5 (torneira aberta ao ensaboar desperdiça ~8L).<br>\n<b>Porta 3<\/b> — Ordem: Evaporação → Condensação → Precipitação → Infiltração.<br>\n<b>Porta 4<\/b> — Anagrama: <b>PRECIPITACAO<\/b>.<br>\n<b>Porta 5<\/b> — Resposta: duche de 4 min (duche 4min×4pessoas×7dias + lava-loiças 1x/dia = ~980L/semana, o mais eficiente).<br>\n<b>Porta 6<\/b> — Resposta: avisar adulto e fechar a torneira se for seguro.<br>\n<b>Porta 7<\/b> — Anagrama: <b>AGUA POTAVEL<\/b>.<br>\n<b>Porta 8<\/b> — Resposta livre: ≥ 3 práticas de poupança de água."}, {"id": "ar", "title": "A Aventura do Ar", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: ventilar 10 min reduz o CO₂; 5 km de bicicleta em vez de carro poupam cerca de 1 kg de CO₂. Falsas: carros elétricos não são 100% limpos (impacto na produção de energia); o ozono estratosférico protege-nos, o do solo faz mal.<br>\n<b>Porta 2<\/b> — Corretas: 1, 2, 4, 6. Erradas: 3 (velas produzem partículas finas), 5 (hora de ponta = mais poluição).<br>\n<b>Porta 3<\/b> — Resposta: <b>muitas pessoas sem ventilação<\/b> (muitas pessoas sem ventilação — acumulação de CO₂ e humidade).<br>\n<b>Porta 4<\/b> — Anagrama: <b>POLUICAO<\/b> (8 letras, sem acento).<br>\n<b>Porta 5<\/b> — Resposta: comboio (15×2×5×14g = 2.100g = 2,1kg CO₂/semana).<br>\n<b>Porta 6<\/b> — Resposta: abrir janelas + avisar adulto.<br>\n<b>Porta 7<\/b> — Anagrama: <b>AR LIMPO<\/b>.<br>\n<b>Porta 8<\/b> — Resposta livre: ≥ 3 boas práticas (mínimo 4 caracteres cada) para proteger o ar."}, {"id": "malware", "title": "Caçadores de Malware", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — Anagrama: <b>RANSOMWARE<\/b> (10 letras, palavra em inglês).<br>\n<b>Porta 2<\/b> — Corretas: <b>1, 3, 5<\/b> (infecta ficheiros, multiplica-se ao executar, precisa de hospedeiro). Erradas: 2 (espalha-se também pela internet), 4 (antivírus desligado é mais vulnerável), 6 (não se apaga sozinho).<br>\n<b>Porta 3<\/b> — Ordem: Entra pelo sistema → Copia-se para memória → Propaga-se pela rede → Causa danos.<br>\n<b>Porta 4<\/b> — Anagrama: <b>ENGENHARIA SOCIAL<\/b> (2 palavras, 16 letras).<br>\n<b>Porta 5<\/b> — Ligações corretas: Spyware↔espia o que fazes, Keylogger↔regista teclas, Adware↔mostra anúncios, Rootkit↔esconde-se no sistema e dá acesso ao atacante.<br>\n<b>Porta 6<\/b> — Resposta: <b>RESGATE<\/b> (tradução de \"ransom\" — o que os criminosos exigem para devolver os ficheiros).<br>\n<b>Porta 7<\/b> — 4 sinais de phishing: <b>1<\/b> (domínio .xyz suspeito), <b>3<\/b> (urgência: \"24h\", \"URGENTE\"), <b>5<\/b> (erros ortográficos: \"supeita\", \"daods\"), <b>6<\/b> (pedido de dados pessoais via link).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (antivírus atualizado, não clicar em links suspeitos, fazer backups regulares)."}, {"id": "fakenews", "title": "Caçadores de Fake News", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: a desinformação também é espalhada por quem tem boas intenções; o fact-checking independente é uma das melhores ferramentas. Falsas: «fotos não mentem» (há manipulação e deepfakes); «o título chega» (nunca chega para verificar).<br>\n<b>Porta 2<\/b> — Anagrama: <b>DESINFORMACAO<\/b> (13 letras, sem acentos).<br>\n<b>Porta 3<\/b> — Clickbait: o título <b>alarmista<\/b> (maiúsculas, emojis excessivos, linguagem alarmante sem fonte).<br>\n<b>Porta 4<\/b> — Ordem: Parar → Verificar quem publicou → Comparar com outras fontes → Só partilhar com certeza.<br>\n<b>Porta 5<\/b> — Ligações: Urgência extrema↔manipulação, Sem fonte/autor↔informação inventada, Erros ortográficos↔não revisto, Emojis/maiúsculas↔clickbait.<br>\n<b>Porta 6<\/b> — 3 sinais corretos: <b>1<\/b> (urgência extrema), <b>3<\/b> (sem fonte/data/autor), <b>5<\/b> (afirmação chocante impossível de verificar). Errados: 2 (estar em WhatsApp não é sinal) e 4 (emojis de limão não são sinal).<br>\n<b>Porta 7<\/b> — Resposta: <b>não partilhar<\/b> (e procurar em fontes oficiais e verificar se é deepfake).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (verificar a fonte, comparar com outros sites confiáveis, falar com adulto quando há dúvidas)."}];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* notas */
+$("notes").innerHTML=ROOMS.map(r=>`<details id="room-${esc(r.id)}"><summary>${esc(r.title)}</summary><div style="margin-top:8px">${r.notes}</div></details>`).join("");
+function openHash(){const h=(location.hash||"").slice(1),d=h&&$("room-"+h);if(d){d.open=true;d.scrollIntoView();}}
+addEventListener("hashchange",openHash);openHash();
+/* modo professora */
+try{$("tmode").checked=localStorage.getItem("vb_teacher_mode")==="1";}catch(e){}
+$("tmode").onchange=e=>{try{localStorage.setItem("vb_teacher_mode",e.target.checked?"1":"0");}catch(x){}};
+/* painel da turma */
+let students=[];
+function add(obj,src){
+  if(!obj||obj.kind!=="vb-results"||!obj.rooms) throw new Error((src||"ficheiro")+": não é um ficheiro de resultados do VanBerto's");
+  const key=String(obj.name||"Aluno").trim().toLowerCase();
+  const i=students.findIndex(s=>s.key===key);
+  const rec={key,name:String(obj.name||"Aluno"),at:obj.exportedAt||"",rooms:obj.rooms,levels:obj.levels||{}};
+  if(i>=0){ if((rec.at||"")>=(students[i].at||"")) students[i]=rec; } else students.push(rec);
+}
+async function readFiles(list){
+  const errs=[];
+  for(const f of list){ try{ add(JSON.parse(await f.text()),f.name); }catch(e){ errs.push(e.message||String(e)); } }
+  render(errs);
+}
+$("files").onchange=e=>readFiles([...e.target.files]);
+$("paste-toggle").onclick=()=>{$("paste").hidden=!$("paste").hidden;};
+$("paste-add").onclick=()=>{const errs=[];try{add(JSON.parse($("paste-ta").value),"texto colado");$("paste-ta").value="";}catch(e){errs.push("Texto inválido");}render(errs);};
+$("clear").onclick=()=>{students=[];$("files").value="";render([]);};
+function roomIds(){const s=new Set();students.forEach(st=>Object.keys(st.rooms).forEach(k=>s.add(k)));return [...s];}
+function titleOf(id){for(const st of students){if(st.rooms[id])return st.rooms[id].title;}return id;}
+function cell(r){
+  if(!r) return '<span class="muted">—</span>';
+  const done=(r.completed||[]).filter(Boolean).length,n=(r.doors||[]).length,t=(r.tries||[]).reduce((a,b)=>a+(b||0),0);
+  const pct=r.max?Math.round(r.score/r.max*100):0;
+  return r.finished?`<span class="${pct>=90?"ok":pct>=65?"warn":"bad"}">✅ ${r.score}/${r.max}</span> <span class="muted">· ${t} tent.</span>`:`<span class="warn">${done}/${n} portas</span> <span class="muted">· ${t} tent.</span>`;
+}
+function doorStats(id){
+  const out=[];let doors=null;
+  students.forEach(st=>{const r=st.rooms[id];if(r&&r.doors&&!doors)doors=r.doors;});
+  if(!doors) return out;
+  doors.forEach((d,i)=>{let n=0,sum=0,hard=0;
+    students.forEach(st=>{const r=st.rooms[id];if(r&&r.completed&&r.completed[i]){n++;const t=r.tries[i]||0;sum+=t;if(t>=3)hard++;}});
+    out.push({title:String(d.t||"Porta "+(i+1)),n,avg:n?sum/n:0,hard});
+  });
+  return out;
+}
+function render(errs){
+  $("msg").innerHTML=errs.length?errs.map(e=>`<span class="bad">${esc(e)}</span>`).join("<br>"):(students.length?`${students.length} aluno${students.length!==1?"s":""} carregado${students.length!==1?"s":""}.`:"");
+  $("csv").disabled=!students.length;
+  if(!students.length){$("dash").innerHTML="";return;}
+  const ids=roomIds();
+  let h=`<h2 style="margin-top:14px">Alunos × salas</h2><div class="scroll"><table><thead><tr><th>Aluno</th>${ids.map(i=>`<th>${esc(titleOf(i))}</th>`).join("")}</tr></thead><tbody>`+
+    students.slice().sort((a,b)=>a.name.localeCompare(b.name,"pt")).map(st=>`<tr><td><b>${esc(st.name)}</b></td>${ids.map(i=>`<td>${cell(st.rooms[i])}</td>`).join("")}</tr>`).join("")+`</tbody></table></div>`;
+  ids.forEach(id=>{const ds=doorStats(id);if(!ds.length)return;const maxAvg=Math.max(...ds.map(d=>d.avg));
+    h+=`<h2 style="margin-top:16px">${esc(titleOf(id))} — onde sentiram mais dificuldade</h2><div class="scroll"><table><thead><tr><th>Porta</th><th>Concluída por</th><th>Tentativas (média)</th><th>≥ 3 tentativas</th></tr></thead><tbody>`+
+    ds.map(d=>`<tr><td>${esc(d.title)}</td><td>${d.n}</td><td class="${d.avg===maxAvg&&d.avg>1.5?"bad":""}">${d.n?d.avg.toFixed(1):"—"}</td><td>${d.hard}${d.n?` (${Math.round(d.hard/d.n*100)}%)`:""}</td></tr>`).join("")+`</tbody></table></div>`;});
+  $("dash").innerHTML=h;
+}
+$("csv").onclick=()=>{
+  const ids=roomIds(),L=[["Aluno",...ids.flatMap(i=>[titleOf(i)+" (pontos)",titleOf(i)+" (tentativas)",titleOf(i)+" (concluída)"])].join(";")];
+  students.forEach(st=>L.push([st.name,...ids.flatMap(i=>{const r=st.rooms[i];return r?[r.score+"/"+r.max,(r.tries||[]).reduce((a,b)=>a+(b||0),0),r.finished?"sim":"não"]:["","",""];})].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")));
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+L.join("\n")],{type:"text/csv;charset=utf-8"}));a.download="turma-escape-rooms.csv";a.click();
+};
+</script></body></html>
