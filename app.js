@@ -2112,7 +2112,7 @@ function animateCards(screen){
 
 /* ============================= GAME STATE ============================= */
 let currentCycleKey=null,currentThemeKey=null,currentCycle=null,currentTheme=null,currentLevelIndex=0;
-let levelState=null,dir=0,carriedItem=false,moveCount=0;
+let levelState=null,dir=0,carriedItem=false,carriedEmoji="📦",carryJustPicked=false,moveCount=0;
 let runningQueue=false,queuedCommands=[],groupStack=[];
 let currentMinMoves=null,shouldDanceOnRender=false;
 let stuckMoves=0,lastItemCount=0;
@@ -2410,7 +2410,7 @@ function loadLevel(index){
   currentLevelIndex=index;
   const base=levels[index];
   levelState=buildLevelState(base);
-  dir=0;carriedItem=false;moveCount=0; if(window.vbTrailSync) window.vbTrailSync();
+  dir=0;carriedItem=false;carryJustPicked=false;moveCount=0; if(window.vbTrailSync) window.vbTrailSync();
   updateMoves();runningQueue=false;resetQueue();
   escapeAllDeposited=false;escapeQuizOpen=false;
   const popupEscape=$("popup-escape-quiz"); if(popupEscape) popupEscape.classList.remove("visible");
@@ -2682,7 +2682,7 @@ function renderGrid(){
         cell.classList.add("robot-cell");
         if(carriedItem) cell.classList.add("robot-carrying");
         const angle=dir*90;
-        const carryBadge=carriedItem?`<span class="carry-badge">📦</span>`:"";
+        const carryBadge=carriedItem?`<span class="carry-badge${carryJustPicked?" carry-pop":""}">${carriedEmoji}</span>`:"";
         const itemUnder=cell.dataset.itemEmoji?`<span class="item-under">${cell.dataset.itemEmoji.replace(/<[^>]*>/g,'').trim()}</span>`:"";
         const itemEmojiRaw=itemAt?(currentTheme.itemEmojis||[])[itemAt.emojiIndex%(((currentTheme.itemEmojis||[]).length)||1)]||"📦":"";
         cell.style.setProperty("--rot",rotInit+"deg");
@@ -3115,19 +3115,36 @@ function fxBurst(list){
     }
   },140);
 }
+/* O objeto voa da cabeça do robô para dentro do portal (elemento fixo: sobrevive ao renderGrid) */
+function fxDepositFly(emoji){
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const cell=document.querySelector(".robot-cell"); if(!cell) return;
+  const badge=cell.querySelector(".carry-badge"), cr=cell.getBoundingClientRect();
+  const br=badge?badge.getBoundingClientRect():cr;
+  const sx=br.left+br.width/2, sy=br.top+br.height/2;
+  const tx=cr.left+cr.width/2, ty=cr.top+cr.height*0.55;
+  const g=document.createElement("span"); g.className="fx-fly"; g.textContent=emoji;
+  g.style.cssText="left:"+sx+"px;top:"+sy+"px;--fx:"+(tx-sx)+"px;--fy:"+(ty-sy)+"px;font-size:"+Math.max(22,cr.width*0.5)+"px";
+  document.body.appendChild(g); setTimeout(()=>g.remove(),950);
+  cell.classList.add("portal-flash"); setTimeout(()=>{const c=document.querySelector(".robot-cell"); if(c) c.classList.remove("portal-flash");},700);
+}
 function grabItem(){
   const[r,c]=levelState.robot;
   if(carriedItem){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbAlreadyCarrying'),"warn");return;}
   const idx=levelState.items.findIndex(it=>it.row===r&&it.col===c);
   if(idx===-1){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbNothingHere'),"err");return;}
-  carriedItem=true;levelState.items.splice(idx,1);playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbCollected'),"ok");fxBurst(["✨","⭐","💫"]);
+  const _it=levelState.items[idx], _l=currentTheme.itemEmojis||[];
+  carriedEmoji=_l.length?_l[_it.emojiIndex%_l.length]:"📦";
+  carriedItem=true;carryJustPicked=true;levelState.items.splice(idx,1);playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbCollected'),"ok");fxBurst(["✨","⭐","💫"]);
+  setTimeout(()=>{carryJustPicked=false;},900);
 }
 function dropItem(){
   const[r,c]=levelState.robot;
   if(!carriedItem){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbNothingToDeposit'),"err");return;}
   const onDep=levelState.deposit.some(d=>d[0]===r&&d[1]===c);
   if(!onDep){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbNotOnDeposit'),"warn");return;}
-  carriedItem=false;playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbDeposited'),"ok");fxBurst(["🎉","⭐","✨"]);
+  fxDepositFly(carriedEmoji);
+  carriedItem=false;carryJustPicked=false;playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbDeposited'),"ok");fxBurst(["🎉","⭐","✨"]);
   if(levelState.items.length===0){
     if(isEscapeMode()&&levelState.door){
       escapeAllDeposited=true;
@@ -3677,7 +3694,7 @@ async function runQueueEntry(entry,delay){
   if(!runningQueue||!levelState) return;
   if(entry.type==="repeat"){
     for(let i=0;i<entry.times;i++) for(const child of entry.children){ if(!runningQueue||!levelState) return; await runQueueEntry(child,delay); }
-  } else { runSingleCommand(entry.cmd); await qxWait(delay); }
+  } else { runSingleCommand(entry.cmd); await qxWait(delay+((entry.cmd==="COLLECT"||entry.cmd==="DROP")?Math.max(0,520-delay):0)); }
 }
 async function executeQueueTree(){
   if(runningQueue||!queuedCommands.length||!levelState) return;
