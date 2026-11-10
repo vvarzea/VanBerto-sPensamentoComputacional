@@ -2078,3 +2078,10 @@ body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color
   #game-screen .robot-cell .carry-badge{top:-24%;bottom:auto;right:-26%;left:auto;font-size:.8rem;padding:1px 4px;border-width:1.5px;box-shadow:0 1px 0 rgba(30,27,75,.35);z-index:9;}
   #game-screen .grid.big .robot-cell .carry-badge,#game-screen .grid.huge .robot-cell .carry-badge{font-size:.7rem;padding:0 3px;top:-28%;right:-30%;}
 }
+
+/* ===== v23 · Comandos do robô no fundo do painel, ao lado do tabuleiro ===== */
+@media(min-width:751px) and (min-height:681px), (max-width:750px) and (orientation:landscape){
+  .game-layout>div:nth-child(2){display:flex;flex-direction:column;}
+  .game-layout>div:nth-child(2)>.tag-row:first-child{order:98;margin-top:14px;}
+  #game-screen .dpad-wrap{order:99;position:sticky;top:auto;bottom:0;margin:0 auto;}
+}
