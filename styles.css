@@ -2085,3 +2085,29 @@ body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color
   .game-layout>div:nth-child(2)>.tag-row:first-child{order:98;margin-top:14px;}
   #game-screen .dpad-wrap{order:99;position:sticky;top:auto;bottom:0;margin:0 auto;}
 }
+
+
+/* ── festa ao apanhar / entregar: selo "Boa!" e faíscas ── */
+.spark{position:fixed;font-size:18px;line-height:1;pointer-events:none;z-index:9950;animation:sparkFly .9s ease-out forwards;}
+@keyframes sparkFly{
+  0%{transform:translate(-50%,-50%) scale(.4);opacity:1;}
+  100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3) rotate(var(--rot));opacity:0;}
+}
+#wordPop{
+  position:fixed;left:50%;top:22%;z-index:9960;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.3) rotate(-6deg);opacity:0;
+  background:#fff;border:4px solid #1e1b4b;border-radius:22px;box-shadow:0 7px 0 #1e1b4b;
+  padding:.3em .9em .35em;text-align:center;white-space:nowrap;
+  font-family:'Fredoka One','Fredoka','Nunito',sans-serif;font-weight:700;color:#1e1b4b;
+  font-size:clamp(1.2rem,5.5vw,2.2rem);line-height:1.1;
+}
+#wordPop small{display:block;font-size:.42em;color:#7c3aed;margin-bottom:.15em;}
+#wordPop b{display:inline-block;padding:0 .3em;border-radius:12px;background:#ffd23f;border:3px solid #1e1b4b;font-weight:700;}
+#wordPop.show{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-2deg);animation:wordPopIn 1.5s ease both;}
+@keyframes wordPopIn{
+  0%{transform:translate(-50%,-50%) scale(.3) rotate(-8deg);opacity:0;}
+  18%{transform:translate(-50%,-50%) scale(1.15) rotate(2deg);opacity:1;}
+  30%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);}
+  78%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);opacity:1;}
+  100%{transform:translate(-50%,-62%) scale(.9) rotate(-2deg);opacity:0;}
+}

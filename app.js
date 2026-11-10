@@ -62,6 +62,7 @@ const LANG_STRINGS = {
     fbAlreadyCarrying: "✋ Já tens um objeto! Leva-o ao 📥 e deposita antes de apanhar outro.",
     fbNothingHere: "❌ Aqui não há nada! Move-te para cima de um objeto (📦) antes de recolher.",
     fbCollected: "✅ Objeto recolhido! Agora navega até ao contentor 📥 e deposita.",
+    fxGood: "Boa!", fxCollected: "Apanhaste! ⭐", fxDelivered: "Entregue!", fxWell: "Muito bem! 🎉",
     fbNothingToDeposit: "❌ Não carregas nada! Primeiro recolhe um objeto (✋) e depois deposita.",
     fbNotOnDeposit: "📥 Tens de estar em cima do contentor (📥) para depositar. Navega até lá!",
     fbDeposited: "📥 Depositado com sucesso! Continua a recolher os restantes.",
@@ -298,6 +299,7 @@ const LANG_STRINGS = {
     fbAlreadyCarrying: "✋ Already carrying an item! Deposit it at 📥 before picking up another.",
     fbNothingHere: "❌ Nothing here! Move on top of an item (📦) before collecting.",
     fbCollected: "✅ Item collected! Now navigate to the container 📥 and deposit.",
+    fxGood: "Nice!", fxCollected: "Got it! ⭐", fxDelivered: "Delivered!", fxWell: "Well done! 🎉",
     fbNothingToDeposit: "❌ Not carrying anything! Collect an item first (✋), then deposit.",
     fbNotOnDeposit: "📥 You must be on the container (📥) to deposit. Navigate there!",
     fbDeposited: "📥 Deposited! Keep collecting the rest.",
@@ -3103,6 +3105,36 @@ function turnRobot(side){
   else{dir=(dir+1)%4;playSound({id:'soundMove'});setFeedback(T('fbTurnRight'),"info");}
 }
 /* Pequena explosão de estrelas à volta do robô (apanhar / depositar) */
+/* ── FESTA: selo "Boa!" + faíscas ao apanhar e ao entregar (igual ao da Missão) ── */
+function vbSticker(top,txt){
+  let wp=document.getElementById("wordPop");
+  if(!wp){ wp=document.createElement("div"); wp.id="wordPop"; wp.setAttribute("role","status"); wp.setAttribute("aria-live","polite"); document.body.appendChild(wp); }
+  wp.innerHTML="<small></small><b></b>";
+  wp.firstChild.textContent=top; wp.lastChild.textContent=txt;
+  wp.classList.remove("show"); void wp.offsetWidth; wp.classList.add("show");
+  clearTimeout(wp._t); wp._t=setTimeout(()=>wp.classList.remove("show"),1500);
+}
+function vbCelebrate(top,txt){
+  setTimeout(()=>{
+    const el=document.querySelector(".robot-cell .robot-icon")||document.querySelector(".robot-cell");
+    const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    if(el&&!reduce){
+      const rect=el.getBoundingClientRect(), cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+      for(let n=0;n<10;n++){
+        const sp=document.createElement("span");
+        sp.className="spark"; sp.textContent=["⭐","✨","🌟"][n%3];
+        sp.style.left=cx+"px"; sp.style.top=cy+"px";
+        const ang=(n/10)*Math.PI*2+Math.random()*.5, dist=40+Math.random()*50;
+        sp.style.setProperty("--dx",Math.cos(ang)*dist+"px");
+        sp.style.setProperty("--dy",Math.sin(ang)*dist+"px");
+        sp.style.setProperty("--rot",(Math.random()*180-90)+"deg");
+        document.body.appendChild(sp);
+        setTimeout(()=>sp.remove(),1100);
+      }
+    }
+    vbSticker(top,txt);
+  },140);
+}
 function fxBurst(list){
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
   setTimeout(()=>{
@@ -3135,7 +3167,7 @@ function grabItem(){
   if(idx===-1){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbNothingHere'),"err");return;}
   const _it=levelState.items[idx], _l=currentTheme.itemEmojis||[];
   carriedEmoji=_l.length?_l[_it.emojiIndex%_l.length]:"📦";
-  carriedItem=true;carryJustPicked=true;levelState.items.splice(idx,1);playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbCollected'),"ok");fxBurst(["✨","⭐","💫"]);
+  carriedItem=true;carryJustPicked=true;levelState.items.splice(idx,1);playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbCollected'),"ok");fxBurst(["✨","⭐","💫"]);vbCelebrate(T('fxGood'),T('fxCollected'));
   setTimeout(()=>{carryJustPicked=false;},900);
 }
 function dropItem(){
@@ -3144,7 +3176,7 @@ function dropItem(){
   const onDep=levelState.deposit.some(d=>d[0]===r&&d[1]===c);
   if(!onDep){playSound({id:'soundError'});shakeRobot();setFeedback(T('fbNotOnDeposit'),"warn");return;}
   fxDepositFly(carriedEmoji);
-  carriedItem=false;carryJustPicked=false;playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbDeposited'),"ok");fxBurst(["🎉","⭐","✨"]);
+  carriedItem=false;carryJustPicked=false;playSound({id:'soundSuccess'});clearHintBubble();setFeedback(T('fbDeposited'),"ok");fxBurst(["🎉","⭐","✨"]);vbCelebrate(T('fxDelivered'),T('fxWell'));
   if(levelState.items.length===0){
     if(isEscapeMode()&&levelState.door){
       escapeAllDeposited=true;
