@@ -14,9 +14,9 @@ main{max-width:980px;margin:0 auto}h1{font-size:1.6rem;margin:6px 0}h2{font-size
 details{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:800}
 textarea{width:100%;min-height:70px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px;font:inherit}
 .alert{background:#fef3c7;color:#78350f;border:1px solid #f59e0b;border-radius:12px;padding:8px 12px;font-size:.85rem}
-</style></head><body><main>
+.sol{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:8px}pre{margin:4px 0;padding:8px 10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;font:600 .82rem/1.45 ui-monospace,Consolas,monospace;overflow-x:auto;white-space:pre}h3{margin:0}</style></head><body><main>
 <h1>👩‍🏫 Área da Professora</h1>
-<p class="muted">Notas das Escape Rooms e resultados da turma. Os resultados ficam <b>só neste computador</b>: os ficheiros dos alunos são lidos aqui, no browser, e não são enviados para lado nenhum.</p>
+<p class="muted">Notas e soluções das Escape Rooms e das Missões de Robótica, e resultados da turma. Os resultados ficam <b>só neste computador</b>: os ficheiros dos alunos são lidos aqui, no browser, e não são enviados para lado nenhum.</p>
 <div class="alert">Para as respostas não ficarem ao alcance dos alunos, <b>não publiques esta página no mesmo site do jogo</b>: guarda-a no teu computador e abre-a daí.</div>
 
 <section class="card"><h2>📥 Resultados da turma</h2>
@@ -28,6 +28,321 @@ textarea{width:100%;min-height:70px;border-radius:10px;border:2px solid var(--li
 <div id="dash"></div></section>
 
 <section class="card"><h2>📋 Notas por sala</h2><div id="notes"></div></section>
+
+<section class="card" id="robotica"><h2>🤖 Missões de Robótica — soluções</h2>
+<p class="muted">Soluções de referência, <b>verificadas por simulação</b> no próprio motor dos jogos (todas passam, incluindo as situações de teste). O jogo valida pelo <b>resultado</b>, por isso há outras soluções certas. Os alunos veem o Python nos ciclos 3.º e Secundário.</p><details id="rob-fabrica"><summary>🏭 Fábrica de Carros</summary><div style="margin-top:8px"><h3 style="margin:12px 0 4px;font-size:1rem">1.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda o carro e entrega-o.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+entregar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda, pinta de vermelho e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Solda e pinta o carro da cor que quiseres. Depois entrega!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar verde
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("verde")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 5. Cor livre: qualquer cor serve.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Faz o carro: solda, pinta de vermelho, monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+montar_motor()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Faz um carro verde com motor: solda, pinta de verde, monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar verde
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("verde")
+montar_motor()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">2.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda 3 vezes, pinta de vermelho e entrega. Dica: usa o repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda 4 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(4):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda 2 vezes, pinta de vermelho, solda mais 2 vezes e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar vermelho
+🔁 repetir 2×
+  🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("vermelho")
+for i in range(2):
+    soldar()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Solda 3 vezes, pinta da cor que quiseres e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar amarelo
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("amarelo")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Cor livre: qualquer cor serve.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Carro amarelo completo: solda 2 vezes, pinta de amarelo, monta o motor, monta as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar amarelo
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("amarelo")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">3.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda 5 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(5):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Repete 3 vezes: soldar e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda 3 vezes, pinta de vermelho, solda 3 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar vermelho
+🔁 repetir 3×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("vermelho")
+for i in range(3):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar azul
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("azul")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Repete 3 vezes: soldar e pintar de verde. Depois monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+  🎨 pintar verde
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+    pintar("verde")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">Secundário</h3><details><summary>Missão 1 — <span style="font-weight:600">Repete 2 vezes: soldar, soldar e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+  🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+    soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>5</b> blocos.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda 12 vezes e entrega. Dica: repetir dentro de repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔁 repetir 4×
+    🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    for i in range(4):
+        soldar()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Limite da missão: <b>4</b> blocos.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Repete 2 vezes: soldar 4 vezes e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔁 repetir 4×
+    🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    for i in range(4):
+        soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>5</b> blocos.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Cada carro chega com um número diferente de peças por soldar. Usa «enquanto» para soldar todas, pinta de vermelho e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar soldar
+  🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>while faltam_pecas():
+    soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 5 — <span style="font-weight:600">A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+↔ senão
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+else:
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8. Limite da missão: <b>7</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Cada carro chega com peças por soldar. Solda todas (usa «enquanto»), pinta de azul, monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar soldar
+  🔥 soldar
+🎨 pintar azul
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>while faltam_pecas():
+    soldar()
+pintar("azul")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9. Limite da missão: <b>8</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 7 — <span style="font-weight:600">A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda, monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+↔ senão
+  🎨 pintar vermelho
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+else:
+    pintar("vermelho")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">9 blocos (conta sem o «fim»). ⭐⭐⭐ com 9 ou menos; ⭐⭐ até 11. Limite da missão: <b>10</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details></div></details><details id="rob-casa"><summary>🏠 Casa Inteligente e Cão Robô</summary><div style="margin-top:8px"><h3 style="margin:12px 0 4px;font-size:1rem">1.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Leva o cão até à tigela 🦴.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+andar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Leva o cão até à tigela. Atenção às curvas!</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+↻ virar à direita
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+virar_direita()
+andar()
+andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Acende o candeeiro 💡 e depois vai até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+💡 luz
+↻ virar à direita
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+luz()
+virar_direita()
+andar()
+andar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Há um sofá no caminho! Contorna-o e leva o cão até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>↺ virar à esquerda
+🐕 andar
+↻ virar à direita
+🐕 andar
+🐕 andar
+↻ virar à direita
+🐕 andar</pre></div><div><b>Python</b><pre>virar_esquerda()
+andar()
+virar_direita()
+andar()
+andar()
+virar_direita()
+andar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Acende os 2 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+💡 luz
+🐕 andar
+🐕 andar
+💡 luz</pre></div><div><b>Python</b><pre>andar()
+luz()
+andar()
+andar()
+luz()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">2.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Leva o cão até à tigela. Dica: usa o repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Acende o candeeiro e continua até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+💡 luz
+🔁 repetir 3×
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+luz()
+for i in range(3):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Faz uma escada: repete andar, virar à direita, andar e virar à esquerda.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+  ↻ virar à direita
+  🐕 andar
+  ↺ virar à esquerda</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+    virar_direita()
+    andar()
+    virar_esquerda()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Vai até ao canto da sala e depois desce até à tigela. Usa o repetir duas vezes!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar
+↻ virar à direita
+🔁 repetir 3×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()
+virar_direita()
+for i in range(3):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">3.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Acende os 2 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🐕 andar
+  🐕 andar
+  💡 luz</pre></div><div><b>Python</b><pre>for i in range(2):
+    andar()
+    andar()
+    luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6.</p></details><details><summary>Missão 2 — <span style="font-weight:600">A porta só abre quando o cão carrega no botão vermelho do chão. Chega à tigela!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+🚪 abrir porta
+🔁 repetir 2×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+abrir_porta()
+for i in range(2):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Acende o candeeiro, abre a porta e chega à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+💡 luz
+🔁 repetir 2×
+  🐕 andar
+🚪 abrir porta
+🔁 repetir 2×
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+luz()
+for i in range(2):
+    andar()
+abrir_porta()
+for i in range(2):
+    andar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Duas portas seguidas! Cada porta tem o seu botão no chão. Chega à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🔁 repetir 2×
+  🚪 abrir porta
+  🐕 andar
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+for i in range(2):
+    abrir_porta()
+    andar()
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">Secundário</h3><details><summary>Missão 1 — <span style="font-weight:600">O cão pode começar em sítios diferentes. Faz com que chegue sempre à tigela, no fim da sala. Usa «enquanto».</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto caminho livre
+  🐕 andar</pre></div><div><b>Python</b><pre>while caminho_livre():
+    andar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 4. Limite da missão: <b>3</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Acende os 3 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Limite da missão: <b>6</b> blocos.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Alguns candeeiros já estão acesos! O botão 💡 liga e desliga. Garante que ficam todos acesos (usa «se»).</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (4): a solução tem de servir para todas.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Percorre o corredor todo, sem saber que candeeiros estão acesos. Acende só os que estiverem apagados (usa «enquanto» e «se»).</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto caminho livre
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>while caminho_livre():
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 6. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (4): a solução tem de servir para todas.</p></details></div></details><div class="alert" style="margin-top:10px"><b>Nota:</b> no Secundário o limite de blocos já obriga à solução mais curta, por isso quase todas dão ⭐⭐⭐ (o limite é que faz a dificuldade). Na Casa, 💡 e 🚪 só funcionam em cima de um candeeiro ou botão; noutro sítio o cão pára com um aviso.</div></section>
 
 <section class="card"><h2>⚙️ Neste dispositivo</h2>
 <label class="row"><input type="checkbox" id="tmode"> <span>Mostrar o botão <b>Notas professora</b> dentro das Escape Rooms</span></label>
