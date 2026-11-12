@@ -77,10 +77,10 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <div id="msg"></div>
 <div id="pyw"><textarea id="py" rows="6" spellcheck="false"></textarea><div class="row"><button id="pya" style="background:#3776ab">⬆ Usar este código</button></div></div>
 </div>
-<footer>Professora Vanda Várzea — Professora de TIC</footer>
+<footer>© Prof.ª Vanda Várzea</footer>
 </div>
 <div id="fixed-robot-wrap"><div class="fixed-bubble" id="fixedRobotBubble" role="status" aria-live="polite">Olá! 😊</div><canvas class="fixed-robot" id="fixed-robot-cv" width="192" height="192" role="button" tabindex="0" aria-label="Robô VanBerto's — clica para falar"></canvas></div>
-<div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#16a34a">⬇ Guardar PNG</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
+<div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#16a34a">⬇ Guardar PNG</button><button id="cpr" style="background:#3776ab">🖨️ Imprimir</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
 <script src="three.min.js"></script>
 <script>
 const $=s=>document.querySelector(s);
@@ -184,6 +184,7 @@ dog.scale.setScalar(1.3);
 let ang=0,SPD=1;
 /* objetos de cada missão */
 const LVG=new THREE.Group();S.add(LVG);const lampObjs=[],doorObjs=[];
+function label(txt,col){const c=document.createElement('canvas');c.width=256;c.height=96;const g=c.getContext('2d');g.fillStyle='rgba(30,27,75,.92)';g.beginPath();if(g.roundRect)g.roundRect(4,8,248,80,24);else g.rect(4,8,248,80);g.fill();g.strokeStyle=col;g.lineWidth=6;g.stroke();g.fillStyle='#fff';g.font='bold 46px system-ui,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(txt,128,50);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));sp.scale.set(1.5,.56,1);sp.renderOrder=10;return sp}
 function setLamp(i,on){const o=lampObjs[i];if(!o)return;o.shade.material.emissive.set(on?0xffd34d:0);o.glow.material.opacity=on?.55:0}
 function show(E){
  while(LVG.children.length)LVG.remove(LVG.children[0]);lampObjs.length=doorObjs.length=0;
@@ -197,9 +198,16 @@ function show(E){
   lampObjs.push({shade,glow});setLamp(i,E.on.some(o=>o[0]===l[0]&&o[1]===l[1]));
  });
  E.doors.forEach(d=>{
-  const m=box(TS*.9,1.4,TS*.9,M(0x8a5a2b,.6),px(d.x),.7,pz(d.y),LVG);
-  const b=cyl(.35,.35,.06,M(0xe5484d,.5),LVG);b.position.set(px(d.b[0]),.16,pz(d.b[1]));
-  doorObjs.push({m,b,open:false});
+  const dg=new THREE.Group();dg.position.set(px(d.x),0,pz(d.y));LVG.add(dg);
+  const dk=M(0x3a2a1a,.7),m=box(.22,1.5,TS*.88,M(0xb7791f,.55),0,.75,0,dg);
+  box(.3,1.75,.2,dk,0,.875,-TS*.47,dg);box(.3,1.75,.2,dk,0,.875,TS*.47,dg);box(.3,.2,TS*.95,dk,0,1.8,0,dg);
+  const kn=new THREE.Mesh(new THREE.SphereGeometry(.08,12,10),M(0xffd34d,.3,.8));kn.position.set(.16,.8,.45);dg.add(kn);
+  const lp=label('Porta','#b7791f');lp.position.set(0,2.35,0);dg.add(lp);
+  const bt=new THREE.Group();bt.position.set(px(d.b[0]),.1,pz(d.b[1]));LVG.add(bt);
+  cyl(.52,.52,.05,M(0xffffff,.4),bt);cyl(.42,.42,.12,M(0x6b0f0f,.5),bt).position.y=.07;
+  const cap=cyl(.34,.34,.12,M(0xff2d2d,.35,.1,0xcc0000),bt);cap.position.y=.18;
+  const lb=label('Botão','#ff2d2d');lb.position.set(0,1.0,0);bt.add(lb);
+  doorObjs.push({m,b:cap,open:false});
  });
  const tx=px(E.target[0]),tz=pz(E.target[1]);
  const ring=new THREE.Mesh(new THREE.RingGeometry(.55,.75,32),new THREE.MeshBasicMaterial({color:0x2ee6a6,transparent:true,opacity:.85,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.set(tx,.09,tz);LVG.add(ring);
@@ -231,7 +239,7 @@ async function play(a){
   await hop(300);
  }else if(a.k==='porta'){
   const E=window.__E;let any=false;
-  E.doors.forEach((d,i)=>{if(a.open.includes(i)&&!doorObjs[i].open){any=true;doorObjs[i].open=true;doorObjs[i].b.material.color.set(0x2fb88f)}});
+  E.doors.forEach((d,i)=>{if(a.open.includes(i)&&!doorObjs[i].open){any=true;doorObjs[i].open=true;doorObjs[i].b.material.color.set(0x2fb88f);doorObjs[i].b.material.emissive.set(0x0a7a55)}});
   if(any){beep(440,.1);beep(660,.2,'square',.1);await T(k=>doorObjs.forEach(o=>{if(o.open)o.m.position.y=lerp(o.m.position.y,-.8,.25*SPD)}),700)}
   else await hop(250);
  }
@@ -384,25 +392,51 @@ function beep(f,d,t,w){
  try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+(w||0);
  o.type=t||'square';o.frequency.value=f;g.gain.setValueAtTime(.05,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}
 }
+const CERT_AC={game:'Casa Inteligente e Cão Robô',main:'#7c3aed',dark:'#4c1d95',rgb:'124,58,237'};
+function certStar(g,cx,cy,R,r){g.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rad=i%2?r:R;g[i?'lineTo':'moveTo'](cx+Math.cos(a)*rad,cy+Math.sin(a)*rad)}g.closePath()}
 function certificate(){
- const c=document.createElement('canvas');c.width=900;c.height=640;const g=c.getContext('2d');
- g.fillStyle='#fbf3dc';g.fillRect(0,0,900,640);
- g.strokeStyle='#1c2340';g.lineWidth=8;g.strokeRect(24,24,852,592);g.strokeStyle='#e5a000';g.lineWidth=3;g.strokeRect(40,40,820,560);
- g.fillStyle='#1c2340';g.textAlign='center';
- const st=LV.reduce((a,_,i)=>a+(P.d[cy+'-'+i]||0),0);
- const T2=(t,y,f)=>{g.font=f;g.fillText(t,450,y)};
- T2('Certificado',130,'bold 52px system-ui');
- T2('VanBerto’s — Casa Inteligente e Cão Robô',178,'24px system-ui');
- T2('Certificamos que',250,'22px system-ui');
- T2(P.name||'Aluno(a)',312,'bold 46px system-ui');
- T2('concluiu as '+LV.length+' missões do '+CY[cy].n,372,'22px system-ui');
- T2('★'.repeat(st)+'☆'.repeat(9-st),440,'44px system-ui');
- T2('Programou uma casa inteligente e um cão robô!',492,'20px system-ui');
- T2(new Date().toLocaleDateString('pt-PT'),540,'20px system-ui');
- T2('Professora Vanda Várzea — Professora de TIC',588,'bold 22px system-ui');
- const rb=document.createElement('canvas');rb.width=rb.height=480;const rg=rb.getContext('2d');rg.scale(5,5);drawVanBerto(rg,'happy',-1,true);g.drawImage(rb,730,70,130,130);
- $('#cimg').src=c.toDataURL('image/png');$('#cert').style.display='block';
+ const draw=()=>{
+  const W=1600,H=1131,F="'Nunito', sans-serif",c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),AC=CERT_AC;
+  const st=LV.reduce((a,_,i)=>a+(P.d[cy+'-'+i]||0),0),max=LV.length*3,pct=max?st/max:1,earned=Math.max(1,Math.round(pct*3));
+  const fit=(t,mw,px,w,mn)=>{let z=px;for(;;){g.font=w+' '+z+'px '+F;if(g.measureText(t).width<=mw||z<=(mn||18))break;z-=2}};
+  const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#fffdf6');bg.addColorStop(1,'#fff6df');g.fillStyle=bg;g.fillRect(0,0,W,H);
+  g.strokeStyle='#d9a441';g.lineWidth=12;g.strokeRect(40,40,W-80,H-80);
+  g.strokeStyle=AC.dark;g.lineWidth=3;g.strokeRect(70,70,W-140,H-140);
+  g.strokeStyle='rgba('+AC.rgb+',0.35)';g.lineWidth=2;g.strokeRect(82,82,W-164,H-164);
+  [[70,70],[W-70,70],[70,H-70],[W-70,H-70]].forEach(([x,y])=>{g.save();g.translate(x,y);g.rotate(Math.PI/4);g.fillStyle='#d9a441';g.fillRect(-15,-15,30,30);g.strokeStyle=AC.dark;g.lineWidth=3;g.strokeRect(-15,-15,30,30);g.restore()});
+  g.textAlign='center';const lx=270;
+  try{const rb=document.createElement('canvas');rb.width=480;rb.height=480;const rg=rb.getContext('2d');rg.scale(5,5);drawVanBerto(rg,'happy',-1,true);g.drawImage(rb,lx-240,235,480,480)}catch(e){g.font='190px sans-serif';g.fillStyle='#000';g.fillText('🤖',lx,520)}
+  for(let i=0;i<3;i++){const sx=lx+(i-1)*92,sy=770;certStar(g,sx,sy,40,17);g.fillStyle=i<earned?'#f5b301':'#eadfc4';g.fill();g.lineWidth=4;g.strokeStyle=i<earned?'#b07d00':'#d6c79c';g.stroke()}
+  g.fillStyle=AC.dark;g.font='900 46px '+F;g.fillText("VanBerto's",lx,885);
+  const cx=1000,mw=1000,name=P.name||'Aluno(a)';
+  g.fillStyle=AC.dark;fit('CERTIFICADO OFICIAL',mw,60,'900');g.fillText('CERTIFICADO OFICIAL',cx,185);
+  g.fillStyle=AC.main;const sub=(AC.game+' · '+CY[cy].n).toUpperCase();fit(sub,mw,28,'800');g.fillText(sub,cx,232);
+  g.strokeStyle='#d9a441';g.lineWidth=3;g.beginPath();g.moveTo(cx-260,262);g.lineTo(cx+260,262);g.stroke();
+  g.fillStyle='#d9a441';g.beginPath();g.arc(cx,262,7,0,Math.PI*2);g.fill();
+  g.fillStyle='#555';g.font='600 32px '+F;g.fillText('Este certificado é atribuído a',cx,325);
+  g.fillStyle=AC.dark;fit(name,mw,100,'900',40);g.fillText(name,cx,430);
+  g.fillStyle='#444';fit('por ter concluído todas as missões do',mw,34,'600');g.fillText('por ter concluído todas as missões do',cx,502);
+  g.fillStyle=AC.main;fit(CY[cy].n,mw,54,'900',28);g.fillText(CY[cy].n,cx,574);
+  const fin='Programou com blocos'+(CY[cy].py?' e Python':'')+', com o VanBerto’s!';
+  g.fillStyle='#444';fit(fin,mw,32,'600');g.fillText(fin,cx,634);
+  const bw=300,bh=170,gap=30,x0=cx-(3*bw+2*gap)/2,y0=690;
+  const box_=x=>{g.fillStyle='rgba('+AC.rgb+',0.09)';g.strokeStyle=AC.main;g.lineWidth=3;g.beginPath();if(g.roundRect)g.roundRect(x,y0,bw,bh,20);else g.rect(x,y0,bw,bh);g.fill();g.stroke()};
+  [[LV.length+' / '+LV.length,'missões'],[st+' / '+max,'estrelas']].forEach((s,i)=>{const x=x0+i*(bw+gap);box_(x);g.fillStyle=AC.dark;fit(s[0],bw-40,68,'900',30);g.fillText(s[0],x+bw/2,y0+90);g.fillStyle='#777';g.font='800 26px '+F;g.fillText(s[1].toUpperCase(),x+bw/2,y0+140)});
+  const mx=x0+2*(bw+gap);box_(mx);
+  const pc=pct*100,mw_=pc>=100?'Perfeito':pc>=80?'Excelente':pc>=60?'Bom':'Concluído',mcol=pc>=100?['#f7c948','#b07d00']:pc>=80?['#d5dde6','#7c8a99']:pc>=60?['#e0a070','#8a5226']:['#86efac','#15803d'];
+  const mcx=mx+bw/2,mcy=y0+52;
+  g.fillStyle=mcol[0];g.strokeStyle=mcol[1];g.lineWidth=6;g.beginPath();g.arc(mcx,mcy,34,0,Math.PI*2);g.fill();g.stroke();
+  certStar(g,mcx,mcy+1,19,8);g.fillStyle=mcol[1];g.fill();
+  g.fillStyle=AC.dark;fit(mw_,bw-40,40,'900',22);g.fillText(mw_,mcx,y0+120);
+  g.fillStyle='#777';g.font='800 22px '+F;g.fillText('MEDALHA',mcx,y0+152);
+  g.fillStyle='#777';g.font='italic 700 30px '+F;g.fillText(new Date().toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'}),cx,922);
+  g.strokeStyle=AC.dark;g.lineWidth=3;g.beginPath();g.moveTo(cx-200,972);g.lineTo(cx+200,972);g.stroke();
+  g.fillStyle=AC.dark;g.font='italic 800 38px '+F;g.fillText('Prof.ª Vanda Várzea',cx,1018);
+  $('#cimg').src=c.toDataURL('image/png');$('#cert').style.display='block';
+ };
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);else draw();
 }
+$('#cpr').onclick=()=>{const w=window.open('','_blank');if(!w)return;w.document.write('<!doctype html><title>Certificado</title><style>@page{size:A4 landscape;margin:0}html,body{margin:0}img{width:100%;display:block}</style><img src="'+$('#cimg').src+'">');w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},400)};
 $('#cx').onclick=()=>$('#cert').style.display='none';
 $('#cdl').onclick=()=>{const a=document.createElement('a');a.href=$('#cimg').src;a.download='certificado-fabrica.png';a.click()};
 /* ---------- blocos ---------- */
