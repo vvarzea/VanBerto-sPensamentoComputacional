@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fff8e7"><title>Hora do Código · Fábrica de Carros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1e1b4b;--sun:#ffd23f;--coral:#ff6b6b;--mint:#2ee6a6;--sky:#4cc9f0;--grape:#7c3aed;--cream:#fff8e7;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--cream);background-image:radial-gradient(rgba(255,150,60,.30) 1.4px,transparent 1.6px);background-size:22px 22px;color:var(--ink);font-family:'Nunito','Nunito Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:10px 10px 170px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.w{max-width:920px;margin:0 auto}
+header{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:0 5px 0 var(--ink);padding:10px 16px;margin-bottom:16px}
+h1{font-family:'Fredoka','Nunito',sans-serif;font-size:1.45rem;margin:0;color:var(--ink);font-weight:700}
+.sub{font-weight:800;opacity:.65;font-size:.9rem}
+.card{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:0 5px 0 var(--ink);padding:12px;margin-bottom:16px}
+canvas#cv{width:100%;aspect-ratio:16/9;display:block;border-radius:14px;background:#1b1f33;border:2.5px solid var(--ink)}
+button{font:800 .95rem 'Nunito',system-ui,sans-serif;cursor:pointer;border:2.5px solid var(--ink);border-radius:14px;box-shadow:0 3px 0 var(--ink);padding:8px 12px;color:var(--ink);background:#fff;transition:transform .08s,box-shadow .08s}
+button:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+button[style*="background"],#go,#clr,#pyb{color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.3)}
+#go{background:#16a34a}#clr{background:#6b7280}#pyb{background:#3776ab}
+.lv{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.lvb.on{background:var(--sun)}
+#mis{font-weight:800;margin:6px 0}
+.pal{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+#prog{min-height:64px;display:flex;flex-direction:column;gap:4px;border:2.5px dashed #b9ad8a;border-radius:14px;padding:8px;background:#fffdf5}
+.chip{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 10px;border-radius:10px;border:2px solid var(--ink);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.3);font-weight:800;cursor:pointer}
+.chip b{background:rgba(0,0,0,.28);border-radius:6px;padding:0 6px}
+.chip.run{outline:3px solid var(--sun);outline-offset:2px}
+.chip.sel{outline:3px dashed var(--ink);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+#msg{margin-top:8px;font-weight:800;min-height:1.4em}
+#pyw{display:none}
+#py{width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
+label{font-size:.9rem;font-weight:700}
+#nm{font:inherit;padding:6px 8px;border:2.5px solid var(--ink);border-radius:10px;width:150px}
+select{font:inherit;border:2.5px solid var(--ink);border-radius:10px;padding:4px}
+footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top:6px}
+#fixed-robot-wrap{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));right:14px;z-index:30;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+#fixed-robot-wrap .fixed-bubble{pointer-events:auto;position:relative;z-index:2;margin-bottom:12px;max-width:190px;min-width:120px;text-align:center;background:linear-gradient(135deg,#eef2ff,#fff);border:2.5px solid #4f46e5;border-radius:16px;padding:8px 12px;box-shadow:3px 3px 0 rgba(30,27,75,.85);font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;color:#1e1b4b;opacity:0;transform:translateY(6px) scale(.9);transition:opacity .35s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+#fixed-robot-wrap .fixed-bubble.show{opacity:1;transform:none}
+#fixed-robot-wrap .fixed-bubble::after{content:"";position:absolute;bottom:-13px;right:34px;border-left:9px solid transparent;border-right:9px solid transparent;border-top:13px solid #4f46e5}
+#fixed-robot-wrap .fixed-bubble::before{content:"";position:absolute;bottom:-9px;right:36px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #eef2ff;z-index:1}
+#fixed-robot-wrap .fixed-robot{pointer-events:auto;cursor:pointer;width:130px;height:130px;display:block;position:relative;z-index:1;animation:fixedVbFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 0 14px #7dd3fc)}
+#fixed-robot-wrap .fixed-robot.bounce{animation:fixedVbJump .7s ease}
+@keyframes fixedVbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes fixedVbJump{0%{transform:translateY(0)}35%{transform:translateY(-26px) scale(1.05)}70%{transform:translateY(0) scale(.97)}100%{transform:translateY(0)}}
+@media(max-width:480px){#fixed-robot-wrap .fixed-robot{width:84px;height:84px}#fixed-robot-wrap{bottom:8px;right:8px}#fixed-robot-wrap .fixed-bubble{max-width:150px;font-size:.78rem}}
+.stage{position:relative}#hud{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:8px;pointer-events:none}#hud div{background:rgba(18,20,30,.78);color:#fff;border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;min-width:96px}#hud b{font:700 1.1rem 'Fredoka',sans-serif}#hud span{font-size:.7rem;opacity:.75}#stl{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:6px;pointer-events:none}#stl .s{flex:1;background:rgba(18,20,30,.72);color:#cbd5e1;border-radius:10px;padding:4px 8px;font-weight:800;font-size:.78rem;border:2px solid transparent}#stl .s i{font-style:normal;opacity:.6;margin-right:2px}#stl .s small{display:block;font-weight:700;opacity:.7}#stl .s.on{border-color:#ffd23f;color:#fff}#stl .s.ok{color:#2ee6a6}@media(max-width:560px){#hud div{min-width:0;padding:4px 6px}#hud b{font-size:.85rem}#hud span{font-size:.6rem}#stl .s{font-size:.62rem;padding:3px 5px}#stl .s small{display:none}}
+</style>
+</head>
+<body>
+<div class="w">
+<header><h1>🏭 Hora do Código · Fábrica de Carros</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
+<div class="card">
+<div class="stage"><canvas id="cv" width="640" height="360"></canvas><div id="hud"><div><b id="h-done">0</b><span>carros prontos</span></div><div><b id="h-t">0.0 s</b><span>tempo deste carro</span></div><div><b id="h-st">Linha à espera</b><span>agora</span></div></div><div id="stl"><div class="s"><i>1</i> Soldadura<small>à espera</small></div><div class="s"><i>2</i> Pintura<small>à espera</small></div><div class="s"><i>3</i> Motor<small>à espera</small></div><div class="s"><i>4</i> Rodas<small>à espera</small></div></div></div>
+<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
+</div>
+<div class="card">
+<div class="lv" id="cys"></div>
+<div class="lv" id="lvs"></div>
+<div id="mis"></div>
+<div class="pal">
+<button style="background:#ff8a3d" data-a="S">🔥 soldar</button>
+<button style="background:#e5484d" data-a="R">🎨 pintar vermelho</button>
+<button style="background:#3e63dd" data-a="B">🎨 pintar azul</button>
+<button style="background:#4c9a2a" data-a="G">🎨 pintar verde</button>
+<button style="background:#d4a000" data-a="Y">🎨 pintar amarelo</button>
+<button style="background:#2b8a9e" data-a="M">🔧 montar o motor</button>
+<button style="background:#d97706" data-a="W">🛞 montar uma roda</button>
+<button style="background:#30a46c" data-a="E">📦 entregar</button>
+<button style="background:#8e4ec6" data-a="rep">🔁 repetir</button>
+<button style="background:#a98bd8" data-a="end">fim do repetir</button>
+<button style="background:#2b8a9e" data-a="ifB">🔀 se encomenda azul</button>
+<button style="background:#2b8a9e" data-a="ifR">🔀 se encomenda vermelha</button>
+<button style="background:#4aa8bb" data-a="else">↔ senão</button>
+<button style="background:#c2410c" data-a="wh">🔄 enquanto faltar soldar</button>
+</div>
+<div id="prog"></div>
+<div class="row">
+<button id="go">▶ Executar</button>
+<button id="clr">🗑 Limpar</button>
+<button id="pyb">🐍 Ver em Python</button>
+</div>
+<div id="msg"></div>
+<div id="pyw"><textarea id="py" rows="6" spellcheck="false"></textarea><div class="row"><button id="pya" style="background:#3776ab">⬆ Usar este código</button></div></div>
+</div>
+<footer>Professora Vanda Várzea — Professora de TIC</footer>
+</div>
+
+<div id="fixed-robot-wrap"><div class="fixed-bubble" id="fixedRobotBubble" role="status" aria-live="polite">Olá! 😊</div><canvas class="fixed-robot" id="fixed-robot-cv" width="192" height="192" role="button" tabindex="0" aria-label="Robô VanBerto's — clica para falar"></canvas></div>
+
+<div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#30a46c">⬇ Guardar PNG</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
+<script src="three.min.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const NAME={S:'🔥 soldar',R:'🎨 pintar vermelho',B:'🎨 pintar azul',G:'🎨 pintar verde',Y:'🎨 pintar amarelo',ifB:'🔀 se encomenda azul',ifR:'🔀 se encomenda vermelha',else:'↔ senão',wh:'🔄 enquanto faltar soldar',M:'🔧 montar o motor',W:'🛞 montar uma roda',E:'📦 entregar',rep:'🔁 repetir',end:'fim'};
+const COL={S:'#ff8a3d',R:'#e5484d',B:'#3e63dd',G:'#4c9a2a',Y:'#d4a000',ifB:'#2b8a9e',ifR:'#2b8a9e',else:'#4aa8bb',wh:'#c2410c',M:'#2b8a9e',W:'#d97706',E:'#30a46c',rep:'#8e4ec6',end:'#a98bd8'};
+const PY={S:'soldar()',R:'pintar("vermelho")',B:'pintar("azul")',G:'pintar("verde")',Y:'pintar("amarelo")',ifB:'if encomenda == "azul":',ifR:'if encomenda == "vermelha":',wh:'while faltam_pecas():',M:'montar_motor()',W:'montar_roda()',E:'entregar()'};
+const x=(n,k)=>Array(n).fill(k);
+const ALL=['S','R','B','G','Y','M','W','E','rep'];
+const CY=[
+{n:'1.º Ciclo',b:['S','R','B','G','Y','M','W','E'],py:0,lv:[
+ {t:'Solda o carro e entrega-o.',g:['S','E']},
+ {t:'Solda, pinta de vermelho e entrega.',g:['S','R','E']},
+ {t:'Solda, pinta de azul e entrega.',g:['S','B','E']},
+ {t:'Solda e pinta o carro da cor que quiseres. Depois entrega!',g:['S','P','E'],free:true},
+ {t:'Faz o carro: solda, pinta de vermelho, monta o motor e entrega.',g:['S','R','M','E']}]},
+{n:'2.º Ciclo',b:ALL,py:0,lv:[
+ {t:'Solda 3 vezes, pinta de vermelho e entrega. Dica: usa o repetir!',g:[...x(3,'S'),'R','E']},
+ {t:'Solda 4 vezes, pinta de azul e entrega.',g:[...x(4,'S'),'B','E']},
+ {t:'Solda 2 vezes, pinta de vermelho, solda mais 2 vezes e entrega.',g:['S','S','R','S','S','E']},
+ {t:'Solda 3 vezes, pinta da cor que quiseres e entrega.',g:[...x(3,'S'),'P','E'],free:true},
+ {t:'Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.',g:['S','R','M',...x(4,'W'),'E']}]},
+{n:'3.º Ciclo',b:ALL,py:1,lv:[
+ {t:'Solda 5 vezes, pinta de azul e entrega.',g:[...x(5,'S'),'B','E']},
+ {t:'Repete 3 vezes: soldar e pintar de vermelho. Depois entrega.',g:['S','R','S','R','S','R','E']},
+ {t:'Solda 3 vezes, pinta de vermelho, solda 3 vezes, pinta de azul e entrega.',g:[...x(3,'S'),'R',...x(3,'S'),'B','E']},
+ {t:'Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.',g:['S','S','B','M',...x(4,'W'),'E']}]},
+{n:'Secundário',b:[...ALL,'ifB','ifR','else','wh'],py:2,lv:[
+ {t:'Repete 2 vezes: soldar, soldar e pintar de vermelho. Depois entrega.',max:5,g:['S','S','R','S','S','R','E']},
+ {t:'Solda 12 vezes e entrega. Dica: repetir dentro de repetir!',max:4,g:[...x(12,'S'),'E']},
+ {t:'Repete 2 vezes: soldar 4 vezes e pintar de vermelho. Depois entrega.',max:5,g:[...x(4,'S'),'R',...x(4,'S'),'R','E']},
+ {t:'Cada carro chega com um número diferente de peças por soldar. Usa «enquanto» para soldar todas, pinta de vermelho e entrega.',max:4,tests:[{pecas:2},{pecas:3},{pecas:5}],x:e=>[...x(e.pecas,'S'),'R','E']},
+ {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.',max:7,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'E']}]}
+];
+let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,light=false;
+
+/* ---------- 3D ---------- */
+const cv=$('#cv');
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.0;
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+const S=new THREE.Scene();S.background=new THREE.Color(0x07080d);S.fog=new THREE.Fog(0x07080d,22,46);
+const cam=new THREE.PerspectiveCamera(42,16/9,.1,90);
+S.add(new THREE.HemisphereLight(0x9db4ff,0x14161f,.3));
+const dl=new THREE.DirectionalLight(0xdfe8ff,.6);dl.position.set(4,12,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,1024);
+Object.assign(dl.shadow.camera,{left:-16,right:16,top:8,bottom:-8,near:1,far:34});dl.shadow.camera.updateProjectionMatrix();S.add(dl);
+const M=(c,r,m,e)=>new THREE.MeshStandardMaterial({color:c,roughness:r==null?.6:r,metalness:m==null?.1:m,emissive:e||0});
+function box(w,h,d,mat,x,y,z,p){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;(p||S).add(m);return m}
+function cyl(r1,r2,h,mat,p){const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,20),mat);m.castShadow=true;(p||S).add(m);return m}
+function ball(r,mat,p){const m=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),mat);m.castShadow=true;p.add(m);return m}
+const steel=M(0x30343f,.45,.7),red=M(0xd62828,.35,.5),dark=M(0x15171d,.6,.4),yel=M(0xf5c518,.5,.1);
+const glowW=new THREE.MeshBasicMaterial({color:0xffffff});
+
+/* fábrica: chão com painéis, parede, luzes de teto, calhas */
+function floorTex(){const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');g.fillStyle='#23262f';g.fillRect(0,0,256,256);g.strokeStyle='#343845';g.lineWidth=3;g.strokeRect(1,1,254,254);g.fillStyle='rgba(255,255,255,.04)';for(let i=0;i<70;i++)g.fillRect(Math.random()*256,Math.random()*256,3,3);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(10,5);t.encoding=THREE.sRGBEncoding;return t}
+box(40,.3,20,new THREE.MeshStandardMaterial({map:floorTex(),roughness:.55,metalness:.15}),2,-.15,-2);
+box(40,9,.3,M(0x161922,.8),2,4.2,-6.8);
+box(40,.06,.08,new THREE.MeshBasicMaterial({color:0x3e63dd}),2,1.3,-6.6);
+box(40,.06,.08,new THREE.MeshBasicMaterial({color:0xff8a3d}),2,6.2,-6.6);
+for(let x=-12;x<=14;x+=4)for(const z of[-3.2,-.4,2.4]){const l=new THREE.Mesh(new THREE.BoxGeometry(3,.06,.3),glowW);l.position.set(x,5.4,z);S.add(l)}
+for(let x=-12;x<=14;x+=4)box(.2,.2,8,dark,x+2,5.7,-.4);
+box(26,.14,.14,steel,1,.3,-.95);box(26,.14,.14,steel,1,.3,.95);
+for(let x=-11;x<=13;x+=1)box(.2,.1,2.3,dark,x,.15,0);
+/* estações: piso colorido, sinais, projetores */
+const STN=['Soldadura','Pintura','Motor','Rodas'],SX=[-6,-2,2,6],SC=[0xff8a3d,0x8e4ec6,0x2fb88f,0x3e63dd],SH=['#ff8a3d','#8e4ec6','#2fb88f','#3e63dd'];
+const spots=[];
+function sign(t,n,x,hex){const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d');g.fillStyle='rgba(15,17,24,.92)';g.fillRect(0,0,512,128);g.fillStyle=hex;g.fillRect(0,0,14,128);g.fillStyle='#fff';g.font='bold 62px system-ui,sans-serif';g.textBaseline='middle';g.fillText(n+'  '+t,40,66);const tx=new THREE.CanvasTexture(c);tx.encoding=THREE.sRGBEncoding;const m=new THREE.Mesh(new THREE.PlaneGeometry(3.4,.85),new THREE.MeshBasicMaterial({map:tx}));m.position.set(x,3.6,-4.2);S.add(m)}
+SX.forEach((x,i)=>{
+ const col=new THREE.Color(SC[i]);
+ box(3.6,.03,6,M(col.clone().multiplyScalar(.45),.6,.1,col.clone().multiplyScalar(.12)),x,.02,0);
+ for(const z of[-3,3])box(3.6,.04,.07,new THREE.MeshBasicMaterial({color:SC[i]}),x,.05,z);
+ for(const dx of[-1.8,1.8])box(.07,.04,6,new THREE.MeshBasicMaterial({color:SC[i]}),x+dx,.05,0);
+ sign(STN[i],i+1,x,SH[i]);
+ const sp=new THREE.SpotLight(SC[i],2.4,20,.75,.5);sp.position.set(x,9,2);sp.target.position.set(x,0,0);S.add(sp,sp.target);spots.push(sp);
+});
+/* cabine de pintura */
+for(const sx of[-1,1])for(const sz of[-1,1])box(.18,3.6,.18,dark,-2+sx*2,1.8,sz*2.3);
+for(const sz of[-1,1])box(4.2,.18,.18,dark,-2,3.6,sz*2.3);
+for(const sx of[-1,1])box(.18,.18,4.6,dark,-2+sx*2,3.6,0);
+for(let i=0;i<5;i++){const b=new THREE.Mesh(new THREE.BoxGeometry(3.6,.05,.26),glowW);b.position.set(-2,3.5,-1.6+i*.8);S.add(b)}
+/* guardas amarelas */
+for(const z of[-3.9,3.9]){for(let x=-11;x<=13;x+=2)box(.1,.9,.1,yel,x,.45,z);box(25,.08,.08,yel,1,.9,z);box(25,.08,.08,yel,1,.5,z)}
+
+/* carro: perfil extrudido com chanfro, vidros, rodas (só aparecem na estação 4) */
+const car=new THREE.Group();S.add(car);
+const bodyMat=new THREE.MeshPhysicalMaterial({color:0x8d94a0,roughness:.4,metalness:.5,clearcoat:1,clearcoatRoughness:.12});
+function prof(pts,d,mat){const sh=new THREE.Shape();pts.forEach((p,i)=>i?sh.lineTo(p[0],p[1]):sh.moveTo(p[0],p[1]));const g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:2});g.translate(0,0,-d/2);const m=new THREE.Mesh(g,mat);m.castShadow=true;car.add(m)}
+prof([[-1.25,.3],[1.25,.3],[1.28,.62],[.8,.78],[.4,1.22],[-.55,1.22],[-.95,.8],[-1.25,.72]],1.05,bodyMat);
+prof([[.55,.82],[.34,1.17],[-.5,1.17],[-.82,.82]],1.14,M(0x0e1824,.1,.9));
+box(2.9,.18,1.5,dark,0,.12,0,car);
+for(const x of[-.78,.78])for(const z of[-.6,.6]){const a=cyl(.36,.36,.02,M(0x050505,.9,0),car);a.rotation.x=Math.PI/2;a.position.set(x,.3,z>0?.585:-.585)}
+for(const z of[-.38,.38]){box(.06,.1,.28,M(0xffffee,.3,0,0xffffcc),1.3,.55,z,car);box(.06,.1,.28,M(0xaa1111,.4,0,0xaa1111),-1.3,.58,z,car)}
+for(const z of[-.68,.68])box(.14,.1,.1,dark,.4,.95,z,car);
+const grille=box(.06,.24,.7,M(0x222222,.5,.2),1.32,.46,0,car);
+const wheels=[];
+for(const x of[-.78,.78])for(const z of[-.62,.62]){const w=new THREE.Group();w.position.set(x,.3,z);car.add(w);const t=cyl(.31,.31,.24,M(0x111111,.9,0),w);t.rotation.x=Math.PI/2;const r=cyl(.18,.18,.26,M(0xc5cad6,.3,.9),w);r.rotation.x=Math.PI/2;wheels.push(w)}
+const engine=box(.9,.5,.7,M(0x3a3f4a,.4,.8,0x0a2a55),0,3,0);engine.visible=false;
+
+/* braços robóticos de 3 articulações */
+const REST=[.25,.5,.3],WORK=[.9,.9,.5];
+function poseArms(arms,k){arms.forEach(a=>{a.p1.rotation.x=lerp(REST[0],WORK[0],k);a.p2.rotation.x=lerp(REST[1],WORK[1],k);a.p3.rotation.x=lerp(REST[2],WORK[2],k)})}
+function arm(x,z,flip,k){
+ const g=new THREE.Group();g.position.set(x,0,z);if(flip)g.rotation.y=Math.PI;S.add(g);
+ cyl(.75,.85,.25,steel,g).position.y=.125;cyl(.55,.6,.5,red,g).position.y=.5;
+ const p1=new THREE.Group();p1.position.y=.85;g.add(p1);ball(.34,steel,p1);box(.38,1.7,.38,red,0,.85,0,p1);
+ const p2=new THREE.Group();p2.position.y=1.75;p1.add(p2);ball(.3,steel,p2);box(.3,1.5,.3,red,0,.75,0,p2);
+ const p3=new THREE.Group();p3.position.y=1.5;p2.add(p3);ball(.2,steel,p3);cyl(.1,.07,.55,steel,p3).position.y=.3;
+ const tip=new THREE.Object3D();tip.position.y=.62;p3.add(tip);
+ const a={p1,p2,p3,tip};poseArms([a],k||0);return a;
+}
+const ST=SX.map(x=>({x,arms:[arm(x,-2.6,false),arm(x,2.6,true)]}));
+[-9,-4,3,9].forEach((x,i)=>{arm(x,-5.8,false,.2+i*.12);box(2.2,.7,1.1,M(0x7c828f,.5,.5),x+1.6,.9,-5)});
+
+/* etiqueta da encomenda e peças por soldar (missões do Secundário) */
+let ENV=null;
+const tag=new THREE.Group();tag.position.set(-.1,1.55,0);car.add(tag);
+const flag=box(.5,.3,.05,M(0xe5484d),0,.25,0,tag);box(.04,.5,.04,steel,0,0,0,tag);
+const pcs=new THREE.Group();pcs.position.set(-.55,1.35,0);car.add(pcs);
+for(let i=0;i<5;i++)box(.18,.18,.18,M(0x9aa3b8,.4,.8),i*.22,0,0,pcs);
+function showEnv(e){ENV=e;tag.visible=!!(e&&e.cor);if(e&&e.cor)flag.material.color.set(e.cor==='B'?0x3e63dd:0xe5484d);pcs.children.forEach((c,i)=>c.visible=!!(e&&e.pecas!=null&&i<e.pecas))}
+
+/* faíscas e tinta */
+const NP=90,pg=new THREE.BufferGeometry(),pp=new Float32Array(NP*3),pv=new Float32Array(NP*3),pl=new Float32Array(NP);
+for(let j=0;j<NP;j++)pp[j*3+1]=-10;
+pg.setAttribute('position',new THREE.BufferAttribute(pp,3));
+const pm=new THREE.PointsMaterial({size:.13,color:0xffd34d,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});
+const pts=new THREE.Points(pg,pm);pts.frustumCulled=false;S.add(pts);
+const tl=new THREE.PointLight(0xffa040,0,8);S.add(tl);const tv=new THREE.Vector3();
+function emit(v,n,spray){for(let c=0;c<n;c++){const j=pl.findIndex(l=>l<=0);if(j<0)return;pl[j]=spray?.5:.7;pp[j*3]=v.x;pp[j*3+1]=v.y;pp[j*3+2]=v.z;const s=spray?1.2:3.2;pv[j*3]=(Math.random()-.5)*s;pv[j*3+1]=spray?-.8+Math.random()*.5:Math.random()*3;pv[j*3+2]=(Math.random()-.5)*s}}
+function stepP(dt){for(let j=0;j<NP;j++){if(pl[j]>0){pl[j]-=dt;pv[j*3+1]-=9*dt;for(let a=0;a<3;a++)pp[j*3+a]+=pv[j*3+a]*dt;if(pp[j*3+1]<.2){pp[j*3+1]=.2;pv[j*3+1]*=-.3}}else pp[j*3+1]=-10}pg.attributes.position.needsUpdate=true}
+
+/* painel de informação (HUD) */
+const stEls=()=>document.querySelectorAll('#stl .s');
+function setSt(i,st){const e=stEls()[i];if(!e)return;e.className='s'+(st==='on'?' on':st==='ok'?' ok':'');e.querySelector('small').textContent=st==='on'?'a trabalhar':st==='ok'?'feito':'à espera'}
+const hudState=t=>{$('#h-st').textContent=t};
+let tI=null,t0=0,done=0;
+function tStart(){t0=performance.now();clearInterval(tI);tI=setInterval(()=>{$('#h-t').textContent=((performance.now()-t0)/1000).toFixed(1)+' s'},100)}
+function tStop(){clearInterval(tI)}
+function reset(){car.position.set(-9.5,.3,0);bodyMat.color.set(0x8d94a0);car.visible=true;wheels.forEach(w=>{w.visible=false;w.position.y=.3});engine.visible=false;grille.material.emissive.set(0);showEnv(null);tStop();stEls().forEach((_,i)=>setSt(i,'wait'));hudState('Linha à espera');$('#h-t').textContent='0.0 s'}
+reset();
+
+function size(){const w=cv.clientWidth||640;R.setPixelRatio(light?.5:Math.min(window.devicePixelRatio||1,2));R.setSize(w,w*9/16,false)}
+function setLight(v,auto){light=v;$('#lt').checked=v;R.shadowMap.enabled=!v;dl.castShadow=!v;spots.forEach(s=>s.intensity=v?0:2.4);S.traverse(o=>{if(o.material)o.material.needsUpdate=true});size();if(auto)say('Fiz o modo leve para ajudar este computador. 😉')}
+$('#lt').onchange=e=>setLight(e.target.checked);
+addEventListener('resize',size);size();
+let last=performance.now(),fr=0,acc=0,camX=-4;
+(function loop(){requestAnimationFrame(loop);const n=performance.now(),d=n-last;acc+=d;last=n;
+ if(++fr===90&&!light&&acc/90>55)setLight(true,true);
+ const tx=Math.max(-5,Math.min(7,car.position.x));camX+=(tx-camX)*.05;
+ cam.position.set(camX+2.5,8.4,11.6);cam.lookAt(camX+1.2,.7,0);
+ stepP(Math.min(d,50)/1000);R.render(S,cam)})();
+
+/* ---------- animação ---------- */
+const T=(f,ms)=>new Promise(r=>{const t0=performance.now();(function l(){const k=Math.min(1,(performance.now()-t0)*SPD/ms);f(k);k<1?requestAnimationFrame(l):r()})()});
+function lerp(a,b,k){return a+(b-a)*k}
+async function goTo(x){const a=car.position.x;if(a===x)return;await T(k=>{const nx=lerp(a,x,k),dx=nx-car.position.x;car.position.x=nx;wheels.forEach(w=>w.rotation.z-=dx/.3)},Math.abs(x-a)*150+80)}
+async function work(st,colorHex,mode){
+ beep(mode==='paint'?440:880,.6,mode==='paint'?'sine':'sawtooth');
+ await T(k=>poseArms(st.arms,k),400);
+ pm.color.set(colorHex);tl.color.set(colorHex);
+ const from=bodyMat.color.clone(),to=new THREE.Color(colorHex);
+ await T(k=>{
+  if(!light){st.arms.forEach(a=>{a.tip.getWorldPosition(tv);emit(tv,mode==='paint'?2:4,mode==='paint')});tl.position.set(st.x,1.4,0);tl.intensity=2+Math.random()*3}
+  if(mode==='paint')bodyMat.color.copy(from).lerp(to,k);
+ },800);
+ tl.intensity=0;
+ await T(k=>poseArms(st.arms,1-k),400);
+}
+async function motor(st){
+ beep(300,.5,'square');await T(k=>poseArms(st.arms,k),400);
+ engine.visible=true;await T(k=>engine.position.set(car.position.x,lerp(3.4,1.05,k),0),700);
+ engine.visible=false;grille.material.emissive.set(0xff7a1a);
+ await T(k=>poseArms(st.arms,1-k),400);
+}
+async function wheel(st){
+ beep(500,.2);const w=wheels.find(x=>!x.visible);
+ await T(k=>poseArms(st.arms,k),300);
+ if(w){w.visible=true;await T(k=>w.position.y=lerp(1.6,.3,k*k),350)}
+ await T(k=>poseArms(st.arms,1-k),300);
+}
+async function stn(i,fn){setSt(i,'on');hudState(STN[i]);await goTo(SX[i]);await fn(ST[i]);setSt(i,'ok')}
+const paint=(i,c)=>stn(1,st=>work(st,c,'paint'));
+const ACT={
+ S:async()=>{await stn(0,st=>work(st,0xffd34d,'weld'));if(ENV&&ENV.pecas!=null){const v=pcs.children.filter(c=>c.visible);if(v.length)v[0].visible=false}},
+ R:()=>paint(1,0xe5484d),B:()=>paint(1,0x3e63dd),G:()=>paint(1,0x4c9a2a),Y:()=>paint(1,0xf5c518),
+ M:()=>stn(2,motor),W:()=>stn(3,wheel),
+ E:async()=>{hudState('Entrega');await goTo(11.5);beep(660,.15);beep(880,.2,'square',.15);done++;$('#h-done').textContent=done;tStop();hudState('Carro entregue ✅')}
+};
+
+/* ---------- blocos ---------- */
+const OPEN=['rep','wh','ifB','ifR'];
+function build(){
+ const root={b:[]},st=[root];
+ prog.forEach((t,i)=>{
+  const top=st[st.length-1],add=n=>(top.inElse?top.e:top.b).push(n);
+  if(OPEN.includes(t.k)){const n={t,i,b:[],e:null,inElse:false};add(n);st.push(n)}
+  else if(t.k==='else'){if(top!==root){top.inElse=true;top.e=[]}}
+  else if(t.k==='end'){if(st.length>1)st.pop()}
+  else add({t,i});
+ });
+ return root.b;
+}
+function run(nodes,env,out){
+ for(const nd of nodes){
+  if(out.length>60)return;
+  const k=nd.t.k;
+  if(k==='rep'){for(let j=0;j<nd.t.n;j++)run(nd.b,env,out)}
+  else if(k==='wh'){let c=0;while(env&&env.pecas>0&&c++<20)run(nd.b,env,out)}
+  else if(k==='ifB'||k==='ifR'){run(env&&env.cor===(k==='ifB'?'B':'R')?nd.b:(nd.e||[]),env,out)}
+  else{out.push({k,i:nd.i});if(k==='S'&&env&&env.pecas>0)env.pecas--}
+ }
+}
+function expand(env){const out=[];run(build(),env,out);return out}
+function toPy(){
+ let ind=0,o=[],prevOpen=false;
+ for(const b of prog){
+  if(b.k==='else'){ind=Math.max(0,ind-1);o.push('    '.repeat(ind)+'else:');ind++;prevOpen=true;continue}
+  if(b.k==='end'){if(prevOpen)o.push('    '.repeat(ind)+'pass');ind=Math.max(0,ind-1);prevOpen=false;continue}
+  const sp='    '.repeat(ind);
+  if(b.k==='rep'){o.push(sp+'for i in range('+b.n+'):');ind++;prevOpen=true;continue}
+  if(OPEN.includes(b.k)){o.push(sp+PY[b.k]);ind++;prevOpen=true;continue}
+  o.push(sp+PY[b.k]);prevOpen=false;
+ }
+ return o.join('\n')||'# o teu programa aparece aqui';
+}
+function parsePy(t){
+ const out=[];let depth=0;
+ const ok=(b,l)=>{if(!CY[cy].b.includes(b.k))throw new Error('Neste ciclo ainda não podes usar: '+l);out.push(b)};
+ for(const raw of t.split('\n')){
+  const l=raw.trim();if(!l||l[0]==='#')continue;
+  const ind=Math.floor((raw.length-raw.trimStart().length)/4);
+  if(l==='else:'){
+   while(depth>ind+1){out.push({k:'end'});depth--}
+   if(depth<1||ind!==depth-1)throw new Error('O «else:» tem de ficar ao nível do «if»');
+   ok({k:'else'},l);continue;
+  }
+  while(depth>ind){out.push({k:'end'});depth--}
+  if(l==='pass')continue;
+  if(ind>depth)throw new Error('Indentação errada (usa 4 espaços dentro do bloco): '+l);
+  let m;
+  if(m=l.match(/^for\s+\w+\s+in\s+range\((\d+)\):$/)){const n=+m[1];if(n<1||n>5)throw new Error('range deve ir de 1 a 5');ok({k:'rep',n},l);depth++}
+  else if(l==='while faltam_pecas():'){ok({k:'wh'},l);depth++}
+  else if(/^if encomenda == ["']azul["']:$/.test(l)){ok({k:'ifB'},l);depth++}
+  else if(/^if encomenda == ["']vermelha["']:$/.test(l)){ok({k:'ifR'},l);depth++}
+  else if(l==='soldar()')ok({k:'S'},l);
+  else if(l==='entregar()')ok({k:'E'},l);
+  else if(l==='montar_motor()')ok({k:'M'},l);
+  else if(l==='montar_roda()')ok({k:'W'},l);
+  else if(m=l.match(/^pintar\(["'](vermelho|azul|verde|amarelo)["']\)$/))ok({k:{vermelho:'R',azul:'B',verde:'G',amarelo:'Y'}[m[1]]},l);
+  else throw new Error('Não percebi esta linha: '+l);
+ }
+ while(depth>0){out.push({k:'end'});depth--}
+ return out;
+}
+function clear(){prog=[];sel=-1}
+function render(){
+ let ind=0;const h=[];
+ prog.forEach((b,i)=>{
+  if(b.k==='end'||b.k==='else')ind=Math.max(0,ind-1);
+  let inner;
+  if(b.k==='end')inner='↩ fim';
+  else if(b.k==='rep')inner=NAME.rep+' <b data-n="'+i+'">'+b.n+'×</b> <b data-x="'+i+'">✕</b>';
+  else inner=NAME[b.k]+' <b data-x="'+i+'">✕</b>';
+  h.push('<span class="chip'+(i===sel?' sel':'')+'" style="background:'+COL[b.k]+';margin-left:'+ind*22+'px" data-i="'+i+'">'+inner+'</span>');
+  if(OPEN.includes(b.k)||b.k==='else')ind++;
+ });
+ $('#prog').innerHTML=h.join('')||'<span style="opacity:.6">Toca nos blocos acima. Toca num bloco do programa para escolher onde juntar o próximo.</span>';
+ const t=$('#py');if(document.activeElement!==t)t.value=toPy();
+}
+function delBlock(i){
+ const rm=[i];
+ if(OPEN.includes(prog[i].k)){let d=1;for(let j=i+1;j<prog.length;j++){const k=prog[j].k;if(OPEN.includes(k))d++;else if(k==='else'&&d===1)rm.push(j);else if(k==='end'&&--d===0){rm.push(j);break}}}
+ rm.sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render();
+}
+document.querySelector('.pal').onclick=e=>{
+ const a=e.target.closest('button');if(!a||running)return;
+ const k=a.dataset.a,items=k==='rep'?[{k:'rep',n:2},{k:'end'}]:OPEN.includes(k)?[{k},{k:'end'}]:[{k}];
+ const at=sel>=0?sel+1:prog.length;prog.splice(at,0,...items);sel=at;render();beep(600,.06);
+};
+$('#prog').onclick=e=>{
+ if(running)return;const t=e.target;
+ if(t.dataset.x!==undefined){delBlock(+t.dataset.x);return}
+ if(t.dataset.n!==undefined){const b=prog[+t.dataset.n];b.n=b.n>=5?2:b.n+1;render();return}
+ const c=t.closest('.chip');if(c){const i=+c.dataset.i;sel=sel===i?-1:i;render()}
+};
+$('#clr').onclick=()=>{if(running)return;clear();render();reset();say('Tudo limpo! Começa de novo. 🙂')};
+$('#pyb').onclick=()=>{const p=$('#pyw');p.style.display=p.style.display==='block'?'none':'block'};
+$('#pya').onclick=()=>{
+ if(running)return;
+ try{prog=parsePy($('#py').value);sel=-1;render();$('#msg').textContent='🐍 Código aplicado aos blocos. Carrega em Executar!'}
+ catch(er){$('#msg').textContent='🐍 '+er.message;say('Há um erro no código. Lê a mensagem por baixo.','sad')}
+};
+
+const DICAS=['Olá! Eu sou o VanBerto’s. Monta os blocos e carrega em Executar! 🚀','Soldar, pintar e entregar: a ordem importa!','O repetir poupa blocos. Toca no número para o mudar.','Toca num bloco do programa para escolher onde juntar o próximo.','Olha para o Python: é o mesmo programa! 🐍'];
+/* ---------- VanBerto’s (robô oficial, igual ao da Hora do Código) ---------- */
+function rrVan(ctx,x,y,w,h,r){
+    const rr=Math.min(r,w/2,h/2);
+    ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath();
+  }
+  function cfVan(ctx,x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
+
+  window.drawVanBerto=drawVanBerto;
+  function drawVanBerto(ctx,blink,step,armsUp){
+    const w=96,h=96;
+    ctx.clearRect(0,0,w,h);
+    ctx.lineJoin="round"; ctx.lineCap="round";
+    ctx.save(); ctx.translate(0,6);
+    const NAVY="#16233e", NAVY2="#26365a", OUT="#101a30";
+    function white(x0,y0,x1,y1){const g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,"#ffffff");g.addColorStop(0.55,"#e6edf7");g.addColorStop(1,"#b4c4dc");return g;}
+
+    const LIFT=8, STRIDE=3;
+    let lTop=70, rTop=70, lDX=0, rDX=0;
+    if(step===0){ lTop=70-LIFT; lDX=STRIDE; rDX=-STRIDE; }
+    else if(step===1){ rTop=70-LIFT; rDX=STRIDE; lDX=-STRIDE; }
+    function leg(cx,top){
+      rrVan(ctx,cx-5,top,10,11,4.5); ctx.fillStyle=white(cx-5,top,cx+5,top); ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      const fy=top+9;
+      rrVan(ctx,cx-6.5,fy,13,9,4); ctx.fillStyle=NAVY; ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      rrVan(ctx,cx-6.5,fy+2,13,2.4,1.2); ctx.fillStyle="rgba(255,255,255,0.85)"; ctx.fill();
+      cfVan(ctx,cx-2.5,fy+4.5,1.4,"rgba(255,255,255,0.5)");
+    }
+    leg(41+lDX,lTop); leg(55+rDX,rTop);
+
+    const ARM_SWING = 0.24;
+    const JUMP_RAISE = 2.9;
+    let lArmSwing = 0, rArmSwing = 0;
+    if(armsUp){ lArmSwing = JUMP_RAISE; rArmSwing = -JUMP_RAISE; }
+    else if(step===0){ lArmSwing=-ARM_SWING; rArmSwing=ARM_SWING; }
+    else if(step===1){ lArmSwing=ARM_SWING; rArmSwing=-ARM_SWING; }
+    function arm(sx,swing){
+      ctx.save();
+      const px=sx+4.5, py=52;
+      ctx.translate(px,py); ctx.rotate(swing); ctx.translate(-px,-py);
+      rrVan(ctx,sx,52,9,13,4.5); ctx.fillStyle=white(sx,52,sx+9,52); ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      const hx=sx+4.5, hy=67;
+      cfVan(ctx,hx,hy,5,NAVY);
+      ctx.lineWidth=2.3; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(hx,hy,5,0,Math.PI*2); ctx.stroke();
+      cfVan(ctx,hx-2,hy+1.6,1.4,NAVY2); cfVan(ctx,hx+0.5,hy+2.4,1.4,NAVY2); cfVan(ctx,hx+2.5,hy+1.6,1.4,NAVY2);
+      ctx.restore();
+    }
+    arm(17,lArmSwing); arm(70,rArmSwing);
+
+    rrVan(ctx,26,44,44,32,15); ctx.fillStyle=white(28,46,68,46); ctx.fill();
+    ctx.save(); rrVan(ctx,26,44,44,32,15); ctx.clip();
+    const wg=ctx.createLinearGradient(0,64,0,76); wg.addColorStop(0,"rgba(22,35,62,0)"); wg.addColorStop(0.4,"#1c2c4c"); wg.addColorStop(1,"#142038");
+    ctx.fillStyle=wg; ctx.fillRect(26,62,44,16);
+    ctx.strokeStyle="rgba(16,26,48,0.6)"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(28,64); ctx.lineTo(68,64); ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,0.5)"; ctx.beginPath(); ctx.ellipse(36,52,9,5.5,-0.5,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.lineWidth=3; ctx.strokeStyle=OUT; rrVan(ctx,26,44,44,32,15); ctx.stroke();
+
+    cfVan(ctx,48,56,8,NAVY);
+    ctx.lineWidth=2.5; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(48,56,8,0,Math.PI*2); ctx.stroke();
+    const dome=ctx.createRadialGradient(45.5,53.5,1,48,56,7); dome.addColorStop(0,"#aebccf"); dome.addColorStop(0.6,"#5a6a85"); dome.addColorStop(1,"#2b3a57");
+    ctx.fillStyle=dome; ctx.beginPath(); ctx.arc(48,56,5.7,0,Math.PI*2); ctx.fill();
+    cfVan(ctx,46,53.8,1.5,"rgba(255,255,255,0.85)");
+
+    function pod(cx){
+      cfVan(ctx,cx,32,6,NAVY);
+      ctx.lineWidth=2.3; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(cx,32,6,0,Math.PI*2); ctx.stroke();
+      cfVan(ctx,cx,32,2.8,NAVY2); cfVan(ctx,cx-0.8,31,1,"rgba(255,255,255,0.6)");
+    }
+    pod(25); pod(71);
+
+    ctx.fillStyle=NAVY; ctx.beginPath(); ctx.moveTo(45,16); ctx.lineTo(51,16); ctx.lineTo(49.2,8); ctx.lineTo(46.8,8); ctx.closePath(); ctx.fill();
+    const halo=ctx.createRadialGradient(48,5,1,48,5,11); halo.addColorStop(0,"rgba(90,200,255,0.55)"); halo.addColorStop(1,"rgba(90,200,255,0)");
+    ctx.fillStyle=halo; ctx.beginPath(); ctx.arc(48,5,11,0,Math.PI*2); ctx.fill();
+    const bg=ctx.createRadialGradient(46.3,3.5,0.5,48,5,5.5); bg.addColorStop(0,"#e6f7ff"); bg.addColorStop(0.4,"#48b4ff"); bg.addColorStop(1,"#1670d8");
+    ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(48,5,5.5,0,Math.PI*2); ctx.fill();
+    cfVan(ctx,46.2,3.4,1.6,"#ffffff");
+
+    rrVan(ctx,26,14,44,34,17); ctx.fillStyle=white(28,15,68,15); ctx.fill();
+    ctx.lineWidth=3; ctx.strokeStyle=OUT; ctx.stroke();
+    ctx.save(); rrVan(ctx,26,14,44,34,17); ctx.clip();
+    ctx.fillStyle="rgba(255,255,255,0.6)"; ctx.beginPath(); ctx.ellipse(38,19,10,4,-0.5,0,Math.PI*2); ctx.fill(); ctx.restore();
+
+    rrVan(ctx,30,20,36,23,12); ctx.fillStyle=NAVY; ctx.fill();
+    rrVan(ctx,32.5,22,31,19,10);
+    const vg=ctx.createLinearGradient(0,22,0,41); vg.addColorStop(0,"#7fd4ff"); vg.addColorStop(0.5,"#2a9bf0"); vg.addColorStop(1,"#1366c6");
+    ctx.fillStyle=vg; ctx.fill();
+    ctx.save(); rrVan(ctx,32.5,22,31,19,10); ctx.clip();
+    ctx.fillStyle="rgba(255,255,255,0.45)"; ctx.beginPath(); ctx.ellipse(42,25,9,3.5,-0.4,0,Math.PI*2); ctx.fill(); ctx.restore();
+
+    if(!blink){
+      ctx.fillStyle="#0a0f1c";
+      ctx.beginPath(); ctx.ellipse(41,30,3.3,4,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(55,30,3.3,4,0,0,Math.PI*2); ctx.fill();
+      cfVan(ctx,42.3,28.4,1.5,"#fff"); cfVan(ctx,39.9,31,0.8,"#fff");
+      cfVan(ctx,56.3,28.4,1.5,"#fff"); cfVan(ctx,53.9,31,0.8,"#fff");
+    } else if(blink==="happy"){
+      ctx.lineWidth=3.2; ctx.strokeStyle="#0a0f1c"; ctx.lineCap="round";
+      ctx.beginPath(); ctx.arc(41,31,3.9,0.10*Math.PI,0.90*Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(55,31,3.9,0.10*Math.PI,0.90*Math.PI); ctx.stroke();
+      cfVan(ctx,33.5,35.5,3,"rgba(255,120,120,0.55)");
+      cfVan(ctx,62.5,35.5,3,"rgba(255,120,120,0.55)");
+    } else {
+      ctx.lineWidth=3; ctx.strokeStyle="#0a0f1c";
+      ctx.beginPath(); ctx.arc(41,31,3.5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(55,31,3.5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+    }
+    ctx.fillStyle="#0a0f1c";
+    if(blink==="happy"){
+      ctx.beginPath(); ctx.ellipse(48,36,6.2,4.2,0,0,Math.PI); ctx.fill();
+      ctx.fillStyle="#ff7a7a";
+      ctx.beginPath(); ctx.ellipse(48,38,3.2,1.9,0,0,Math.PI); ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.ellipse(48,36,4.6,3.2,0,0,Math.PI); ctx.fill();
+      ctx.fillStyle="#ff7a7a";
+      ctx.beginPath(); ctx.ellipse(48,37.4,2.4,1.5,0,0,Math.PI); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  
+(function(){
+ const cv=$('#fixed-robot-cv'),bub=$('#fixedRobotBubble'),ctx=cv.getContext('2d');ctx.scale(2,2);
+ let busy=false,t=null,di=0;
+ const frame=(b,st,up)=>drawVanBerto(ctx,b,st,up);
+ frame(false,-1,false);
+ const blink=()=>{if(busy)return;frame(true,-1,false);setTimeout(()=>{if(!busy)frame(false,-1,false)},180)};
+ const walk=()=>{if(busy)return;busy=true;let i=0;const iv=setInterval(()=>{frame(false,i%2===0?0:1,false);if(++i>=6){clearInterval(iv);frame(false,-1,false);busy=false}},170)};
+ const jump=m=>{if(busy)return;busy=true;cv.classList.remove('bounce');void cv.offsetWidth;cv.classList.add('bounce');frame(m==='sad'?true:'happy',-1,m!=='sad');setTimeout(()=>{frame(false,-1,false);busy=false},700)};
+ window.say=(m,mood)=>{clearTimeout(t);bub.textContent=m;bub.classList.add('show');jump(mood);t=setTimeout(()=>bub.classList.remove('show'),3800)};
+ window.dance=()=>{if(busy)return;busy=true;let i=0;frame('happy',0,true);const iv=setInterval(()=>{i++;if(i>=8){clearInterval(iv);frame(false,-1,false);busy=false;return}frame('happy',i%2?1:0,i%2===0)},170)};
+ setInterval(()=>{if(!busy)Math.random()<.5?blink():walk()},3600);
+ cv.onclick=()=>say(DICAS[di++%DICAS.length]);
+ cv.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cv.onclick()}};
+ setTimeout(()=>say(DICAS[0]),1200);
+})();
+
+/* ---------- missões ---------- */
+const OPT=[[2,3,3,3,4],[4,4,6,4,6],[4,4,7,7],[5,4,5,4,6]];
+let P={name:'',d:{}};
+try{P=JSON.parse(localStorage.getItem('vbf'))||P}catch(e){}
+const save=()=>{try{localStorage.setItem('vbf',JSON.stringify(P))}catch(e){}};
+let AC;
+function beep(f,d,t,w){
+ if(!$('#snd').checked)return;
+ try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+(w||0);
+ o.type=t||'square';o.frequency.value=f;g.gain.setValueAtTime(.05,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}
+}
+if(!P.name){try{P.name=(localStorage.getItem('vanbertos_student_name_v1')||'').trim().slice(0,40)}catch(e){}}
+$('#nm').value=P.name||'';$('#nm').oninput=e=>{P.name=e.target.value.trim().slice(0,40);save()};
+$('#sp').onchange=e=>{SPD=+e.target.value};
+function levels(){
+ $('#cys').innerHTML=CY.map((c,i)=>'<button class="lvb'+(i===cy?' on':'')+'" data-c="'+i+'">'+c.n+'</button>').join('');
+ $('#lvs').innerHTML=LV.map((_,i)=>{const s=P.d[cy+'-'+i];return '<button class="lvb'+(i===lv?' on':'')+'" data-l="'+i+'">Missão '+(i+1)+(s?' '+'⭐'.repeat(s):'')+'</button>'}).join('');
+ $('#mis').textContent=LV[lv].t+(LV[lv].max?' (máx. '+LV[lv].max+' blocos, sem contar o «fim»)':'');
+ document.querySelectorAll('.pal button').forEach(b=>b.style.display=CY[cy].b.includes(b.dataset.a)?'':'none');
+ $('#pyb').style.display=CY[cy].py?'':'none';
+ if(!CY[cy].py)$('#pyw').style.display='none';
+}
+$('#cys').onclick=e=>{const b=e.target.closest('button');if(!b||running)return;cy=+b.dataset.c;LV=CY[cy].lv;lv=0;clear();levels();render();reset();$('#msg').textContent='';if(CY[cy].py===2)$('#pyw').style.display='block';say(LV[lv].t)};
+$('#lvs').onclick=e=>{const b=e.target.closest('button');if(!b||running)return;lv=+b.dataset.l;clear();levels();render();reset();$('#msg').textContent='';say(LV[lv].t)};
+function certificate(){
+ const c=document.createElement('canvas');c.width=900;c.height=640;const g=c.getContext('2d');
+ g.fillStyle='#fbf3dc';g.fillRect(0,0,900,640);
+ g.strokeStyle='#1c2340';g.lineWidth=8;g.strokeRect(24,24,852,592);g.strokeStyle='#e5a000';g.lineWidth=3;g.strokeRect(40,40,820,560);
+ g.fillStyle='#1c2340';g.textAlign='center';
+ const st=LV.reduce((a,_,i)=>a+(P.d[cy+'-'+i]||0),0);
+ const T2=(t,y,f)=>{g.font=f;g.fillText(t,450,y)};
+ T2('Certificado',130,'bold 52px system-ui');
+ T2('VanBerto’s — Fábrica de Carros',178,'24px system-ui');
+ T2('Certificamos que',250,'22px system-ui');
+ T2(P.name||'Aluno(a)',312,'bold 46px system-ui');
+ T2('concluiu as '+LV.length+' missões do '+CY[cy].n,372,'22px system-ui');
+ T2('★'.repeat(st)+'☆'.repeat(9-st),440,'44px system-ui');
+ T2('Programou uma fábrica com blocos'+(CY[cy].py?' e Python':'')+'!',492,'20px system-ui');
+ T2(new Date().toLocaleDateString('pt-PT'),540,'20px system-ui');
+ T2('Professora Vanda Várzea — Professora de TIC',588,'bold 22px system-ui');
+ const rb=document.createElement('canvas');rb.width=rb.height=480;const rg=rb.getContext('2d');rg.scale(5,5);drawVanBerto(rg,'happy',-1,true);g.drawImage(rb,730,70,130,130);
+ $('#cimg').src=c.toDataURL('image/png');$('#cert').style.display='block';
+}
+$('#cx').onclick=()=>$('#cert').style.display='none';
+$('#cdl').onclick=()=>{const a=document.createElement('a');a.href=$('#cimg').src;a.download='certificado-fabrica.png';a.click()};
+$('#go').onclick=async()=>{
+ if(running)return;
+ const L=LV[lv],tests=L.tests||[null],e0=tests[Math.floor(Math.random()*tests.length)];
+ const acts=expand(e0?{...e0}:null);
+ if(!acts.length){say('Junta primeiro alguns blocos! 🙂');return}
+ if(acts.length>40){say('Programa muito grande! Usa o repetir com menos vezes.','sad');return}
+ running=true;$('#msg').textContent='';reset();tStart();showEnv(e0?{...e0}:null);
+ const lab=e0?(e0.cor?'📋 Encomenda '+(e0.cor==='B'?'azul':'vermelha')+' · ':'🔩 Peças por soldar: '+e0.pecas+' · '):'';
+ const off=()=>document.querySelectorAll('.chip.run').forEach(c=>c.classList.remove('run'));
+ for(let i=0;i<acts.length;i++){
+  off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');
+  $('#msg').textContent=lab+'Passo '+(i+1)+' de '+acts.length;await ACT[acts[i].k]();
+ }
+ off();running=false;tStop();
+ const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a,seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)).join(),goal=e=>nz(L.x?L.x(e):L.g).join(),shownOk=seq(e0)===goal(e0),okSeq=tests.every(e=>seq(e)===goal(e)),ok=okSeq&&(!L.max||cnt<=L.max);
+ if(ok){
+  const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;
+  if((P.d[key]||0)<st)P.d[key]=st;save();levels();
+  const all=LV.every((_,i)=>P.d[cy+'-'+i]);
+  $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆')+(all?' <button id="ce" style="background:#e5a000">🎓 Certificado</button>':'');
+  say('Boa! A fábrica está orgulhosa de ti! 🎉');dance();
+  beep(523,.12);beep(659,.12,'square',.12);beep(784,.25,'square',.24);
+  const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent='';say(LV[lv].t)};
+  const ce=$('#ce');if(ce)ce.onclick=certificate;
+ }else{
+  $('#msg').textContent=okSeq?'❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!':(shownOk?'❌ Funciona neste carro, mas não em todos! O programa tem de servir para qualquer carro.':'❌ Ainda não é isto. Lê outra vez a missão e tenta de novo.');
+  say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
+ }
+};
+levels();render();
+</script>
+</body>
+</html>
