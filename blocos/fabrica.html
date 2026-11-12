@@ -106,24 +106,29 @@ const CY=[
  {t:'Solda, pinta de vermelho e entrega.',g:['S','R','E']},
  {t:'Solda, pinta de azul e entrega.',g:['S','B','E']},
  {t:'Solda e pinta o carro da cor que quiseres. Depois entrega!',g:['S','P','E'],free:true},
- {t:'Faz o carro: solda, pinta de vermelho, monta o motor e entrega.',g:['S','R','M','E']}]},
+ {t:'Faz o carro: solda, pinta de vermelho, monta o motor e entrega.',g:['S','R','M','E']},
+ {t:'Faz um carro verde com motor: solda, pinta de verde, monta o motor e entrega.',g:['S','G','M','E']}]},
 {n:'2.º Ciclo',b:ALL,py:0,lv:[
  {t:'Solda 3 vezes, pinta de vermelho e entrega. Dica: usa o repetir!',g:[...x(3,'S'),'R','E']},
  {t:'Solda 4 vezes, pinta de azul e entrega.',g:[...x(4,'S'),'B','E']},
  {t:'Solda 2 vezes, pinta de vermelho, solda mais 2 vezes e entrega.',g:['S','S','R','S','S','E']},
  {t:'Solda 3 vezes, pinta da cor que quiseres e entrega.',g:[...x(3,'S'),'P','E'],free:true},
- {t:'Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.',g:['S','R','M',...x(4,'W'),'E']}]},
+ {t:'Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.',g:['S','R','M',...x(4,'W'),'E']},
+ {t:'Carro amarelo completo: solda 2 vezes, pinta de amarelo, monta o motor, monta as 4 rodas e entrega.',g:['S','S','Y','M',...x(4,'W'),'E']}]},
 {n:'3.º Ciclo',b:ALL,py:1,lv:[
  {t:'Solda 5 vezes, pinta de azul e entrega.',g:[...x(5,'S'),'B','E']},
  {t:'Repete 3 vezes: soldar e pintar de vermelho. Depois entrega.',g:['S','R','S','R','S','R','E']},
  {t:'Solda 3 vezes, pinta de vermelho, solda 3 vezes, pinta de azul e entrega.',g:[...x(3,'S'),'R',...x(3,'S'),'B','E']},
- {t:'Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.',g:['S','S','B','M',...x(4,'W'),'E']}]},
+ {t:'Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.',g:['S','S','B','M',...x(4,'W'),'E']},
+ {t:'Repete 3 vezes: soldar e pintar de verde. Depois monta o motor, as 4 rodas e entrega.',g:['S','G','S','G','S','G','M',...x(4,'W'),'E']}]},
 {n:'Secundário',b:[...ALL,'ifB','ifR','else','wh'],py:2,lv:[
  {t:'Repete 2 vezes: soldar, soldar e pintar de vermelho. Depois entrega.',max:5,g:['S','S','R','S','S','R','E']},
  {t:'Solda 12 vezes e entrega. Dica: repetir dentro de repetir!',max:4,g:[...x(12,'S'),'E']},
  {t:'Repete 2 vezes: soldar 4 vezes e pintar de vermelho. Depois entrega.',max:5,g:[...x(4,'S'),'R',...x(4,'S'),'R','E']},
  {t:'Cada carro chega com um número diferente de peças por soldar. Usa «enquanto» para soldar todas, pinta de vermelho e entrega.',max:4,tests:[{pecas:2},{pecas:3},{pecas:5}],x:e=>[...x(e.pecas,'S'),'R','E']},
- {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.',max:7,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'E']}]}
+ {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.',max:7,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'E']},
+ {t:'Cada carro chega com peças por soldar. Solda todas (usa «enquanto»), pinta de azul, monta o motor, as 4 rodas e entrega.',max:8,tests:[{pecas:1},{pecas:4},{pecas:5}],x:e=>[...x(e.pecas,'S'),'B','M',...x(4,'W'),'E']},
+ {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda, monta o motor, as 4 rodas e entrega.',max:10,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'M',...x(4,'W'),'E']}]}
 ];
 let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,light=false;
 
@@ -525,7 +530,7 @@ function rrVan(ctx,x,y,w,h,r){
 })();
 
 /* ---------- missões ---------- */
-const OPT=[[2,3,3,3,4],[4,4,6,4,6],[4,4,7,7],[5,4,5,4,6]];
+const OPT=[[2,3,3,3,4,4],[4,4,6,4,6,7],[4,4,7,7,7],[5,4,5,4,6,7,9]];
 let P={name:'',d:{}};
 try{P=JSON.parse(localStorage.getItem('vbf'))||P}catch(e){}
 const save=()=>{try{localStorage.setItem('vbf',JSON.stringify(P))}catch(e){}};
@@ -620,7 +625,7 @@ $('#go').onclick=async()=>{
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent='';say(LV[lv].t)};
   const ce=$('#ce');if(ce)ce.onclick=certificate;
  }else{
-  $('#msg').textContent=okSeq?'❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!':(shownOk?'❌ Funciona neste carro, mas não em todos! O programa tem de servir para qualquer carro.':'❌ Ainda não é isto. Lê outra vez a missão e tenta de novo.');
+  $('#msg').textContent=okSeq?'❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!':(shownOk?'❌ Funciona neste carro, mas não em todos! O programa tem de servir para qualquer carro.':(()=>{const A=nz(expand(e0?{...e0}:null).map(a=>a.k)),G=nz(L.x?L.x(e0):L.g),nm=k=>k==='P'?'🎨 pintar (uma cor)':NAME[k],i=A.findIndex((k,j)=>k!==G[j]);return i>=0&&i<G.length?'❌ No passo '+(i+1)+' fizeste «'+nm(A[i])+'», mas a missão pedia «'+nm(G[i])+'».':A.length<G.length?'❌ Faltou fazer «'+nm(G[A.length])+'» (passo '+(A.length+1)+').':'❌ Fizeste passos a mais depois do que a missão pedia.'})());
   say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
  }
 };
