@@ -2068,7 +2068,7 @@ function applyUniverse(uid){
 document.querySelectorAll(".universe-card").forEach(card=>{
   card.addEventListener("click",()=>{
     const uid=card.getAttribute("data-universe");
-    if(uid==="escaperooms"||uid==="fabrica"||uid==="casa") return; // escaperooms: módulo ER; fabrica/casa: vb-blocos.js
+    if(uid==="escaperooms"||uid==="fabrica"||uid==="casa"||uid==="natal") return; // escaperooms: módulo ER; fabrica/casa/natal: vb-blocos.js
     applyUniverse(uid);
     showScreen("menu-screen");
     setFeedback(T('fbUniverseSelected',{name:ALL_UNIVERSES[uid].name}),"ok");

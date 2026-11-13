@@ -55,7 +55,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <header><h1>🏠 Hora do Código · Casa Inteligente e Cão Robô</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
 <div class="card">
 <canvas id="cv" width="640" height="360"></canvas>
-<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
+<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
 </div>
 <div class="card">
 <div class="lv" id="cys"></div>
@@ -82,6 +82,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <div id="fixed-robot-wrap"><div class="fixed-bubble" id="fixedRobotBubble" role="status" aria-live="polite">Olá! 😊</div><canvas class="fixed-robot" id="fixed-robot-cv" width="192" height="192" role="button" tabindex="0" aria-label="Robô VanBerto's — clica para falar"></canvas></div>
 <div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#16a34a">⬇ Guardar PNG</button><button id="cpr" style="background:#3776ab">🖨️ Imprimir</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
 <script src="three.min.js"></script>
+<script src="vb-core.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const NAME={F:'🐕 andar',L:'↺ virar à esquerda',R:'↻ virar à direita',luz:'💡 luz',porta:'🚪 abrir porta',rep:'🔁 repetir',wh:'🔄 enquanto caminho livre',ifO:'🔀 se luz apagada aqui',else:'↔ senão',end:'fim'};
@@ -96,6 +97,7 @@ const CY=[
  {t:'Leva o cão até à tigela 🦴.',start:s(0,2,0),target:[3,2]},
  {t:'Leva o cão até à tigela. Atenção às curvas!',start:s(0,0,0),target:[2,2]},
  {t:'Acende o candeeiro 💡 e depois vai até à tigela.',start:s(0,1,0),lamps:[[2,1]],target:[2,3]},
+ {t:'🐞 Encontra o erro! Era para levar o cão à tigela, mas o programa tem um erro. Corrige-o!',start:s(0,2,0),target:[3,2],pre:[{k:'F'},{k:'F'},{k:'L'},{k:'F'}]},
  {t:'Há um sofá no caminho! Contorna-o e leva o cão até à tigela.',start:s(0,1,0),walls:[[1,1]],target:[2,1]},
  {t:'Acende os 2 candeeiros e termina na tigela.',start:s(0,0,0),lamps:[[1,0],[3,0]],target:[3,0]}]},
 {n:'2.º Ciclo',b:['F','L','R','luz','rep'],py:0,lv:[
@@ -114,21 +116,11 @@ const CY=[
  {t:'Alguns candeeiros já estão acesos! O botão 💡 liga e desliga. Garante que ficam todos acesos (usa «se»).',start:s(0,1,0),lamps:[[1,1],[2,1],[3,1]],target:[3,1],max:4,tests:[{on:[[1,1]]},{on:[[2,1]]},{on:[[1,1],[3,1]]},{on:[]}]},
  {t:'Percorre o corredor todo, sem saber que candeeiros estão acesos. Acende só os que estiverem apagados (usa «enquanto» e «se»).',start:s(0,1,0),lamps:[[1,1],[2,1],[3,1],[4,1],[5,1]],target:[5,1],max:4,tests:[{on:[]},{on:[[2,1],[4,1]]},{on:[[1,1],[3,1],[5,1]]},{on:[[1,1],[2,1]]}]}]}
 ];
-const OPT=[[3,5,6,7,5],[2,5,5,5],[4,5,7,5],[2,4,4,4]];
+const OPT=[[3,5,6,3,7,5],[2,5,5,5],[4,5,7,5],[2,4,4,4]];
 let prog=[];
 const mk=(L,t)=>({start:t.start||L.start,target:t.target||L.target,lamps:L.lamps||[],walls:t.walls||L.walls||[],doors:L.doors||[],on:t.on||L.on||[]});
 const blocked=(E,st,x,y)=>x<0||y<0||x>=W||y>=H||E.walls.some(w=>w[0]===x&&w[1]===y)||E.doors.some((d,i)=>d.x===x&&d.y===y&&!st.open.has(i));
-function build(){
- const root={b:[]},st=[root];
- prog.forEach((t,i)=>{
-  const top=st[st.length-1],add=n=>(top.inElse?top.e:top.b).push(n);
-  if(OPEN.includes(t.k)){const n={t,i,b:[],e:null,inElse:false};add(n);st.push(n)}
-  else if(t.k==='else'){if(top!==root){top.inElse=true;top.e=[]}}
-  else if(t.k==='end'){if(st.length>1)st.pop()}
-  else add({t,i});
- });
- return root.b;
-}
+function build(){return VB.build(prog,OPEN)}
 function exec(nodes,E,st,out){
  for(const nd of nodes){
   if(st.stop||out.length>60)return;
@@ -484,7 +476,7 @@ function parsePy(t){
  return out;
 }
 let sel=-1;
-function clear(){prog=[];sel=-1}
+function clear(){prog=(LV[lv]&&LV[lv].pre)?JSON.parse(JSON.stringify(LV[lv].pre)):[];sel=-1}
 function render(){
  let ind=0;const h=[];
  prog.forEach((b,i)=>{
@@ -499,11 +491,7 @@ function render(){
  $('#prog').innerHTML=h.join('')||'<span style="opacity:.6">Toca nos blocos acima. Toca num bloco do programa para escolher onde juntar o próximo.</span>';
  const t=$('#py');if(document.activeElement!==t)t.value=toPy();
 }
-function delBlock(i){
- const rm=[i];
- if(OPEN.includes(prog[i].k)){let d=1;for(let j=i+1;j<prog.length;j++){const k=prog[j].k;if(OPEN.includes(k))d++;else if(k==='else'&&d===1)rm.push(j);else if(k==='end'&&--d===0){rm.push(j);break}}}
- rm.sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render();
-}
+function delBlock(i){VB.delRange(prog,i,OPEN).sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render()}
 let running=false,cy=0,LV=CY[0].lv,lv=0;
 document.querySelector('.pal').onclick=e=>{
  const a=e.target.closest('button');if(!a||running)return;
@@ -528,7 +516,7 @@ let P={name:'',d:{}};
 try{P=JSON.parse(localStorage.getItem('vbc'))||P}catch(e){}
 const save=()=>{try{localStorage.setItem('vbc',JSON.stringify(P))}catch(e){}};
 if(!P.name){try{P.name=(localStorage.getItem('vanbertos_student_name_v1')||'').trim().slice(0,40)}catch(e){}}
-$('#nm').value=P.name||'';$('#nm').oninput=e=>{P.name=e.target.value.trim().slice(0,40);save()};
+if(!P.name)P.name=(function(){try{return localStorage.getItem('vanbertos_student_name_v1')||''}catch(e){return ''}})();$('#nm').value=P.name||'';$('#nm').oninput=e=>{P.name=e.target.value.trim().slice(0,40);save()};
 $('#sp').onchange=e=>{SPD=+e.target.value};
 function preview(){const L=LV[lv],E=mk(L,(L.tests||[{}])[0]);window.__E=E;show(E)}
 function levels(){
@@ -548,7 +536,7 @@ $('#go').onclick=async()=>{
  running=true;$('#msg').textContent='';window.__E=E0;show(E0);
  const off=()=>document.querySelectorAll('.chip.run').forEach(c=>c.classList.remove('run'));
  for(let i=0;i<acts.length;i++){
-  off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');
+  off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');if(document.getElementById('stp')&&document.getElementById('stp').checked)await VB.step();
   $('#msg').textContent='Passo '+(i+1)+' de '+acts.length;await play(acts[i]);
  }
  off();running=false;

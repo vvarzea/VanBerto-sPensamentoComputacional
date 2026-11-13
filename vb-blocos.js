@@ -3,7 +3,7 @@
 (function(){
   var GAMES={
     fabrica:{title:'🏭 Fábrica de Carros',src:'blocos/fabrica.html',key:'vbf',max:78},
-    natal:{title:'🎅 Fábrica do Pai Natal',src:'blocos/natal.html',key:'vbn',max:45},
+    natal:{title:'🎅 Fábrica do Pai Natal',src:'blocos/natal.html',key:'vbn',max:60},
     casa:{title:'🏠 Casa Inteligente e Cão Robô',src:'blocos/casa-cao.html',key:'vbc',max:54}
   };
   var ov=null,fr=null,INLINE=window.VB_BLOCOS_INLINE||null;
