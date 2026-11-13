@@ -15,6 +15,8 @@ button[style*=background],#go,#clr,#pyb{color:#fff}
 .lv,.pal,.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
 .lvb.on{background:#ffd23f}
 #stage{background:linear-gradient(#10224a,#1b3a6b);border:2.5px solid var(--ink);border-radius:14px;padding:10px;color:#fff;position:relative;overflow:hidden}
+.row label{font:800 .9rem 'Nunito',system-ui,sans-serif;display:flex;align-items:center;gap:5px}select{font:800 .9rem 'Nunito',sans-serif;border:2.5px solid var(--ink);border-radius:10px;padding:4px 6px}
+#c3d{height:clamp(260px,46vw,420px);border-radius:12px;overflow:hidden;margin-bottom:6px}#c3d canvas{display:block}
 #st{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;text-align:center;font-weight:800;font-size:.8rem}
 #st div{background:rgba(255,255,255,.1);border-radius:12px;padding:8px 2px;border:2px solid transparent}
 #st div.on{border-color:#ffd23f;background:rgba(255,210,63,.25)}#st i{display:block;font-size:1.8rem;font-style:normal}
@@ -31,9 +33,9 @@ button[style*=background],#go,#clr,#pyb{color:#fff}
 footer{text-align:center;opacity:.6;font-weight:800}
 </style></head><body><div class="w">
 <header><h1>🎅 Hora do Código · Fábrica do Pai Natal</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
-<div class="card"><div id="stage"><div id="st"><div><i>🔨</i>Oficina</div><div><i>🎁</i>Embrulho</div><div><i>🎀</i>Laços</div><div><i>✉️</i>Cartões</div><div><i>🛷</i>Trenó</div></div>
-<div id="belt"><div id="toy"></div></div><div id="info"><span>🎄 Prendas no trenó: <b id="hd">0</b></span><span id="ped"></span></div></div>
-<div class="row" style="margin-top:8px"><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label></div></div>
+<div class="card"><div id="stage"><div id="c3d"></div><div id="st" class="fb"><div><i>🔨</i>Oficina</div><div><i>🎁</i>Embrulho</div><div><i>🎀</i>Laços</div><div><i>✉️</i>Cartões</div><div><i>🛷</i>Trenó</div></div>
+<div id="belt" class="fb"><div id="toy"></div></div><div id="info"><span>🎄 Prendas no trenó: <b id="hd">0</b></span><span id="ped"></span></div></div>
+<div class="row" style="margin-top:8px"><label>👤 <input id="nm" maxlength="14" placeholder="O teu nome" style="font:800 .9rem Nunito,sans-serif;border:2.5px solid #1e1b4b;border-radius:12px;padding:6px 10px;width:150px"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊 Som</label><label><input type="checkbox" id="lgt"> ⚡ Modo leve</label></div></div>
 <div class="card"><div class="lv" id="cys"></div><div class="lv" id="lvs"></div><div id="mis"></div>
 <div class="pal">
 <button style="background:#b45309" data-a="F">🔨 fazer brinquedo</button>
@@ -52,6 +54,7 @@ footer{text-align:center;opacity:.6;font-weight:800}
 <div class="row"><button id="go">▶ Executar</button><button id="clr">🗑 Limpar</button><button id="pyb">🐍 Ver em Python</button></div>
 <div id="msg"></div><div id="pyw"><textarea id="py" rows="6" readonly></textarea></div></div>
 <footer>© Prof.ª Vanda Várzea</footer></div>
+<script src="three.min.js"></script>
 <script src="vb-core.js"></script>
 <script>
 const $=s=>document.querySelector(s);
@@ -83,7 +86,7 @@ const CY=[
  {t:'Pedido completo! Faz todos os brinquedos que faltam, embrulha na cor do pedido, põe o laço e coloca no trenó.',max:9,tests:[{pecas:1,cor:'B'},{pecas:3,cor:'R'},{pecas:4,cor:'B'}],x:e=>[...x(e.pecas,'F'),e.cor,'L','E']}]}
 ];
 const OPT=[[2,3,4,5],[4,5,7,5,4],[5,6,6],[5,8,8]];
-const FAILS={};let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,P={d:{}};
+let T3=null;let AC=null;const FAILS={};let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,P={d:{}};
 try{P=JSON.parse(localStorage.getItem('vbn'))||P}catch(e){}
 const save=()=>{try{localStorage.setItem('vbn',JSON.stringify(P))}catch(e){}};
 const OPEN=['rep','wh','ifB','ifR'];
@@ -121,18 +124,18 @@ function levels(){
 /* ---- animação ---- */
 const sleep=ms=>new Promise(r=>setTimeout(r,ms/SPD));
 let state,done=0;
-function showToy(){const t=$('#toy');if(!state.made){t.innerHTML='';return}
+function showToy(){if(T3)T3.sync();const t=$('#toy');if(!state.made){t.innerHTML='';return}
  t.innerHTML='<span style="background:'+(state.paper?PAPER[state.paper]:'transparent')+'">🧸</span>'+(state.ribbon?'🎀':'')+(state.card?'✉️':'')}
 function showEnv(e){$('#ped').textContent=e?(e.cor?'📋 Pedido '+(e.cor==='B'?'azul':'vermelho')+' ':'')+(e.pecas!=null?'🔩 Por fazer: '+e.pecas:''):''}
-function reset(e){state={made:0,paper:null,ribbon:false,card:false};showToy();$('#toy').style.left='0';document.querySelectorAll('#st div').forEach(d=>d.classList.remove('on'));showEnv(e||null)}
+function reset(e){done=0;$('#hd').textContent=0;if(T3)T3.clear();state={made:0,paper:null,ribbon:false,card:false};showToy();$('#toy').style.left='0';document.querySelectorAll('#st div').forEach(d=>d.classList.remove('on'));showEnv(e||null)}
 async function act(k,env){
  const s=STN[k];document.querySelectorAll('#st div').forEach((d,i)=>d.classList.toggle('on',i===s));
- $('#toy').style.left=s*20+'%';await sleep(500);
- if(k==='F'){state.made=1;if(env&&env.pecas>0){env.pecas--;showEnv(env)}}
+ $('#toy').style.left=s*20+'%';if(T3)T3.go(s);beep(220+s*110,.12);await sleep(500);
+ if(k==='F'){if(!state.made&&T3)T3.newToy();state.made=1;if(env&&env.pecas>0){env.pecas--;showEnv(env)}}
  else if('RBG'.includes(k))state.paper=k;
  else if(k==='L')state.ribbon=true;else if(k==='C')state.card=true;
- else if(k==='E'){done++;$('#hd').textContent=done}
- showToy();await sleep(300)}
+ else if(k==='E'){done++;$('#hd').textContent=done;if(T3)T3.deliver();beep(660,.2);state={made:0,paper:null,ribbon:false,card:false}}
+ showToy();await sleep(300);if(T3)T3.idle()}
 /* ---- eventos ---- */
 document.querySelector('.pal').onclick=e=>{const a=e.target.closest('button');if(!a||running)return;
  const k=a.dataset.a,items=k==='rep'?[{k:'rep',n:2},{k:'end'}]:OPEN.includes(k)?[{k},{k:'end'}]:[{k}];
@@ -159,13 +162,75 @@ $('#go').onclick=async()=>{
  const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBG'.includes(k)?'P':k):a,
   seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)),goal=e=>nz(L.x?L.x(e):L.g),
   shownOk=seq(e0).join()===goal(e0).join(),okSeq=tests.every(e=>seq(e).join()===goal(e).join()),ok=okSeq&&(!L.max||cnt<=L.max);
- if(ok){const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;if((P.d[key]||0)<st)P.d[key]=st;FAILS[key]=0;save();levels();
-  $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆');
+ if(ok){const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;if((P.d[key]||0)<st)P.d[key]=st;FAILS[key]=0;save();levels();fan();
+  $('#msg').innerHTML='✅ Missão cumprida'+(P.name?', '+P.name:'')+'! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆');
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent=''}}
  else{let m;
   if(okSeq)m='❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!';
   else if(shownOk)m='❌ Funciona neste pedido, mas não em todos! O programa tem de servir para qualquer pedido.';
   else{const fk=cy+'-'+lv;FAILS[fk]=(FAILS[fk]||0)+1;m=VB.hint(FAILS[fk],seq(e0),goal(e0),k=>k==='P'?'🎁 embrulhar (uma cor)':NAME[k])}
   $('#msg').textContent=m}};
+function beep(f,d){if(!$('#snd').checked)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+function fan(){if(T3)T3.cheer();[523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.18),i*140))}
+const nm=$('#nm');try{const o=JSON.parse(localStorage.getItem('vbf')||localStorage.getItem('vbc')||'{}');nm.value=P.name||o.name||''}catch(e){}
+nm.oninput=()=>{P.name=nm.value.trim();save()};
+const IMG={treno:'natal-treno.png',robo:'natal-robo.png'};
+/* ---- cena 3D (se o WebGL falhar, fica o palco 2D de emojis) ---- */
+(function(){
+ const box=$('#c3d'),lgt=$('#lgt');let R;
+ try{if(!window.THREE)throw 0;const c=document.createElement('canvas');if(!(c.getContext('webgl')||c.getContext('experimental-webgl')))throw 0;R=new THREE.WebGLRenderer({antialias:true})}catch(e){box.style.display='none';return}
+ document.querySelectorAll('.fb').forEach(e=>e.style.display='none');
+ try{lgt.checked=!!localStorage.getItem('vbn_leve')}catch(e){}
+ const sc=new THREE.Scene();sc.background=new THREE.Color(0x10224a);sc.fog=new THREE.Fog(0x10224a,24,50);
+ const cam=new THREE.PerspectiveCamera(42,2,.1,100);cam.position.set(0,8.5,14.5);cam.lookAt(0,.6,0);
+ sc.add(new THREE.AmbientLight(0xffffff,.7));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(6,12,8);sc.add(dl);
+ const M=c=>new THREE.MeshLambertMaterial({color:c}),BG=THREE.BoxGeometry;
+ const add=(g,m,x,y,z,p)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);(p||sc).add(o);return o};
+ add(new BG(36,.4,12),M(0xeaf4ff),0,-.45,-1);add(new BG(27,.3,2.4),M(0x333844),0,-.1,0);
+ for(let i=-12;i<=12;i+=1.5)add(new BG(.5,.05,2.4),M(0x4a5060),i,.07,0);
+ const XS=[-9,-4.5,0,4.5,9],EM=['🔨','🎁','🎀','✉️','🛷'],TX=['Oficina','Embrulho','Laços','Cartões','Trenó'],CO=[0xb45309,0xe5484d,0xd946a8,0x0e7490,0xc0392b],arms=[];
+ XS.forEach((x,i)=>{
+  const c=document.createElement('canvas');c.width=256;c.height=128;const g=c.getContext('2d');g.fillStyle='rgba(16,34,74,.9)';g.fillRect(0,0,256,128);g.font='54px sans-serif';g.textAlign='center';g.fillStyle='#fff';g.fillText(EM[i],128,62);g.font='bold 28px sans-serif';g.fillText(TX[i],128,108);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c)}));sp.scale.set(3,1.5,1);sp.position.set(x,4.4,-2.8);sc.add(sp);
+  if(i<4){add(new THREE.CylinderGeometry(1.5,1.7,.25,24),M(CO[i]),x,.05,-2.8);add(new THREE.CylinderGeometry(.5,.6,.9,16),M(0x555b6e),x,.6,-2.8);
+   const p=new THREE.Group();p.position.set(x,1.1,-2.8);sc.add(p);add(new THREE.CylinderGeometry(.22,.22,2.2,12),M(CO[i]),0,1,.4,p).rotation.x=.45;add(new THREE.SphereGeometry(.36,12,10),M(0x222222),0,2,.9,p);arms.push(p)}});
+ const sl=new THREE.Group();sl.position.set(XS[4]+.6,0,-.2);sc.add(sl);add(new BG(3.4,.8,2),M(0xc0392b),0,.55,0,sl);add(new BG(1,1.4,2),M(0xa93226),1.5,1,0,sl);
+ [-.8,.8].forEach(z=>add(new BG(4,.14,.18),M(0xf1c40f),.2,.05,z,sl));
+ const TL=new THREE.TextureLoader();let sleighS=null,mascot=null;
+ const spr=(u,w,h,x,y,z,cb)=>TL.load(u,t=>{const q=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true}));q.scale.set(w,h,1);q.position.set(x,y,z);sc.add(q);cb(q)});
+ spr(IMG.treno,6,4,XS[4]+.6,2,-.6,q=>{sleighS=q;sl.visible=false});
+ spr(IMG.robo,3.4,2.83,-11.6,1.5,2.4,q=>{mascot=q});
+ [-12.8,12.4].forEach((x,i)=>{const t=new THREE.Group();t.position.set(x,0,-4);sc.add(t);add(new THREE.CylinderGeometry(.25,.25,.8,8),M(0x6b4423),0,.4,0,t);[[1.5,2.2],[1.1,3.2],[.7,4]].forEach(a=>add(new THREE.ConeGeometry(a[0],1.6,10),M(0x1f7a3a),0,a[1]+.3,0,t))});
+ const toy=new THREE.Group(),SP=(r,c,x,y,z,p)=>add(new THREE.SphereGeometry(r,14,10),M(c),x,y,z,p),kinds=[];
+ const mkK=f=>{const g=new THREE.Group();f(g);toy.add(g);kinds.push(g)};
+ mkK(g=>{SP(.5,0xb5651d,0,.6,0,g);SP(.4,0xc9833a,0,1.25,0,g);SP(.17,0xb5651d,-.33,1.58,0,g);SP(.17,0xb5651d,.33,1.58,0,g);SP(.18,0xf0d0a0,0,1.15,.33,g);SP(.06,0x111111,0,1.2,.5,g);SP(.05,0x111111,-.15,1.35,.36,g);SP(.05,0x111111,.15,1.35,.36,g);SP(.16,0xb5651d,-.5,.7,.1,g);SP(.16,0xb5651d,.5,.7,.1,g);SP(.18,0xb5651d,-.25,.1,.2,g);SP(.18,0xb5651d,.25,.1,.2,g)});
+ mkK(g=>{add(new BG(.9,.9,.6),M(0x9db4c8),0,.7,0,g);add(new BG(.7,.55,.55),M(0xc7d3de),0,1.45,0,g);SP(.09,0x2a6df4,-.17,1.5,.3,g);SP(.09,0x2a6df4,.17,1.5,.3,g);add(new THREE.CylinderGeometry(.03,.03,.3,6),M(0x444444),0,1.85,0,g);SP(.09,0xe5484d,0,2.05,0,g);add(new BG(.2,.6,.2),M(0x7a8fa3),-.58,.8,0,g);add(new BG(.2,.6,.2),M(0x7a8fa3),.58,.8,0,g);add(new BG(.25,.3,.3),M(0x333333),-.22,.15,0,g);add(new BG(.25,.3,.3),M(0x333333),.22,.15,0,g)});
+ mkK(g=>{SP(.55,0xffd23f,0,.65,0,g);SP(.36,0xffd23f,.1,1.3,.15,g);add(new BG(.28,.1,.22),M(0xff8a00),.1,1.22,.5,g);SP(.05,0x111111,-.05,1.38,.45,g);SP(.05,0x111111,.25,1.38,.45,g);SP(.2,0xf5c400,-.55,.7,0,g)});
+ mkK(g=>{add(new BG(1.5,.45,.8),M(0xe5484d),0,.45,0,g);add(new BG(.7,.4,.7),M(0x9fd8ff),-.1,.88,0,g);[-.5,.5].forEach(x=>[-.42,.42].forEach(z=>{add(new THREE.CylinderGeometry(.22,.22,.15,12),M(0x222222),x,.17,z,g).rotation.x=Math.PI/2}))});
+ const wrap=add(new BG(1.4,1.4,1.4),M(0xffffff),0,.75,0,toy),r1=add(new BG(1.46,.14,.3),M(0xff4fb0),0,1.46,0,toy),r2=add(new BG(.3,.14,1.46),M(0xff4fb0),0,1.46,0,toy),bw=[-.2,.2].map(x=>SP(.2,0xff4fb0,x,1.62,0,toy)),cd=add(new BG(.55,.38,.05),M(0xffffff),.5,1.0,.73,toy);
+ let kind=0;toy.position.set(XS[0],0,0);sc.add(toy);
+ const N=260,sa=new Float32Array(N*3);for(let i=0;i<N;i++){sa[i*3]=(Math.random()-.5)*34;sa[i*3+1]=Math.random()*12;sa[i*3+2]=(Math.random()-.5)*14}
+ const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sa,3));const snow=new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.16}));sc.add(snow);
+ let tx=XS[0],bump=0,act=-1,fly=[],sbump=0,jump=0;
+ T3={
+  sync(){const s=state;toy.visible=!!s.made;wrap.visible=!!s.paper;if(s.paper)wrap.material.color.set(PAPER[s.paper]);kinds.forEach((g,i)=>g.visible=!s.paper&&i===kind);const ry=s.paper?1.46:1.3;r1.visible=r2.visible=!!s.ribbon;r1.position.y=r2.position.y=ry;bw.forEach(b=>{b.visible=!!s.ribbon;b.position.y=ry+.16});cd.visible=!!s.card;bump=1},
+  newToy(){kind=(kind+1+Math.floor(Math.random()*3))%4},cheer(){jump=1},
+  go(i){tx=XS[i];act=i},idle(){act=-1},
+  deliver(){const g=toy.clone();g.traverse(o=>{if(o.material)o.material=o.material.clone()});g.position.copy(toy.position);sc.add(g);fly.push({g,t:0,x0:toy.position.x});toy.visible=false;tx=XS[4]},
+  clear(){fly.forEach(f=>sc.remove(f.g));fly=[];toy.position.x=tx=XS[0];act=-1}};
+ function size(){const w=box.clientWidth||600,h=box.clientHeight||300;R.setPixelRatio(lgt.checked?1:Math.min(2,window.devicePixelRatio||1));R.setSize(w,h,false);R.domElement.style.width='100%';R.domElement.style.height='100%';cam.aspect=w/h;const z=Math.max(16,13.2/(.384*cam.aspect));cam.position.set(0,z*.56,z);cam.lookAt(0,.9,0);cam.updateProjectionMatrix()}
+ box.appendChild(R.domElement);size();window.addEventListener('resize',size);
+ lgt.onchange=()=>{try{localStorage.setItem('vbn_leve',lgt.checked?'1':'')}catch(e){}snow.visible=!lgt.checked;size()};snow.visible=!lgt.checked;
+ let t0=performance.now(),fr=0,acc=0;
+ (function loop(){requestAnimationFrame(loop);const now=performance.now();acc+=now-t0;t0=now;
+  if(++fr===90&&acc/90>45&&!lgt.checked){lgt.checked=true;lgt.onchange();$('#msg').textContent='⚡ Ativei o modo leve porque o computador parecia lento.'}
+  fly=fly.filter(f=>{f.t+=.03;const k=Math.min(f.t,1);f.g.position.set(f.x0+(8.6-f.x0)*k,.6+2.6*k+Math.sin(k*Math.PI)*2.4,-.2);f.g.scale.setScalar(1-.55*k);f.g.rotation.y+=.2;if(k>=1){sc.remove(f.g);sbump=1;return false}return true});
+  sbump*=.9;if(sleighS)sleighS.scale.set(6*(1+sbump*.04),4*(1-sbump*.05),1);
+  if(mascot){const j=jump>0?Math.abs(Math.sin(jump*3.2))*1.6:0;jump=Math.max(0,jump-.03);mascot.position.y=1.5+j+Math.sin(now/500)*.05}
+  toy.position.x+=(tx-toy.position.x)*.14;bump*=.88;toy.scale.setScalar(1+bump*.14);
+  arms.forEach((a,i)=>{a.rotation.x=i===act?Math.sin(now/90)*.5:0});
+  if(snow.visible){const p=sg.attributes.position;for(let i=0;i<N;i++){p.array[i*3+1]-=.03;if(p.array[i*3+1]<0)p.array[i*3+1]=12}p.needsUpdate=true}
+  R.render(sc,cam)})();
+})();
 levels();render();reset();
 </script></body></html>
