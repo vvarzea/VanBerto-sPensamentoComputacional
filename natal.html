@@ -33,7 +33,7 @@ footer{text-align:center;opacity:.6;font-weight:800}
 <header><h1>🎅 Hora do Código · Fábrica do Pai Natal</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
 <div class="card"><div id="stage"><div id="st"><div><i>🔨</i>Oficina</div><div><i>🎁</i>Embrulho</div><div><i>🎀</i>Laços</div><div><i>✉️</i>Cartões</div><div><i>🛷</i>Trenó</div></div>
 <div id="belt"><div id="toy"></div></div><div id="info"><span>🎄 Prendas no trenó: <b id="hd">0</b></span><span id="ped"></span></div></div>
-<div class="row" style="margin-top:8px"><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label></div></div>
+<div class="row" style="margin-top:8px"><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label></div></div>
 <div class="card"><div class="lv" id="cys"></div><div class="lv" id="lvs"></div><div id="mis"></div>
 <div class="pal">
 <button style="background:#b45309" data-a="F">🔨 fazer brinquedo</button>
@@ -52,6 +52,7 @@ footer{text-align:center;opacity:.6;font-weight:800}
 <div class="row"><button id="go">▶ Executar</button><button id="clr">🗑 Limpar</button><button id="pyb">🐍 Ver em Python</button></div>
 <div id="msg"></div><div id="pyw"><textarea id="py" rows="6" readonly></textarea></div></div>
 <footer>© Prof.ª Vanda Várzea</footer></div>
+<script src="vb-core.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const NAME={F:'🔨 fazer brinquedo',R:'🎁 papel vermelho',B:'🎁 papel azul',G:'🎁 papel verde',L:'🎀 pôr laço',C:'✉️ pôr cartão',E:'🛷 pôr no trenó',rep:'🔁 repetir',wh:'🔄 enquanto faltar fazer',ifB:'🔀 se pedido azul',ifR:'🔀 se pedido vermelho',else:'↔ senão'};
@@ -70,7 +71,8 @@ const CY=[
  {t:'Faz 3 brinquedos, embrulha em vermelho e põe no trenó. Dica: usa o repetir!',g:[...x(3,'F'),'R','E']},
  {t:'Faz 4 brinquedos, embrulha em azul, põe o laço e coloca no trenó.',g:[...x(4,'F'),'B','L','E']},
  {t:'Faz 2 brinquedos, embrulha em vermelho, faz mais 2, põe o laço e coloca no trenó.',g:['F','F','R','F','F','L','E']},
- {t:'Faz 5 brinquedos, embrulha em verde, põe o cartão e coloca no trenó.',g:[...x(5,'F'),'G','C','E']}]},
+ {t:'Faz 5 brinquedos, embrulha em verde, põe o cartão e coloca no trenó.',g:[...x(5,'F'),'G','C','E']},
+ {t:'🐞 Encontra o erro! Era para fazer 3 brinquedos, embrulhar em vermelho e pôr no trenó, mas o programa tem um erro. Corrige-o!',pre:[{k:'rep',n:3},{k:'F'},{k:'end'},{k:'G'},{k:'E'}],g:[...x(3,'F'),'R','E']}]},
 {n:'3.º Ciclo',b:B2,py:1,lv:[
  {t:'Repete 3 vezes: fazer e embrulhar em vermelho. Depois põe o laço e coloca no trenó.',g:['F','R','F','R','F','R','L','E']},
  {t:'Faz 3 brinquedos, embrulha em verde, põe o laço e o cartão e coloca no trenó.',g:[...x(3,'F'),'G','L','C','E']},
@@ -80,17 +82,12 @@ const CY=[
  {t:'O pedido pode ser azul ou vermelho. Faz 1 brinquedo, embrulha na cor do pedido (usa «se» e «senão»), põe laço e cartão e coloca no trenó.',max:9,tests:[{cor:'B'},{cor:'R'}],x:e=>['F',e.cor,'L','C','E']},
  {t:'Pedido completo! Faz todos os brinquedos que faltam, embrulha na cor do pedido, põe o laço e coloca no trenó.',max:9,tests:[{pecas:1,cor:'B'},{pecas:3,cor:'R'},{pecas:4,cor:'B'}],x:e=>[...x(e.pecas,'F'),e.cor,'L','E']}]}
 ];
-const OPT=[[2,3,4,5],[4,5,7,5],[5,6,6],[5,8,8]];
-let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,P={d:{}};
+const OPT=[[2,3,4,5],[4,5,7,5,4],[5,6,6],[5,8,8]];
+const FAILS={};let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,P={d:{}};
 try{P=JSON.parse(localStorage.getItem('vbn'))||P}catch(e){}
 const save=()=>{try{localStorage.setItem('vbn',JSON.stringify(P))}catch(e){}};
 const OPEN=['rep','wh','ifB','ifR'];
-function build(){const root={b:[]},st=[root];
- prog.forEach((t,i)=>{const top=st[st.length-1],add=n=>(top.inElse?top.e:top.b).push(n);
-  if(OPEN.includes(t.k)){const n={t,i,b:[],e:null,inElse:false};add(n);st.push(n)}
-  else if(t.k==='else'){if(top!==root){top.inElse=true;top.e=[]}}
-  else if(t.k==='end'){if(st.length>1)st.pop()}else add({t,i})});
- return root.b}
+function build(){return VB.build(prog,OPEN)}
 function run(nodes,env,out){for(const nd of nodes){if(out.length>60)return;const k=nd.t.k;
  if(k==='rep'){for(let j=0;j<nd.t.n;j++)run(nd.b,env,out)}
  else if(k==='wh'){let c=0;while(env&&env.pecas>0&&c++<20)run(nd.b,env,out)}
@@ -113,10 +110,8 @@ function render(){let ind=0;const h=[];
   if(OPEN.includes(b.k)||b.k==='else')ind++});
  $('#prog').innerHTML=h.join('')||'<span style="opacity:.6">Toca nos blocos acima. Toca num bloco do programa para escolher onde juntar o próximo.</span>';
  $('#py').value=toPy()}
-function delBlock(i){const rm=[i];
- if(OPEN.includes(prog[i].k)){let d=1;for(let j=i+1;j<prog.length;j++){const k=prog[j].k;if(OPEN.includes(k))d++;else if(k==='else'&&d===1)rm.push(j);else if(k==='end'&&--d===0){rm.push(j);break}}}
- rm.sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render()}
-function clear(){prog=[];sel=-1}
+function delBlock(i){VB.delRange(prog,i,OPEN).sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render()}
+function clear(){prog=(LV[lv]&&LV[lv].pre)?JSON.parse(JSON.stringify(LV[lv].pre)):[];sel=-1}
 function levels(){
  $('#cys').innerHTML=CY.map((c,i)=>'<button class="lvb'+(i===cy?' on':'')+'" data-c="'+i+'">'+c.n+'</button>').join('');
  $('#lvs').innerHTML=LV.map((_,i)=>{const s=P.d[cy+'-'+i];return '<button class="lvb'+(i===lv?' on':'')+'" data-l="'+i+'">Missão '+(i+1)+(s?' '+'⭐'.repeat(s):'')+'</button>'}).join('');
@@ -158,20 +153,19 @@ $('#go').onclick=async()=>{
  if(acts.length>40){$('#msg').textContent='Programa muito grande! Usa o repetir com menos vezes.';return}
  running=true;$('#msg').textContent='';const env=e0?{...e0}:null;reset(env);
  const off=()=>document.querySelectorAll('.chip.run').forEach(c=>c.classList.remove('run'));
- for(let i=0;i<acts.length;i++){off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');
+ for(let i=0;i<acts.length;i++){off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');if(document.getElementById('stp')&&document.getElementById('stp').checked)await VB.step();
   $('#msg').textContent='Passo '+(i+1)+' de '+acts.length;await act(acts[i].k,env)}
  off();running=false;
  const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBG'.includes(k)?'P':k):a,
   seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)),goal=e=>nz(L.x?L.x(e):L.g),
   shownOk=seq(e0).join()===goal(e0).join(),okSeq=tests.every(e=>seq(e).join()===goal(e).join()),ok=okSeq&&(!L.max||cnt<=L.max);
- if(ok){const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;if((P.d[key]||0)<st)P.d[key]=st;save();levels();
+ if(ok){const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;if((P.d[key]||0)<st)P.d[key]=st;FAILS[key]=0;save();levels();
   $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆');
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent=''}}
  else{let m;
   if(okSeq)m='❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!';
   else if(shownOk)m='❌ Funciona neste pedido, mas não em todos! O programa tem de servir para qualquer pedido.';
-  else{const A=seq(e0),G=goal(e0),nm=k=>k==='P'?'🎁 embrulhar (uma cor)':NAME[k],i=A.findIndex((k,j)=>k!==G[j]);
-   m=i>=0&&i<G.length?'❌ No passo '+(i+1)+' fizeste «'+nm(A[i])+'», mas a missão pedia «'+nm(G[i])+'».':A.length<G.length?'❌ Faltou fazer «'+nm(G[A.length])+'» (passo '+(A.length+1)+').':'❌ Fizeste passos a mais depois do que a missão pedia.'}
+  else{const fk=cy+'-'+lv;FAILS[fk]=(FAILS[fk]||0)+1;m=VB.hint(FAILS[fk],seq(e0),goal(e0),k=>k==='P'?'🎁 embrulhar (uma cor)':NAME[k])}
   $('#msg').textContent=m}};
 levels();render();reset();
 </script></body></html>
