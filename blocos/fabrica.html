@@ -110,7 +110,9 @@ const CY=[
  {t:'Solda, pinta de azul e entrega.',g:['S','B','E']},
  {t:'Solda e pinta o carro da cor que quiseres. Depois entrega!',g:['S','P','E'],free:true},
  {t:'Faz o carro: solda, pinta de vermelho, monta o motor e entrega.',g:['S','R','M','E']},
- {t:'Faz um carro verde com motor: solda, pinta de verde, monta o motor e entrega.',g:['S','G','M','E']}]},
+ {t:'Faz um carro verde com motor: solda, pinta de verde, monta o motor e entrega.',g:['S','G','M','E']},
+ {t:'Solda, pinta de amarelo e entrega.',g:['S','Y','E']},
+ {t:'Solda, monta o motor e entrega (sem pintar).',g:['S','M','E']}]},
 {n:'2.º Ciclo',b:ALL,py:0,lv:[
  {t:'Solda 3 vezes, pinta de vermelho e entrega. Dica: usa o repetir!',g:[...x(3,'S'),'R','E']},
  {t:'Solda 4 vezes, pinta de azul e entrega.',g:[...x(4,'S'),'B','E']},
@@ -118,13 +120,17 @@ const CY=[
  {t:'Solda 3 vezes, pinta da cor que quiseres e entrega.',g:[...x(3,'S'),'P','E'],free:true},
  {t:'Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.',g:['S','R','M',...x(4,'W'),'E']},
  {t:'Carro amarelo completo: solda 2 vezes, pinta de amarelo, monta o motor, monta as 4 rodas e entrega.',g:['S','S','Y','M',...x(4,'W'),'E']},
- {t:'🐞 Encontra o erro! Era para soldar 3 vezes, pintar de vermelho e entregar, mas o programa tem um erro. Corrige-o!',pre:[{k:'rep',n:3},{k:'S'},{k:'end'},{k:'B'},{k:'E'}],g:[...x(3,'S'),'R','E']}]},
+ {t:'🐞 Encontra o erro! Era para soldar 3 vezes, pintar de vermelho e entregar, mas o programa tem um erro. Corrige-o!',pre:[{k:'rep',n:3},{k:'S'},{k:'end'},{k:'B'},{k:'E'}],g:[...x(3,'S'),'R','E']},
+ {t:'Solda 2 vezes, pinta de verde, monta as 4 rodas e entrega.',g:['S','S','G',...x(4,'W'),'E']},
+ {t:'🐞 Encontra o erro! Era para montar as 4 rodas, mas o programa só monta 3. Corrige-o!',pre:[{k:'S'},{k:'R'},{k:'M'},{k:'rep',n:3},{k:'W'},{k:'end'},{k:'E'}],g:['S','R','M',...x(4,'W'),'E']}]},
 {n:'3.º Ciclo',b:ALL,py:1,lv:[
  {t:'Solda 5 vezes, pinta de azul e entrega.',g:[...x(5,'S'),'B','E']},
  {t:'Repete 3 vezes: soldar e pintar de vermelho. Depois entrega.',g:['S','R','S','R','S','R','E']},
  {t:'Solda 3 vezes, pinta de vermelho, solda 3 vezes, pinta de azul e entrega.',g:[...x(3,'S'),'R',...x(3,'S'),'B','E']},
  {t:'Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.',g:['S','S','B','M',...x(4,'W'),'E']},
- {t:'Repete 3 vezes: soldar e pintar de verde. Depois monta o motor, as 4 rodas e entrega.',g:['S','G','S','G','S','G','M',...x(4,'W'),'E']}]},
+ {t:'Repete 3 vezes: soldar e pintar de verde. Depois monta o motor, as 4 rodas e entrega.',g:['S','G','S','G','S','G','M',...x(4,'W'),'E']},
+ {t:'Repete 4 vezes: soldar e pintar de amarelo. Depois monta o motor e entrega.',g:['S','Y','S','Y','S','Y','S','Y','M','E']},
+ {t:'Carro completo: solda 3 vezes, pinta de azul, monta o motor, as 4 rodas e entrega.',g:[...x(3,'S'),'B','M',...x(4,'W'),'E']}]},
 {n:'Secundário',b:[...ALL,'ifB','ifR','else','wh','ifD','X'],py:2,lv:[
  {t:'Repete 2 vezes: soldar, soldar e pintar de vermelho. Depois entrega.',max:5,g:['S','S','R','S','S','R','E']},
  {t:'Solda 12 vezes e entrega. Dica: repetir dentro de repetir!',max:4,g:[...x(12,'S'),'E']},
@@ -133,7 +139,9 @@ const CY=[
  {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.',max:7,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'E']},
  {t:'Cada carro chega com peças por soldar. Solda todas (usa «enquanto»), pinta de azul, monta o motor, as 4 rodas e entrega.',max:8,tests:[{pecas:1},{pecas:4},{pecas:5}],x:e=>[...x(e.pecas,'S'),'B','M',...x(4,'W'),'E']},
  {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda, monta o motor, as 4 rodas e entrega.',max:10,tests:[{cor:'B'},{cor:'R'}],x:e=>['S',e.cor,'M',...x(4,'W'),'E']},
- {t:'🔍 Controlo de qualidade! Solda, pinta de vermelho e, SE o carro tiver defeito, retoca a pintura. Depois entrega.',max:6,tests:[{defeito:true},{defeito:false}],x:e=>['S','R',...(e.defeito?['X']:[]),'E']}]}
+ {t:'🔍 Controlo de qualidade! Solda, pinta de vermelho e, SE o carro tiver defeito, retoca a pintura. Depois entrega.',max:6,tests:[{defeito:true},{defeito:false}],x:e=>['S','R',...(e.defeito?['X']:[]),'E']},
+ {t:'A encomenda pode ser azul ou vermelha. Solda 1 vez; se for azul, pinta de azul e monta o motor; senão, pinta de vermelho. Entrega no fim.',max:8,tests:[{cor:'B'},{cor:'R'}],x:e=>e.cor==='B'?['S','B','M','E']:['S','R','E']},
+ {t:'Controlo de qualidade e encomenda! Solda, pinta da cor da encomenda, SE o carro tiver defeito retoca, monta o motor e entrega.',max:10,tests:[{cor:'B',defeito:true},{cor:'R',defeito:false},{cor:'B',defeito:false}],x:e=>['S',e.cor,...(e.defeito?['X']:[]),'M','E']}]}
 ];
 const FAILS={};let cy=0,LV=CY[0].lv,lv=0,prog=[],sel=-1,SPD=1,running=false,light=false;
 
@@ -524,7 +532,7 @@ function rrVan(ctx,x,y,w,h,r){
 })();
 
 /* ---------- missões ---------- */
-const OPT=[[2,3,3,3,4,4],[4,4,6,4,6,7,4],[4,4,7,7,7],[5,4,5,4,6,7,9,5]];
+const OPT=[[2,3,3,3,4,4,3,3],[4,4,6,4,6,7,4,6,6],[4,4,7,7,7,5,7],[5,4,5,4,6,7,9,5,7,9]];
 let P={name:'',d:{}};
 try{P=JSON.parse(localStorage.getItem('vbf'))||P}catch(e){}
 const save=()=>{try{localStorage.setItem('vbf',JSON.stringify(P))}catch(e){}};
