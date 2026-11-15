@@ -24,7 +24,7 @@ const LANG_STRINGS = {
     sideTip: "💡 Pensa antes de agir!",
     // Universe screen
     chooseUniverse: "Escolhe o teu universo!",
-    universeDesc: "Programa o cão robô VanBerto's em desafios sobre temas reais. Escolhe um universo e depois o teu ciclo!",
+    universeDesc: "Programa o robô VanBerto's em desafios sobre temas reais. Escolhe um universo e depois o teu ciclo!",
     // Menu screen
     chooseYourCycle: "Escolhe o teu ciclo",
     cycleMenuDesc: "Começa pelo 1.º Ciclo e sobe de nível.",
@@ -57,7 +57,7 @@ const LANG_STRINGS = {
     fbBackOk: "⬇️ Recuaste.",
     fbTurnLeft: "↩️ Viraste à esquerda.",
     fbTurnRight: "↪️ Viraste à direita.",
-    fbEdge: "❌ Borda do tabuleiro! O cão robô não pode sair dos limites.",
+    fbEdge: "❌ Borda do tabuleiro! O robô não pode sair dos limites.",
     fbObstacle: "⛔ Obstáculo! Vira primeiro (Esq./Dir.) e depois tenta avançar.",
     fbAlreadyCarrying: "✋ Já tens um objeto! Leva-o ao 📥 e deposita antes de apanhar outro.",
     fbNothingHere: "❌ Aqui não há nada! Move-te para cima de um objeto (📦) antes de recolher.",
@@ -212,21 +212,21 @@ const LANG_STRINGS = {
     tutSkip: "Saltar",
     tutOk: "Ok! →",
     tutStep: "{a} / {b}",
-    tutMsg1: "Carrega aqui para avançar o cão robô!",
-    tutMsg2: "Usa estas setas para virar o cão robô.",
+    tutMsg1: "Carrega aqui para avançar o robô!",
+    tutMsg2: "Usa estas setas para virar o robô.",
     tutMsg3: "Vai até ao item colorido e usa Recolher!",
     tutMsg4: "Quando estiveres no item, carrega em Recolher.",
     tutMsg5: "Leva o item ao contentor e carrega em Depositar!",
     // Queue mode tutorial (2nd/3rd Cycle / Secondary)
     tutQ1: "Adiciona comandos à sequência — começa por Avançar!",
-    tutQ2: "Usa Esq./Dir. para virar o cão robô antes de avançar.",
+    tutQ2: "Usa Esq./Dir. para virar o robô antes de avançar.",
     tutQ3: "Recolher e Depositar também fazem parte da sequência.",
     tutQ4: "Quando a sequência estiver pronta, carrega em Executar ▶️.",
     tutQ5: "Enganaste-te? Usa Apagar para remover o último comando.",
     tutQ6: "Cada item colorido precisa de ser recolhido e depositado no 📥.",
     // Escape mode tutorial
     tutEsc1: "Recolhe todos os ficheiros suspeitos 📁 na grelha.",
-    tutEsc2: "Usa Recolher quando o cão robô estiver sobre um ficheiro.",
+    tutEsc2: "Usa Recolher quando o robô estiver sobre um ficheiro.",
     tutEsc3: "Leva os ficheiros à zona segura 🛡️ e usa Depositar.",
     tutEsc4: "Depois de depositar tudo, vai até à porta 🚪 para escapar!",
     tutBtnLabel: "❓ Tutorial",
@@ -265,7 +265,7 @@ const LANG_STRINGS = {
     sideProgressText: "⭐ {n} levels done",
     sideTip: "💡 Think before you act!",
     chooseUniverse: "Choose your universe!",
-    universeDesc: "Program the VanBerto's robot dog in challenges about real-world topics. Pick a universe, then your cycle!",
+    universeDesc: "Program the VanBerto's robot in challenges about real-world topics. Pick a universe, then your cycle!",
     chooseYourCycle: "Choose your cycle",
     cycleMenuDesc: "Start with the 1st Cycle and level up.",
     movements: "Moves: {n}",
@@ -294,7 +294,7 @@ const LANG_STRINGS = {
     fbBackOk: "⬇️ Moved backward.",
     fbTurnLeft: "↩️ Turned left.",
     fbTurnRight: "↪️ Turned right.",
-    fbEdge: "❌ Board edge! The robot dog cannot leave the grid.",
+    fbEdge: "❌ Board edge! The robot cannot leave the grid.",
     fbObstacle: "⛔ Obstacle! Turn (Left/Right) first, then try moving.",
     fbAlreadyCarrying: "✋ Already carrying an item! Deposit it at 📥 before picking up another.",
     fbNothingHere: "❌ Nothing here! Move on top of an item (📦) before collecting.",
@@ -439,21 +439,21 @@ const LANG_STRINGS = {
     tutSkip: "Skip",
     tutOk: "Got it! →",
     tutStep: "{a} / {b}",
-    tutMsg1: "Press here to move the robot dog forward!",
-    tutMsg2: "Use these arrows to turn the robot dog.",
+    tutMsg1: "Press here to move the robot forward!",
+    tutMsg2: "Use these arrows to turn the robot.",
     tutMsg3: "Go to the coloured item and use Collect!",
     tutMsg4: "When you're on the item, press Collect.",
     tutMsg5: "Bring the item to the container and press Deposit!",
     // Queue mode tutorial (2nd/3rd Cycle / Secondary)
     tutQ1: "Add commands to the sequence — start with Forward!",
-    tutQ2: "Use Left/Right to turn the robot dog before moving.",
+    tutQ2: "Use Left/Right to turn the robot before moving.",
     tutQ3: "Collect and Deposit are also part of the sequence.",
     tutQ4: "When your sequence is ready, press Run ▶️.",
     tutQ5: "Made a mistake? Use Undo to remove the last command.",
     tutQ6: "Each coloured item must be collected and deposited in 📥.",
     // Escape mode tutorial
     tutEsc1: "Collect all suspicious files 📁 on the grid.",
-    tutEsc2: "Use Collect when the robot dog is on top of a file.",
+    tutEsc2: "Use Collect when the robot is on top of a file.",
     tutEsc3: "Bring the files to the safe zone 🛡️ and use Deposit.",
     tutEsc4: "Once everything is deposited, go to the door 🚪 to escape!",
     tutBtnLabel: "❓ Tutorial",
@@ -658,8 +658,120 @@ function applyLangToDOM() {
   }
   function cfVan(ctx,x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
 
-  
-  /* o desenho do cão vive em vanberto-cao.js (window.drawVanBerto) */
+  window.drawVanBerto=drawVanBerto;
+  function drawVanBerto(ctx,blink,step,armsUp){
+    const w=96,h=96;
+    ctx.clearRect(0,0,w,h);
+    ctx.lineJoin="round"; ctx.lineCap="round";
+    ctx.save(); ctx.translate(0,6);
+    const NAVY="#16233e", NAVY2="#26365a", OUT="#101a30";
+    function white(x0,y0,x1,y1){const g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,"#ffffff");g.addColorStop(0.55,"#e6edf7");g.addColorStop(1,"#b4c4dc");return g;}
+
+    const LIFT=8, STRIDE=3;
+    let lTop=70, rTop=70, lDX=0, rDX=0;
+    if(step===0){ lTop=70-LIFT; lDX=STRIDE; rDX=-STRIDE; }
+    else if(step===1){ rTop=70-LIFT; rDX=STRIDE; lDX=-STRIDE; }
+    function leg(cx,top){
+      rrVan(ctx,cx-5,top,10,11,4.5); ctx.fillStyle=white(cx-5,top,cx+5,top); ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      const fy=top+9;
+      rrVan(ctx,cx-6.5,fy,13,9,4); ctx.fillStyle=NAVY; ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      rrVan(ctx,cx-6.5,fy+2,13,2.4,1.2); ctx.fillStyle="rgba(255,255,255,0.85)"; ctx.fill();
+      cfVan(ctx,cx-2.5,fy+4.5,1.4,"rgba(255,255,255,0.5)");
+    }
+    leg(41+lDX,lTop); leg(55+rDX,rTop);
+
+    const ARM_SWING = 0.24;
+    const JUMP_RAISE = 2.9;
+    let lArmSwing = 0, rArmSwing = 0;
+    if(armsUp){ lArmSwing = JUMP_RAISE; rArmSwing = -JUMP_RAISE; }
+    else if(step===0){ lArmSwing=-ARM_SWING; rArmSwing=ARM_SWING; }
+    else if(step===1){ lArmSwing=ARM_SWING; rArmSwing=-ARM_SWING; }
+    function arm(sx,swing){
+      ctx.save();
+      const px=sx+4.5, py=52;
+      ctx.translate(px,py); ctx.rotate(swing); ctx.translate(-px,-py);
+      rrVan(ctx,sx,52,9,13,4.5); ctx.fillStyle=white(sx,52,sx+9,52); ctx.fill();
+      ctx.lineWidth=2.6; ctx.strokeStyle=OUT; ctx.stroke();
+      const hx=sx+4.5, hy=67;
+      cfVan(ctx,hx,hy,5,NAVY);
+      ctx.lineWidth=2.3; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(hx,hy,5,0,Math.PI*2); ctx.stroke();
+      cfVan(ctx,hx-2,hy+1.6,1.4,NAVY2); cfVan(ctx,hx+0.5,hy+2.4,1.4,NAVY2); cfVan(ctx,hx+2.5,hy+1.6,1.4,NAVY2);
+      ctx.restore();
+    }
+    arm(17,lArmSwing); arm(70,rArmSwing);
+
+    rrVan(ctx,26,44,44,32,15); ctx.fillStyle=white(28,46,68,46); ctx.fill();
+    ctx.save(); rrVan(ctx,26,44,44,32,15); ctx.clip();
+    const wg=ctx.createLinearGradient(0,64,0,76); wg.addColorStop(0,"rgba(22,35,62,0)"); wg.addColorStop(0.4,"#1c2c4c"); wg.addColorStop(1,"#142038");
+    ctx.fillStyle=wg; ctx.fillRect(26,62,44,16);
+    ctx.strokeStyle="rgba(16,26,48,0.6)"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(28,64); ctx.lineTo(68,64); ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,0.5)"; ctx.beginPath(); ctx.ellipse(36,52,9,5.5,-0.5,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.lineWidth=3; ctx.strokeStyle=OUT; rrVan(ctx,26,44,44,32,15); ctx.stroke();
+
+    cfVan(ctx,48,56,8,NAVY);
+    ctx.lineWidth=2.5; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(48,56,8,0,Math.PI*2); ctx.stroke();
+    const dome=ctx.createRadialGradient(45.5,53.5,1,48,56,7); dome.addColorStop(0,"#aebccf"); dome.addColorStop(0.6,"#5a6a85"); dome.addColorStop(1,"#2b3a57");
+    ctx.fillStyle=dome; ctx.beginPath(); ctx.arc(48,56,5.7,0,Math.PI*2); ctx.fill();
+    cfVan(ctx,46,53.8,1.5,"rgba(255,255,255,0.85)");
+
+    function pod(cx){
+      cfVan(ctx,cx,32,6,NAVY);
+      ctx.lineWidth=2.3; ctx.strokeStyle=OUT; ctx.beginPath(); ctx.arc(cx,32,6,0,Math.PI*2); ctx.stroke();
+      cfVan(ctx,cx,32,2.8,NAVY2); cfVan(ctx,cx-0.8,31,1,"rgba(255,255,255,0.6)");
+    }
+    pod(25); pod(71);
+
+    ctx.fillStyle=NAVY; ctx.beginPath(); ctx.moveTo(45,16); ctx.lineTo(51,16); ctx.lineTo(49.2,8); ctx.lineTo(46.8,8); ctx.closePath(); ctx.fill();
+    const halo=ctx.createRadialGradient(48,5,1,48,5,11); halo.addColorStop(0,"rgba(90,200,255,0.55)"); halo.addColorStop(1,"rgba(90,200,255,0)");
+    ctx.fillStyle=halo; ctx.beginPath(); ctx.arc(48,5,11,0,Math.PI*2); ctx.fill();
+    const bg=ctx.createRadialGradient(46.3,3.5,0.5,48,5,5.5); bg.addColorStop(0,"#e6f7ff"); bg.addColorStop(0.4,"#48b4ff"); bg.addColorStop(1,"#1670d8");
+    ctx.fillStyle=bg; ctx.beginPath(); ctx.arc(48,5,5.5,0,Math.PI*2); ctx.fill();
+    cfVan(ctx,46.2,3.4,1.6,"#ffffff");
+
+    rrVan(ctx,26,14,44,34,17); ctx.fillStyle=white(28,15,68,15); ctx.fill();
+    ctx.lineWidth=3; ctx.strokeStyle=OUT; ctx.stroke();
+    ctx.save(); rrVan(ctx,26,14,44,34,17); ctx.clip();
+    ctx.fillStyle="rgba(255,255,255,0.6)"; ctx.beginPath(); ctx.ellipse(38,19,10,4,-0.5,0,Math.PI*2); ctx.fill(); ctx.restore();
+
+    rrVan(ctx,30,20,36,23,12); ctx.fillStyle=NAVY; ctx.fill();
+    rrVan(ctx,32.5,22,31,19,10);
+    const vg=ctx.createLinearGradient(0,22,0,41); vg.addColorStop(0,"#7fd4ff"); vg.addColorStop(0.5,"#2a9bf0"); vg.addColorStop(1,"#1366c6");
+    ctx.fillStyle=vg; ctx.fill();
+    ctx.save(); rrVan(ctx,32.5,22,31,19,10); ctx.clip();
+    ctx.fillStyle="rgba(255,255,255,0.45)"; ctx.beginPath(); ctx.ellipse(42,25,9,3.5,-0.4,0,Math.PI*2); ctx.fill(); ctx.restore();
+
+    if(!blink){
+      ctx.fillStyle="#0a0f1c";
+      ctx.beginPath(); ctx.ellipse(41,30,3.3,4,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(55,30,3.3,4,0,0,Math.PI*2); ctx.fill();
+      cfVan(ctx,42.3,28.4,1.5,"#fff"); cfVan(ctx,39.9,31,0.8,"#fff");
+      cfVan(ctx,56.3,28.4,1.5,"#fff"); cfVan(ctx,53.9,31,0.8,"#fff");
+    } else if(blink==="happy"){
+      ctx.lineWidth=3.2; ctx.strokeStyle="#0a0f1c"; ctx.lineCap="round";
+      ctx.beginPath(); ctx.arc(41,31,3.9,0.10*Math.PI,0.90*Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(55,31,3.9,0.10*Math.PI,0.90*Math.PI); ctx.stroke();
+      cfVan(ctx,33.5,35.5,3,"rgba(255,120,120,0.55)");
+      cfVan(ctx,62.5,35.5,3,"rgba(255,120,120,0.55)");
+    } else {
+      ctx.lineWidth=3; ctx.strokeStyle="#0a0f1c";
+      ctx.beginPath(); ctx.arc(41,31,3.5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.arc(55,31,3.5,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+    }
+    ctx.fillStyle="#0a0f1c";
+    if(blink==="happy"){
+      ctx.beginPath(); ctx.ellipse(48,36,6.2,4.2,0,0,Math.PI); ctx.fill();
+      ctx.fillStyle="#ff7a7a";
+      ctx.beginPath(); ctx.ellipse(48,38,3.2,1.9,0,0,Math.PI); ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.ellipse(48,36,4.6,3.2,0,0,Math.PI); ctx.fill();
+      ctx.fillStyle="#ff7a7a";
+      ctx.beginPath(); ctx.ellipse(48,37.4,2.4,1.5,0,0,Math.PI); ctx.fill();
+    }
+    ctx.restore();
+  }
 
   /* ── Helpers de expressão para qualquer canvas do VanBerto (grelha, dpad, etc.) ── */
   function vbFlashPose(canvas, blink, step, armsUp, duration){
@@ -681,7 +793,7 @@ function applyLangToDOM() {
   }
 
 
-const VB_ROBOT_CANVAS_HTML='<canvas class="grid-vb-robot" width="192" height="192" aria-hidden="true"></canvas>';
+const VB_ROBOT_CANVAS_HTML='<canvas class="grid-vb-robot" width="96" height="96" aria-hidden="true"></canvas>';
 
 const VANBERTO_SVG = "";   // robô só na grelha e na mascote do canto
 
@@ -696,7 +808,7 @@ const ALL_UNIVERSES = {
     name: "Segurança na Internet",
     emoji: "🔒",
     badge: "🔒 Segurança na Internet · Pensamento computacional",
-    menuTitle: "Programa o cão robô e protege-te online!",
+    menuTitle: "Programa o robô e protege-te online!",
     menuDesc: "Guia o VanBerto's por missões reais de cibersegurança.",
     colors: { primary:"#6366f1", rgb:"99,102,241", dark:"#3730a3", soft:"rgba(99,102,241,0.12)", bg1:"#e0e7ff", bg2:"#f0f0ff" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -799,7 +911,7 @@ const ALL_UNIVERSES = {
     name: "Missões da Água",
     emoji: "💧",
     badge: "💧 Ambiente · Água · Pensamento computacional",
-    menuTitle: "Programa o cão robô e protege a água!",
+    menuTitle: "Programa o robô e protege a água!",
     menuDesc: "Limpa oceanos, repara fugas e preserva as nascentes.",
     colors: { primary:"#0ea5e9", rgb:"14,165,233", dark:"#0369a1", soft:"rgba(14,165,233,0.12)", bg1:"#e0f2fe", bg2:"#f0f9ff" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -890,7 +1002,7 @@ const ALL_UNIVERSES = {
     name: "Qualidade do Ar",
     emoji: "🌬️",
     badge: "🌬️ Ambiente · Ar · Pensamento computacional",
-    menuTitle: "Programa o cão robô e melhora o ar!",
+    menuTitle: "Programa o robô e melhora o ar!",
     menuDesc: "Reduz poluição, instala filtros e monitoriza a qualidade do ar.",
     colors: { primary:"#10b981", rgb:"16,185,129", dark:"#065f46", soft:"rgba(16,185,129,0.12)", bg1:"#d1fae5", bg2:"#f0fdf4" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -981,14 +1093,14 @@ const ALL_UNIVERSES = {
     name: "Missões Ambientais",
     emoji: "🌱",
     badge: "🌱 Pensamento computacional · Ambiente",
-    menuTitle: "Programa o cão robô e cuida do planeta!",
+    menuTitle: "Programa o robô e cuida do planeta!",
     menuDesc: "Floresta, reciclagem, oceanos e muito mais.",
     colors: { primary:"#f59e0b", rgb:"245,158,11", dark:"#92400e", soft:"rgba(245,158,11,0.12)", bg1:"#fef3c7", bg2:"#fffbeb" },
     hasCycles: ["1c","2c","3c","sec"],
     cycleDescs: { "1c":"Comandos imediatos", "2c":"Sequência · Planeamento", "3c":"Sequência + otimização", "sec":"Estratégia e eficiência" },
     data: {
       "1c": { name:"1.º Ciclo", mode:"direct", themes: {
-        robo: { name:"Cão Robô & Ambiente", emoji:"🌱", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
+        robo: { name:"Robô & Ambiente", emoji:"🌱", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
           levels:[
             {size:5,robot:[4,0],items:[[2,2]],deposit:[[0,4]],obstacles:[],difficulty:"Fácil",desc:"Recolhe a folha e leva ao contentor."},
             {size:5,robot:[4,0],items:[[3,2],[1,3]],deposit:[[0,4]],obstacles:[[2,1]],difficulty:"Médio",desc:"Recolhe as folhas e contorna o obstáculo."},
@@ -1423,13 +1535,13 @@ function _baseTipForTheme(themeKey){
   if(THEME_TIPS[themeKey]) return THEME_TIPS[themeKey];
   // Fuzzy match (no underscores to avoid cross-universe hits)
   const k=Object.keys(THEME_TIPS).find(t=>!t.includes("_")&&(themeKey.includes(t)||t.includes(themeKey)));
-  return k?THEME_TIPS[k]:"💡 Pensa no caminho mais curto antes de começar a programar o cão robô!";
+  return k?THEME_TIPS[k]:"💡 Pensa no caminho mais curto antes de começar a programar o robô!";
 }
 
 /* Dicas extra por tema (universo "ambiente"): cada nível mostra uma dica diferente, sempre sobre o tema.
    Chave = universo_tema. Nível 1 usa a dica base (THEME_TIPS); os seguintes usam estas, em rotação. */
 const THEME_TIPS_EXTRA = {
-  ambiente_robo: ["💡 As folhas caídas podem ir para a compostagem: em alguns meses transformam-se em adubo natural para o jardim.", "💡 Em Portugal, o ecoponto azul é para papel e cartão, o amarelo para plástico e metal e o verde para vidro.", "💡 Já existem drones que plantam árvores e cães robô que limpam rios e praias. A tecnologia também ajuda o ambiente!", "💡 Uma árvore adulta pode absorver cerca de 22 kg de CO₂ por ano e liberta o oxigénio que respiramos."],
+  ambiente_robo: ["💡 As folhas caídas podem ir para a compostagem: em alguns meses transformam-se em adubo natural para o jardim.", "💡 Em Portugal, o ecoponto azul é para papel e cartão, o amarelo para plástico e metal e o verde para vidro.", "💡 Já existem drones que plantam árvores e robôs que limpam rios e praias. A tecnologia também ajuda o ambiente!", "💡 Uma árvore adulta pode absorver cerca de 22 kg de CO₂ por ano e liberta o oxigénio que respiramos."],
   ambiente_oceanos: ["💡 Uma garrafa de plástico pode demorar cerca de 450 anos a decompor-se no mar.", "💡 As tartarugas confundem os sacos de plástico com alforrecas e podem morrer ao comê-los.", "💡 Os recifes de coral ocupam menos de 1% do fundo do mar, mas são casa de cerca de 25% das espécies marinhas.", "💡 Os oceanos cobrem cerca de 71% da superfície da Terra e produzem grande parte do oxigénio que respiramos."],
   ambiente_cidade: ["💡 Em Portugal, cada pessoa produz cerca de 500 kg de resíduos urbanos por ano. Reduzir começa em casa!", "💡 O vidro pode ser reciclado vezes sem conta sem perder qualidade.", "💡 Os telhados verdes arrefecem os edifícios, captam a água da chuva e dão casa a insetos e aves.", "💡 Ir a pé, de bicicleta ou de transportes públicos reduz o trânsito, o ruído e a poluição da cidade."],
   ambiente_natal: ["💡 As luzes LED gastam até cerca de 80% menos energia do que as lâmpadas antigas e duram muito mais.", "💡 Podes embrulhar prendas com jornal, tecido ou papel reutilizado. O papel plastificado ou com purpurinas não se recicla.", "💡 Uma árvore natural pode ser replantada ou transformada em composto depois das festas.", "💡 Cerca de um terço dos alimentos produzidos no mundo é desperdiçado. Planear as quantidades da ceia evita sobras.", "💡 Os cartões de Natal e o papel de embrulho simples (sem plástico nem purpurinas) podem ir para o ecoponto azul."],
@@ -2468,7 +2580,6 @@ function buildDoorSVG(unlocked, opening){
 function shakeRobot(){
   const icon=document.querySelector(".robot-cell .robot-icon");
   if(!icon) return;
-  try{ const _cv=icon.querySelector(".grid-vb-robot"); if(_cv) vbFlashPose(_cv,"sad",-1,false,800); }catch(_e){}
   icon.classList.remove("robot-icon-shake");
   void icon.offsetWidth;
   icon.classList.add("robot-icon-shake");
@@ -2545,7 +2656,7 @@ function renderGrid(){
   // bússola: acumula o ângulo para rodar sempre pelo caminho mais curto
   if(!(_gp && _gp.ls===levelState && _gp.size===size)) renderGrid._cAcc=dir*90; else renderGrid._cAcc=(renderGrid._cAcc||0)+turned;
   const _nd=$("compass-needle"); if(_nd) _nd.style.transform="rotate("+renderGrid._cAcc+"deg)";
-  const _cp=$("dpad-compass"); if(_cp) _cp.setAttribute("title","Direção do cão robô: "+DIR_ARROWS[dir]);
+  const _cp=$("dpad-compass"); if(_cp) _cp.setAttribute("title","Direção do robô: "+DIR_ARROWS[dir]);
   gridEl.style.gridTemplateColumns=`repeat(${size},1fr)`;
   gridEl.classList.remove("big","huge");
   if(size>=8)gridEl.classList.add("big");
@@ -2585,7 +2696,7 @@ function renderGrid(){
           ${carryBadge}
         `;
         const _gcv=cell.querySelector(".grid-vb-robot");
-        if(_gcv){ _gcv.dataset.vbdir=dir; const _gctx=_gcv.getContext("2d"); if(_gctx) drawVanBerto(_gctx,false,-1,false); }
+        if(_gcv){ const _gctx=_gcv.getContext("2d"); if(_gctx) drawVanBerto(_gctx,false,-1,false); }
         const _doDance=shouldDanceOnRender;
         setTimeout(()=>{
           const icon=cell.querySelector(".robot-icon");
@@ -2789,8 +2900,6 @@ function renderGrid(){
 
     function apply(){
       gw.classList.toggle("mode3d",on);
-      /* o cão desenha-se de frente em 3D e de frente/costas/lado em 2D: redesenha ao mudar de modo */
-      try{ document.querySelectorAll(".grid-vb-robot").forEach(function(c){ var x=c.getContext("2d"); if(x&&window.drawVanBerto) window.drawVanBerto(x,false,-1,false); }); }catch(_e){}
       btn.setAttribute("aria-pressed",on?"true":"false");
       btn.textContent=on?"🧊 3D":"🔲 2D";
       if(on && typeof solutionVisible!=="undefined" && solutionVisible && typeof hideSolutionPath==="function") hideSolutionPath();
@@ -3006,7 +3115,6 @@ function vbSticker(top,txt){
   clearTimeout(wp._t); wp._t=setTimeout(()=>wp.classList.remove("show"),1500);
 }
 function vbCelebrate(top,txt){
-  try{ const _cv=document.querySelector(".robot-cell .grid-vb-robot"); if(_cv) vbDanceSequence(_cv,2); }catch(_e){}
   setTimeout(()=>{
     const el=document.querySelector(".robot-cell .robot-icon")||document.querySelector(".robot-cell");
     const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -3330,8 +3438,8 @@ const QX_EN={
  "Programador(a)":"Programmer",
  "🥇 Perfeito":"🥇 Perfect","🥈 Excelente":"🥈 Excellent","🥉 Bom":"🥉 Good","✅ Concluído":"✅ Completed",
  "de Pensamento Computacional":"in Computational Thinking","de Pensamento Computacional — ciclo completo":"in Computational Thinking — full cycle",
- "que, com atenção e criatividade, programou o cão robô e completou o tema":"who, with care and creativity, programmed the robot dog and completed the theme",
- "que, com atenção e criatividade, programou o cão robô e completou todos os temas de":"who, with care and creativity, programmed the robot dog and completed all the themes of",
+ "que, com atenção e criatividade, programou o robô e completou o tema":"who, with care and creativity, programmed the robot and completed the theme",
+ "que, com atenção e criatividade, programou o robô e completou todos os temas de":"who, with care and creativity, programmed the robot and completed all the themes of",
  "tornando-se oficialmente Programador(a) do Pensamento Computacional.":"officially becoming a Computational Thinking Programmer.",
  "tornando-se oficialmente Programador(a) do Pensamento Computacional deste ciclo.":"officially becoming a Computational Thinking Programmer for this cycle.",
  "Ensino Secundário":"Upper Secondary",
@@ -3347,14 +3455,14 @@ const QX_EN={
  "😕 Não consegui calcular uma demonstração para este nível.":"😕 I couldn't work out a demo for this level.",
  "🎬 Repara na sequência completa — o passo atual fica em destaque!":"🎬 Watch the whole sequence — the current step is highlighted!",
  "🎬 Fim da demonstração! Carrega em ↺ Reiniciar e tenta tu — este nível ainda não conta.":"🎬 End of the demo! Press ↺ Restart and try it yourself — this level doesn't count yet.",
- "🎬 Repara: primeiro escreve-se o programa, depois o cão robô executa-o linha a linha.":"🎬 Look: first the program is written, then the robot dog runs it line by line.",
+ "🎬 Repara: primeiro escreve-se o programa, depois o robô executa-o linha a linha.":"🎬 Look: first the program is written, then the robot runs it line by line.",
  "📋 A solução ficou escrita na caixa — carrega em ▶️ Executar para a veres outra vez, ou muda o que quiseres.":"📋 The solution is now in the box — press ▶️ Run to watch it again, or change whatever you like.",
  "🎬 Vou reiniciar este nível e mostrar uma forma de o resolver escrevendo o pseudocódigo. Continuar?":"🎬 I'll restart this level and show one way to solve it by writing the pseudocode. Continue?",
  "🎬 Vou reiniciar este nível e mostrar uma forma de o resolver usando os blocos. Continuar?":"🎬 I'll restart this level and show one way to solve it using the blocks. Continue?",
  "🔁 Só podes aninhar ciclos até 2 níveis — fecha o mais interno primeiro.":"🔁 You can nest loops up to 2 levels — close the innermost one first.",
  "Ainda não escreveste nenhum comando.":"You haven't written any commands yet.",
  "🧠 Desafio de Pseudocódigo ":"🧠 Pseudocode Challenge ",
- "Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o cão robô faz.":"You completed all the pseudocode challenges! You can now read a program line by line and predict what the robot dog does.",
+ "Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o robô faz.":"You completed all the pseudocode challenges! You can now read a program line by line and predict what the robot does.",
  "← Voltar ao jogo":"← Back to the game","Terminar ✓":"Finish ✓","Seguinte →":"Next →","Fechar":"Close",
  "✅ Certo! Seguiste o programa passo a passo.":"✅ Correct! You followed the program step by step.","❌ Não era essa — vê a opção a verde e a explicação.":"❌ Not that one — see the green option and the explanation.",
  "Tema concluído! 🏆":"Theme completed! 🏆","Ciclo concluído! 🎓":"Cycle completed! 🎓"
@@ -3720,7 +3828,7 @@ async function runDemoWritten(entries){
   };
   const lbl=$("queue-label"), lblOriginal=lbl?lbl.textContent:null; if(lbl) lbl.textContent=Q("🎬 A demonstrar…");
   runningQueue=true; ta.classList.add("qx-hidden"); pre.classList.remove("qx-hidden");
-  showWriteMsg("","🎬 Repara: primeiro escreve-se o programa, depois o cão robô executa-o linha a linha.");
+  showWriteMsg("","🎬 Repara: primeiro escreve-se o programa, depois o robô executa-o linha a linha.");
   try{
     for(let n=1;n<=lines.length;n++){ paint(n,null); await qxWait(280); }
     await qxWait(500);
@@ -3860,7 +3968,7 @@ function showCertificate(ck,tk){
   const set=(id,t)=>{ const e=$(id); if(e) e.textContent=Q(t); };
   set("certPlayerName",(_getStudentName()||"").trim()||"Programador(a)");
   set("certSubtitle",isCycle?"de Pensamento Computacional — ciclo completo":"de Pensamento Computacional");
-  set("certAchText",isCycle?"que, com atenção e criatividade, programou o cão robô e completou todos os temas de":"que, com atenção e criatividade, programou o cão robô e completou o tema");
+  set("certAchText",isCycle?"que, com atenção e criatividade, programou o robô e completou todos os temas de":"que, com atenção e criatividade, programou o robô e completou o tema");
   set("certHighlight",isCycle?cycleLabel+" — "+uni:theme.name+" ("+cycleLabel+")");
   set("certFinalText",isCycle?"tornando-se oficialmente Programador(a) do Pensamento Computacional deste ciclo.":"tornando-se oficialmente Programador(a) do Pensamento Computacional.");
   const st=isCycle?certCycleStats(ck):certThemeStats(ck,tk);
@@ -4061,19 +4169,19 @@ function buildPseudoChallenges(){
     const trace=r.acts.map(a=>PSEUDO_CMD[a]).join(", ");
     if(src.t==="count"){
       const correct=String(r.n), ops=uniq([correct,String(r.n-1),String(r.n+2),String(lines)]).filter(v=>+v>0).slice(0,4);
-      return {code:src.code,q:EN?"How many commands does the robot dog run in total, counting every repetition?":"Quantos comandos executa o cão robô ao todo, contando cada repetição?",ops,a:ops.indexOf(correct),
+      return {code:src.code,q:EN?"How many commands does the robot run in total, counting every repetition?":"Quantos comandos executa o robô ao todo, contando cada repetição?",ops,a:ops.indexOf(correct),
         e:EN?"REPETIR blocks count every pass. Step by step: "+trace+" → "+r.n+" commands (the program only has "+lines+" written lines).":"Os blocos REPETIR contam todas as voltas. Passo a passo: "+trace+" → "+r.n+" comandos (o programa só tem "+lines+" linhas escritas)."};
     }
     if(src.t==="dir"){
       const ops=DN.slice();
-      return {code:src.code,q:EN?"The robot dog starts facing up. Which way is it facing at the end?":"O cão robô começa a olhar para cima. Para onde fica a olhar no fim?",ops,a:r.d,
+      return {code:src.code,q:EN?"The robot starts facing up. Which way is it facing at the end?":"O robô começa a olhar para cima. Para onde fica a olhar no fim?",ops,a:r.d,
         e:EN?"Each VIRAR À DIREITA turns 90° to the right and each VIRAR À ESQUERDA 90° to the left. The commands were: "+trace+". At the end it faces "+DN[r.d]+".":"Cada VIRAR À DIREITA roda 90° para a direita e cada VIRAR À ESQUERDA 90° para a esquerda. Os comandos foram: "+trace+". No fim olha "+DN[r.d]+"."};
     }
     if(src.t==="pos"){
       const correct=posText(r.x,r.y), ops=uniq([correct,posText(r.y,r.x),posText(r.x+1,r.y),posText(r.x,r.y-1),posText(-r.x,-r.y)]).slice(0,4);
       if(ops.indexOf(correct)<0) ops[0]=correct;
-      return {code:src.code,q:EN?"The robot dog starts facing up. Where does it end up, compared with its starting square?":"O cão robô começa a olhar para cima. Onde fica, em relação à casa onde começou?",ops,a:ops.indexOf(correct),
-        e:EN?"Following the commands: "+trace+". The robot dog always moves in the direction it is facing. It ends "+correct+(r.d?", facing "+DN[r.d]:", facing up")+".":"Seguindo os comandos: "+trace+". O cão robô anda sempre na direção para onde está virado. Fica "+correct+(r.d?", a olhar "+DN[r.d]:", a olhar para cima")+"."};
+      return {code:src.code,q:EN?"The robot starts facing up. Where does it end up, compared with its starting square?":"O robô começa a olhar para cima. Onde fica, em relação à casa onde começou?",ops,a:ops.indexOf(correct),
+        e:EN?"Following the commands: "+trace+". The robot always moves in the direction it is facing. It ends "+correct+(r.d?", facing "+DN[r.d]:", facing up")+".":"Seguindo os comandos: "+trace+". O robô anda sempre na direção para onde está virado. Fica "+correct+(r.d?", a olhar "+DN[r.d]:", a olhar para cima")+"."};
     }
     const mine=expandEntries(parsePseudoProgram(src.code).entries).join(","); const all=[src.alts[0]].concat(src.alts.slice(1));
     const good=all.findIndex(c=>expandEntries(parsePseudoProgram(c).entries).join(",")===mine);
@@ -4090,7 +4198,7 @@ function openPseudoChallenge(idx){
     pop.addEventListener("click",e=>{ if(e.target===pop) closePseudoChallenge(); }); document.body.appendChild(pop); }
   const card=h=>'<div class="psch-card">'+h+'</div>';
   if(idx>=list.length){
-    pop.innerHTML=card('<div style="font-size:2.2rem;text-align:center">🧠✅</div><p class="psch-done">'+Q("Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o cão robô faz.")+'</p><div class="psch-actions"><button class="btn small" id="psch-close">'+Q("← Voltar ao jogo")+'</button></div>');
+    pop.innerHTML=card('<div style="font-size:2.2rem;text-align:center">🧠✅</div><p class="psch-done">'+Q("Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o robô faz.")+'</p><div class="psch-actions"><button class="btn small" id="psch-close">'+Q("← Voltar ao jogo")+'</button></div>');
     $("psch-close").addEventListener("click",closePseudoChallenge); return;
   }
   const ch=list[idx];

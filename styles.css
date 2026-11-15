@@ -2111,23 +2111,3 @@ body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color
   78%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);opacity:1;}
   100%{transform:translate(-50%,-62%) scale(.9) rotate(-2deg);opacity:0;}
 }
-
-/* VanBerto's cão-robô: não roda a imagem; desenha-se de frente, costas ou lado conforme a direção */
-.cell.robot-cell .robot-icon{transform:none!important;}
-.robot-icon canvas{image-rendering:auto;}
-
-/* ── Direção do cão em 2D: seta dourada na borda da casa que roda com ele (o cão já vira de frente/costas/lado) ── */
-.grid-wrapper:not(.mode3d) .cell.robot-cell::before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:3;border-radius:inherit;
-  transform:rotate(var(--rot));
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,3 66,20 34,20' fill='%23ffd54f' stroke='%237c2d12' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
-  filter:drop-shadow(0 0 3px rgba(255,193,7,.85));
-}
-.grid-wrapper:not(.mode3d) .cell.robot-cell::after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;
-  transform:rotate(var(--rot));
-  background:linear-gradient(to bottom,rgba(255,213,79,.55) 0,rgba(255,152,0,.2) 18%,rgba(255,152,0,0) 42%);
-}
-.grid-wrapper:not(.mode3d) .cell.robot-cell .robot-icon{width:82%;height:82%;}
-.grid-wrapper:not(.mode3d) .grid.big .cell.robot-cell .robot-icon,.grid-wrapper:not(.mode3d) .grid.huge .cell.robot-cell .robot-icon{width:86%;height:86%;}
-@media (prefers-reduced-motion:reduce){.grid-wrapper:not(.mode3d) .cell.robot-cell::before{transition:none;}}
