@@ -24,7 +24,7 @@ const LANG_STRINGS = {
     sideTip: "💡 Pensa antes de agir!",
     // Universe screen
     chooseUniverse: "Escolhe o teu universo!",
-    universeDesc: "Programa o robô VanBerto's em desafios sobre temas reais. Escolhe um universo e depois o teu ciclo!",
+    universeDesc: "Programa o cão robô VanBerto's em desafios sobre temas reais. Escolhe um universo e depois o teu ciclo!",
     // Menu screen
     chooseYourCycle: "Escolhe o teu ciclo",
     cycleMenuDesc: "Começa pelo 1.º Ciclo e sobe de nível.",
@@ -57,7 +57,7 @@ const LANG_STRINGS = {
     fbBackOk: "⬇️ Recuaste.",
     fbTurnLeft: "↩️ Viraste à esquerda.",
     fbTurnRight: "↪️ Viraste à direita.",
-    fbEdge: "❌ Borda do tabuleiro! O robô não pode sair dos limites.",
+    fbEdge: "❌ Borda do tabuleiro! O cão robô não pode sair dos limites.",
     fbObstacle: "⛔ Obstáculo! Vira primeiro (Esq./Dir.) e depois tenta avançar.",
     fbAlreadyCarrying: "✋ Já tens um objeto! Leva-o ao 📥 e deposita antes de apanhar outro.",
     fbNothingHere: "❌ Aqui não há nada! Move-te para cima de um objeto (📦) antes de recolher.",
@@ -212,21 +212,21 @@ const LANG_STRINGS = {
     tutSkip: "Saltar",
     tutOk: "Ok! →",
     tutStep: "{a} / {b}",
-    tutMsg1: "Carrega aqui para avançar o robô!",
-    tutMsg2: "Usa estas setas para virar o robô.",
+    tutMsg1: "Carrega aqui para avançar o cão robô!",
+    tutMsg2: "Usa estas setas para virar o cão robô.",
     tutMsg3: "Vai até ao item colorido e usa Recolher!",
     tutMsg4: "Quando estiveres no item, carrega em Recolher.",
     tutMsg5: "Leva o item ao contentor e carrega em Depositar!",
     // Queue mode tutorial (2nd/3rd Cycle / Secondary)
     tutQ1: "Adiciona comandos à sequência — começa por Avançar!",
-    tutQ2: "Usa Esq./Dir. para virar o robô antes de avançar.",
+    tutQ2: "Usa Esq./Dir. para virar o cão robô antes de avançar.",
     tutQ3: "Recolher e Depositar também fazem parte da sequência.",
     tutQ4: "Quando a sequência estiver pronta, carrega em Executar ▶️.",
     tutQ5: "Enganaste-te? Usa Apagar para remover o último comando.",
     tutQ6: "Cada item colorido precisa de ser recolhido e depositado no 📥.",
     // Escape mode tutorial
     tutEsc1: "Recolhe todos os ficheiros suspeitos 📁 na grelha.",
-    tutEsc2: "Usa Recolher quando o robô estiver sobre um ficheiro.",
+    tutEsc2: "Usa Recolher quando o cão robô estiver sobre um ficheiro.",
     tutEsc3: "Leva os ficheiros à zona segura 🛡️ e usa Depositar.",
     tutEsc4: "Depois de depositar tudo, vai até à porta 🚪 para escapar!",
     tutBtnLabel: "❓ Tutorial",
@@ -265,7 +265,7 @@ const LANG_STRINGS = {
     sideProgressText: "⭐ {n} levels done",
     sideTip: "💡 Think before you act!",
     chooseUniverse: "Choose your universe!",
-    universeDesc: "Program the VanBerto's robot in challenges about real-world topics. Pick a universe, then your cycle!",
+    universeDesc: "Program the VanBerto's robot dog in challenges about real-world topics. Pick a universe, then your cycle!",
     chooseYourCycle: "Choose your cycle",
     cycleMenuDesc: "Start with the 1st Cycle and level up.",
     movements: "Moves: {n}",
@@ -294,7 +294,7 @@ const LANG_STRINGS = {
     fbBackOk: "⬇️ Moved backward.",
     fbTurnLeft: "↩️ Turned left.",
     fbTurnRight: "↪️ Turned right.",
-    fbEdge: "❌ Board edge! The robot cannot leave the grid.",
+    fbEdge: "❌ Board edge! The robot dog cannot leave the grid.",
     fbObstacle: "⛔ Obstacle! Turn (Left/Right) first, then try moving.",
     fbAlreadyCarrying: "✋ Already carrying an item! Deposit it at 📥 before picking up another.",
     fbNothingHere: "❌ Nothing here! Move on top of an item (📦) before collecting.",
@@ -439,21 +439,21 @@ const LANG_STRINGS = {
     tutSkip: "Skip",
     tutOk: "Got it! →",
     tutStep: "{a} / {b}",
-    tutMsg1: "Press here to move the robot forward!",
-    tutMsg2: "Use these arrows to turn the robot.",
+    tutMsg1: "Press here to move the robot dog forward!",
+    tutMsg2: "Use these arrows to turn the robot dog.",
     tutMsg3: "Go to the coloured item and use Collect!",
     tutMsg4: "When you're on the item, press Collect.",
     tutMsg5: "Bring the item to the container and press Deposit!",
     // Queue mode tutorial (2nd/3rd Cycle / Secondary)
     tutQ1: "Add commands to the sequence — start with Forward!",
-    tutQ2: "Use Left/Right to turn the robot before moving.",
+    tutQ2: "Use Left/Right to turn the robot dog before moving.",
     tutQ3: "Collect and Deposit are also part of the sequence.",
     tutQ4: "When your sequence is ready, press Run ▶️.",
     tutQ5: "Made a mistake? Use Undo to remove the last command.",
     tutQ6: "Each coloured item must be collected and deposited in 📥.",
     // Escape mode tutorial
     tutEsc1: "Collect all suspicious files 📁 on the grid.",
-    tutEsc2: "Use Collect when the robot is on top of a file.",
+    tutEsc2: "Use Collect when the robot dog is on top of a file.",
     tutEsc3: "Bring the files to the safe zone 🛡️ and use Deposit.",
     tutEsc4: "Once everything is deposited, go to the door 🚪 to escape!",
     tutBtnLabel: "❓ Tutorial",
@@ -658,297 +658,8 @@ function applyLangToDOM() {
   }
   function cfVan(ctx,x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
 
-  window.drawVanBerto=drawVanBerto;
-  function drawVanBerto(ctx, blink, step, armsUp, dirOverride){
-  var cv=ctx.canvas, S=((cv&&cv.width)||96)/96;
-  var dir=2;
-  if(dirOverride!=null) dir=dirOverride;
-  else if(cv&&cv.dataset&&cv.dataset.vbdir!=null&&cv.dataset.vbdir!=='') dir=+cv.dataset.vbdir;
-  if(cv&&cv.closest&&cv.closest('.mode3d')) dir=2;
-  if(dir!==0&&dir!==1&&dir!==3) dir=2;
-  step=(step===0||step===1)?step:-1;
-
-  var OUT='#0e1c4b', BLK='#060a17', CY='#5af2ff', CYD='#22b9ee';
-  var happy=(blink==='happy'), blinking=(blink===true);
-  var PI=Math.PI;
-
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,cv.width,cv.height);
-  ctx.setTransform(S,0,0,S,0,0);
-  ctx.lineJoin='round'; ctx.lineCap='round';
-
-  /* ---------- utilitários ---------- */
-  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-  function ell(x,y,rx,ry,rot){ctx.beginPath();ctx.ellipse(x,y,rx,ry,rot||0,0,PI*2);}
-  function circ(x,y,r){ctx.beginPath();ctx.arc(x,y,r,0,PI*2);}
-  function white(x0,y0,x1,y1){var g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'#ffffff');g.addColorStop(.55,'#eaf0fb');g.addColorStop(1,'#c2d1ec');return g;}
-  function blue(x0,y0,x1,y1){var g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'#4b98ff');g.addColorStop(.55,'#2a63e6');g.addColorStop(1,'#1637a8');return g;}
-  function fs(fill,lw){ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=(lw==null?2.2:lw);ctx.strokeStyle=OUT;ctx.stroke();}
-  function glow(col,b){ctx.shadowColor=col;ctx.shadowBlur=b*S;}
-  function noGlow(){ctx.shadowColor='transparent';ctx.shadowBlur=0;}
-  function paw(x,y,s,col,b){
-    ctx.save(); if(b) glow(col,b); ctx.fillStyle=col;
-    ell(x,y+1.1*s,2.9*s,2.3*s); ctx.fill();
-    [[-3.4,-.6,1.15],[-1.2,-2.9,1.2],[1.2,-2.9,1.2],[3.4,-.6,1.15]].forEach(function(t){circ(x+t[0]*s,y+t[1]*s,t[2]*s);ctx.fill();});
-    ctx.restore();
-  }
-  function bez(p,t){var u=1-t;return [u*u*u*p[0][0]+3*u*u*t*p[1][0]+3*u*t*t*p[2][0]+t*t*t*p[3][0],
-                                       u*u*u*p[0][1]+3*u*u*t*p[1][1]+3*u*t*t*p[2][1]+t*t*t*p[3][1]];}
-  function seg(p,t0,t1,w,col,cap){
-    ctx.beginPath(); for(var i=0;i<=14;i++){var q=bez(p,t0+(t1-t0)*i/14); if(i) ctx.lineTo(q[0],q[1]); else ctx.moveTo(q[0],q[1]);}
-    ctx.lineWidth=w; ctx.strokeStyle=col; ctx.lineCap=cap||'round'; ctx.stroke(); ctx.lineCap='round';
-  }
-  function tail(p){
-    seg(p,0,1,11,OUT);
-    seg(p,0,1,7.4,'#f1f5fd');
-    seg(p,.30,.40,7.4,'#101a40','butt');
-    seg(p,.52,.62,7.4,'#101a40','butt');
-    ctx.save(); glow(CY,5); seg(p,.76,1,7.4,CY); ctx.restore();
-    seg(p,.80,.96,2.4,'#d9fcff');
-  }
-  function shadow(cx,rx){ell(cx,91,rx,4);ctx.fillStyle='rgba(10,24,70,.22)';ctx.fill();}
-  function pawFoot(cx,cy,rx,ry,fill){
-    ell(cx,cy,rx,ry); fs(fill||white(cx-rx,cy-ry,cx+rx,cy+ry),2.1);
-    ctx.save(); ell(cx,cy,rx,ry); ctx.clip();
-    ctx.fillStyle='#2a63e6'; ctx.fillRect(cx-rx,cy+ry-2.6,rx*2,4); ctx.restore();
-    ctx.strokeStyle='rgba(14,28,75,.55)'; ctx.lineWidth=1.1;
-    ctx.beginPath(); ctx.moveTo(cx-rx*.28,cy-ry*.1); ctx.lineTo(cx-rx*.28,cy+ry*.55); ctx.moveTo(cx+rx*.28,cy-ry*.1); ctx.lineTo(cx+rx*.28,cy+ry*.55); ctx.stroke();
-    ell(cx,cy,rx,ry); ctx.lineWidth=2.1; ctx.strokeStyle=OUT; ctx.stroke();
-  }
-  function haunch(cx,cy){
-    ell(cx,cy,9.4,10.2); fs(white(cx-9,cy-10,cx+9,cy+10),2.2);
-    circ(cx,cy,6.2); ctx.fillStyle='#0a1128'; ctx.fill(); ctx.lineWidth=1.6; ctx.strokeStyle=OUT; ctx.stroke();
-    circ(cx,cy,6.2); ctx.lineWidth=1.1; ctx.strokeStyle='rgba(90,242,255,.7)'; ctx.stroke();
-    paw(cx,cy-.3,.95,CY,4);
-  }
-  function collarBand(x,y,w,h){
-    rr(x,y,w,h,h/2); fs(blue(x,y,x,y+h),2.2);
-    ctx.strokeStyle='rgba(150,225,255,.85)'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(x+h/2,y+2); ctx.lineTo(x+w-h/2,y+2); ctx.stroke();
-  }
-  function tag(cx,cy,sc){
-    ctx.save(); ctx.translate(cx,cy); ctx.scale(sc,sc);
-    ctx.strokeStyle='#cfd8e8'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(0,-6,2.4,0,PI*2); ctx.stroke();
-    ctx.strokeStyle=OUT; ctx.lineWidth=.7; ctx.beginPath(); ctx.arc(0,-6,3.1,0,PI*2); ctx.stroke();
-    var K=[[-7.2,-2.6],[7.2,-2.6],[-7.2,2.9],[7.2,2.9]];
-    rr(-7.6,-3.6,15.2,8.6,3.2); fs(blue(0,-4,0,5),1.8);
-    K.forEach(function(k){circ(k[0],k[1],2.9);ctx.fillStyle='#2a63e6';ctx.fill();ctx.lineWidth=1.8;ctx.strokeStyle=OUT;ctx.stroke();});
-    rr(-7.6,-3.6,15.2,8.6,3.2); ctx.fillStyle='#2a63e6'; ctx.fill();
-    ctx.strokeStyle='rgba(170,230,255,.9)'; ctx.lineWidth=.9; rr(-6.4,-2.5,12.8,6.4,2.4); ctx.stroke();
-    ctx.fillStyle='#fff'; paw(0,.9,.52,'#ffffff',0);
-    ctx.restore();
-  }
-  function ear(root,tip,out,hang){   /* orelha mole azul */
-    var rx=root[0], ry=root[1], d=out;      /* d = +1 direita / -1 esquerda */
-    ctx.beginPath();
-    ctx.moveTo(rx,ry);
-    ctx.bezierCurveTo(rx+d*12,ry-8, rx+d*24,ry+2, rx+d*21,ry+16+hang);
-    ctx.bezierCurveTo(rx+d*19,ry+24+hang, rx+d*9,ry+27+hang, rx+d*3,ry+16);
-    ctx.closePath();
-    fs(blue(rx,ry-8,rx+d*22,ry+26),2.3);
-    ctx.save(); glow(CY,4); ctx.strokeStyle=CY; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.moveTo(rx+d*9,ry-4); ctx.bezierCurveTo(rx+d*20,ry-3, rx+d*23,ry+9, rx+d*19.5,ry+17+hang); ctx.stroke(); ctx.restore();
-  }
-  function eyeArc(cx,cy,r,flat){
-    ctx.save(); glow(CY,7); ctx.strokeStyle=CY; ctx.lineWidth=3.2;
-    ctx.beginPath();
-    if(flat){ ctx.moveTo(cx-r,cy+1); ctx.quadraticCurveTo(cx,cy-.6,cx+r,cy+1); }
-    else ctx.arc(cx,cy+1.6,r,PI,PI*2);
-    ctx.stroke(); noGlow();
-    ctx.strokeStyle='#e3fdff'; ctx.lineWidth=1.1; ctx.stroke(); ctx.restore();
-  }
-  function mouth(cx,cy,w,hOpen){
-    ctx.beginPath(); ctx.moveTo(cx-w,cy); ctx.quadraticCurveTo(cx,cy+hOpen*1.9,cx+w,cy); ctx.quadraticCurveTo(cx,cy+1.4,cx-w,cy); ctx.closePath();
-    ctx.fillStyle='#4a1020'; ctx.fill();
-    ctx.save(); ctx.clip(); ell(cx+.6,cy+hOpen*.95,w*.52,hOpen*.42); ctx.fillStyle='#ff6f86'; ctx.fill(); ctx.restore();
-    ctx.beginPath(); ctx.moveTo(cx-w,cy); ctx.quadraticCurveTo(cx,cy+hOpen*1.9,cx+w,cy); ctx.lineWidth=1.7; ctx.strokeStyle=OUT; ctx.stroke();
-  }
-
-  /* ---------- movimento ---------- */
-  var walking=(step===0||step===1);
-  var bob=walking?-1.4:0;
-  var lift0=(step===0)?5:0, lift1=(step===1)?5:0;
-  var wag=(step===0)?-1:(step===1?1:0);
-
-  /* =====================  FRENTE  ===================== */
-  function front(){
-    shadow(48,25);
-    tail([[62,78],[80,80],[90,62],[83+wag*3,43]]);
-    /* patas de trás (só se veem as ancas e os pezinhos) */
-    pawFoot(26,88.5,7.4,3.9,'#dfe8f7'); pawFoot(70,88.5,7.4,3.9,'#dfe8f7');
-    haunch(26.5,77); haunch(69.5,77);
-    /* corpo */
-    ctx.save(); ctx.translate(0,bob*.5);
-    rr(30,55,36,30,14); fs(white(30,55,66,85),2.3);
-    ctx.save(); rr(30,55,36,30,14); ctx.clip();
-    ell(48,84,22,7); ctx.fillStyle='rgba(120,150,210,.28)'; ctx.fill();
-    ell(41,62,9,5,-.4); ctx.fillStyle='rgba(255,255,255,.75)'; ctx.fill(); ctx.restore();
-    ctx.restore();
-    /* patas da frente */
-    var L=armsUp;
-    ctx.save(); ctx.translate(0,bob*.5);
-    /* direita (do lado de quem olha) */
-    ctx.save(); ctx.translate(0,-lift1);
-    rr(51,68,12,19,5.5); fs(white(51,68,63,68),2.2);
-    pawFoot(57,88,8.6,5.4);
-    ctx.restore();
-    if(!L){
-      ctx.save(); ctx.translate(0,-lift0);
-      rr(33,68,12,19,5.5); fs(white(33,68,45,68),2.2);
-      pawFoot(39,88,8.6,5.4);
-      ctx.restore();
-    } else {
-      /* patinha a acenar */
-      var wv=wag*3;
-      ctx.beginPath(); ctx.moveTo(37,71); ctx.lineTo(20+wv*.4,62-wv*.3);
-      ctx.lineWidth=13; ctx.strokeStyle=OUT; ctx.stroke();
-      ctx.lineWidth=9.6; ctx.strokeStyle='#eef3fc'; ctx.stroke();
-      circ(14+wv,55,10.2); fs(white(4,45,24,65),2.3);
-      circ(14+wv,55,6.9); ctx.fillStyle='#0a1128'; ctx.fill(); ctx.lineWidth=1.4; ctx.strokeStyle=OUT; ctx.stroke();
-      circ(14+wv,55,6.9); ctx.lineWidth=1.1; ctx.strokeStyle='rgba(90,242,255,.75)'; ctx.stroke();
-      paw(14+wv,55,1.25,CY,5);
-    }
-    ctx.restore();
-    /* colar + medalha */
-    ctx.save(); ctx.translate(0,bob*.5);
-    collarBand(30,52,36,9);
-    tag(48,69.5,1);
-    ctx.restore();
-
-    /* cabeça (com balanço) */
-    ctx.save(); ctx.translate(0,bob);
-    var earHang=happy?-3:(walking?1.5*wag:0);
-    ear([30,20],null,-1,earHang); ear([66,20],null,1,-earHang);
-    /* cabeça */
-    ctx.beginPath(); ctx.moveTo(48,10);
-    ctx.bezierCurveTo(66,10,76,22,76,35); ctx.bezierCurveTo(76,48,64,56,48,56);
-    ctx.bezierCurveTo(32,56,20,48,20,35); ctx.bezierCurveTo(20,22,30,10,48,10); ctx.closePath();
-    fs(white(24,12,72,56),2.5);
-    ctx.save(); ctx.clip();
-    ell(48,56,30,9); ctx.fillStyle='rgba(120,150,210,.26)'; ctx.fill();
-    ell(35,16,11,4.2,-.4); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill(); ctx.restore();
-    /* placa azul no topo */
-    rr(36,8.2,24,8.4,4); fs(blue(36,8,36,17),2);
-    ctx.strokeStyle='rgba(150,225,255,.9)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(41,10.8); ctx.lineTo(55,10.8); ctx.stroke();
-    /* pods das bochechas */
-    [21,75].forEach(function(px){
-      circ(px,40,6.4); fs(blue(px-6,34,px+6,46),2);
-      ctx.save(); glow(CY,4); circ(px,40,3.6); ctx.strokeStyle=CY; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore();
-    });
-    /* viseira */
-    rr(26,19,44,21,10.5);
-    var vg=ctx.createLinearGradient(0,19,0,40); vg.addColorStop(0,'#101a3e'); vg.addColorStop(.5,'#070c20'); vg.addColorStop(1,'#03050f');
-    ctx.fillStyle=vg; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle=OUT; ctx.stroke();
-    ctx.strokeStyle='rgba(120,170,255,.35)'; ctx.lineWidth=.9; rr(27.5,20.5,41,18,9); ctx.stroke();
-    ell(62,23.6,2.8,1.5,.3); ctx.fillStyle='rgba(255,255,255,.92)'; ctx.fill();
-    ell(33,22.6,2.2,1,-.3); ctx.fillStyle='rgba(255,255,255,.35)'; ctx.fill();
-    /* olhos */
-    eyeArc(38.5,29.5,5.2,blinking); eyeArc(57.5,29.5,5.2,blinking);
-    if(happy){ ell(30.5,37,3.2,1.8); ctx.fillStyle='rgba(255,120,150,.5)'; ctx.fill(); ell(65.5,37,3.2,1.8); ctx.fill(); }
-    /* focinho */
-    ell(48,43.5,14.5,10.3); fs(white(34,34,62,54),2);
-    ell(48,38.2,5.6,3.9); ctx.fillStyle=BLK; ctx.fill(); ctx.lineWidth=1.2; ctx.strokeStyle=OUT; ctx.stroke();
-    ell(46.3,36.8,1.9,1,-.4); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill();
-    ctx.strokeStyle=OUT; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(48,42); ctx.lineTo(48,44.4); ctx.stroke();
-    mouth(48,44.6,8.2,happy?8.4:6.2);
-    ctx.restore();
-  }
-
-  /* =====================  COSTAS  ===================== */
-  function back(){
-    shadow(48,25);
-    tail([[58,76],[80,78],[86,58],[78+wag*3,42]]);
-    pawFoot(34,88.5,8,4.6,'#dfe8f7'); pawFoot(62,88.5,8,4.6,'#dfe8f7');
-    /* patas de trás */
-    ctx.save(); ctx.translate(0,bob*.5);
-    ctx.save(); ctx.translate(0,-lift0); rr(28,70,14,17,6); fs(white(28,70,42,70),2.2); pawFoot(35,88,8.8,5.3); ctx.restore();
-    ctx.save(); ctx.translate(0,-lift1); rr(54,70,14,17,6); fs(white(54,70,68,70),2.2); pawFoot(61,88,8.8,5.3); ctx.restore();
-    rr(26,52,44,30,15); fs(white(26,52,70,82),2.3);
-    ell(48,82,24,6); ctx.save(); rr(26,52,44,30,15); ctx.clip(); ctx.fillStyle='rgba(120,150,210,.28)'; ctx.fill(); ctx.restore();
-    haunch(31,72); haunch(65,72);
-    ctx.restore();
-    /* cauda para cima, à frente do corpo */
-    ctx.save(); ctx.translate(0,bob*.5); collarBand(30,48,36,9); ctx.restore();
-    ctx.save(); ctx.translate(0,bob);
-    ear([30,20],null,-1,walking?1.5*wag:0); ear([66,20],null,1,walking?-1.5*wag:0);
-    ctx.beginPath(); ctx.moveTo(48,10);
-    ctx.bezierCurveTo(66,10,76,22,76,35); ctx.bezierCurveTo(76,48,64,56,48,56);
-    ctx.bezierCurveTo(32,56,20,48,20,35); ctx.bezierCurveTo(20,22,30,10,48,10); ctx.closePath();
-    fs(white(24,12,72,56),2.5);
-    ctx.save(); ctx.clip(); ell(48,56,30,9); ctx.fillStyle='rgba(120,150,210,.26)'; ctx.fill();
-    ell(35,16,11,4.2,-.4); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill(); ctx.restore();
-    /* placa azul grande atrás */
-    rr(33,13,30,17,8); fs(blue(33,13,33,30),2);
-    ctx.save(); glow(CY,4); ctx.strokeStyle=CY; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(39,17); ctx.lineTo(57,17); ctx.stroke(); ctx.restore();
-    ctx.fillStyle='#fff'; paw(48,24,.8,'#d6f6ff',3);
-    [21,75].forEach(function(px){ circ(px,40,6.4); fs(blue(px-6,34,px+6,46),2);
-      ctx.save(); glow(CY,4); circ(px,40,3.6); ctx.strokeStyle=CY; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore(); });
-    ctx.restore();
-  }
-
-  /* =====================  LADO (virado para a direita)  ===================== */
-  function side(){
-    shadow(46,27);
-    tail([[22,68],[6,70],[4,52],[12+wag*2,40]]);
-    /* patas longínquas */
-    ctx.save(); ctx.translate(0,bob*.5);
-    ctx.save(); ctx.translate(0,-lift1); rr(33,72,11,15,5); fs('#d3dff3',2); pawFoot(40,88,8,5,'#d3dff3'); ctx.restore();
-    ctx.save(); ctx.translate(0,-lift0); rr(57,72,11,15,5); fs('#d3dff3',2); pawFoot(64,88,8,5,'#d3dff3'); ctx.restore();
-    /* corpo */
-    rr(14,53,50,29,13); fs(white(14,53,64,82),2.3);
-    ctx.save(); rr(14,53,50,29,13); ctx.clip(); ell(40,82,28,6); ctx.fillStyle='rgba(120,150,210,.28)'; ctx.fill();
-    ell(30,59,10,4.5,-.1); ctx.fillStyle='rgba(255,255,255,.75)'; ctx.fill(); ctx.restore();
-    /* anca + pata de trás */
-    ctx.save(); ctx.translate(0,-lift0);
-    rr(20,70,12,17,5.5); fs(white(20,70,32,70),2.2); pawFoot(27,88,9,5.4);
-    ctx.restore();
-    haunch(26,72);
-    /* pata da frente */
-    ctx.save(); ctx.translate(0,-lift1);
-    if(armsUp){
-      var wv=wag*2.5;
-      ctx.beginPath(); ctx.moveTo(52,68); ctx.lineTo(66+wv*.3,56-wv*.3); ctx.lineWidth=13; ctx.strokeStyle=OUT; ctx.stroke(); ctx.lineWidth=9.6; ctx.strokeStyle='#eef3fc'; ctx.stroke();
-      circ(69+wv,52,9.8); fs(white(59,42,79,62),2.3); circ(69+wv,52,6.6); ctx.fillStyle='#0a1128'; ctx.fill(); ctx.lineWidth=1.4; ctx.strokeStyle=OUT; ctx.stroke();
-      paw(69+wv,52,1.2,CY,5);
-    } else { rr(48,68,12,19,5.5); fs(white(48,68,60,68),2.2); pawFoot(55,88,9,5.4); }
-    ctx.restore();
-    ctx.restore();
-    /* colar + medalha */
-    ctx.save(); ctx.translate(0,bob*.5);
-    ctx.save(); ctx.translate(58,57); ctx.rotate(.12); collarBand(-10,-5,20,10); ctx.restore();
-    tag(62,69,.85);
-    ctx.restore();
-    /* cabeça de perfil */
-    ctx.save(); ctx.translate(0,bob);
-    /* orelha de trás (azul, à esquerda da cabeça) */
-    ear([52,19],null,-1,walking?1.5*wag:(happy?-3:0));
-    ctx.beginPath(); ctx.moveTo(60,11);
-    ctx.bezierCurveTo(76,10,84,22,83,34); ctx.bezierCurveTo(82,50,70,57,58,56);
-    ctx.bezierCurveTo(46,55,40,46,40,34); ctx.bezierCurveTo(40,20,48,11,60,11); ctx.closePath();
-    fs(white(44,12,84,56),2.5);
-    ctx.save(); ctx.clip(); ell(62,56,24,8); ctx.fillStyle='rgba(120,150,210,.26)'; ctx.fill(); ell(54,16,9,3.6,-.3); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill(); ctx.restore();
-    rr(52,8.4,18,8,4); fs(blue(52,8,52,17),2);
-    /* viseira de lado */
-    rr(46,20,34,19,9.5); var vg=ctx.createLinearGradient(0,20,0,39); vg.addColorStop(0,'#101a3e'); vg.addColorStop(.5,'#070c20'); vg.addColorStop(1,'#03050f');
-    ctx.fillStyle=vg; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle=OUT; ctx.stroke();
-    ell(72,23.4,2.6,1.4,.3); ctx.fillStyle='rgba(255,255,255,.92)'; ctx.fill();
-    eyeArc(66,29.5,5.2,blinking);
-    /* focinho comprido */
-    ell(78,43,11.5,8.6); fs(white(66,35,90,52),2);
-    ell(86,38.6,4.6,3.5); ctx.fillStyle=BLK; ctx.fill(); ctx.lineWidth=1.2; ctx.strokeStyle=OUT; ctx.stroke();
-    ell(85,37.4,1.5,.9,-.4); ctx.fillStyle='rgba(255,255,255,.85)'; ctx.fill();
-    mouth(79,45.6,6.6,happy?7.4:5.4);
-    /* pod da bochecha */
-    circ(49,42,6); fs(blue(43,36,55,48),2); ctx.save(); glow(CY,4); circ(49,42,3.3); ctx.strokeStyle=CY; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore();
-    ctx.restore();
-  }
-
-  if(dir===2) front();
-  else if(dir===0) back();
-  else if(dir===1) side();
-  else { ctx.save(); ctx.translate(96,0); ctx.scale(-1,1); side(); ctx.restore(); }
-  noGlow();
-  ctx.setTransform(1,0,0,1,0,0);
-}
+  
+  /* o desenho do cão vive em vanberto-cao.js (window.drawVanBerto) */
 
   /* ── Helpers de expressão para qualquer canvas do VanBerto (grelha, dpad, etc.) ── */
   function vbFlashPose(canvas, blink, step, armsUp, duration){
@@ -985,7 +696,7 @@ const ALL_UNIVERSES = {
     name: "Segurança na Internet",
     emoji: "🔒",
     badge: "🔒 Segurança na Internet · Pensamento computacional",
-    menuTitle: "Programa o robô e protege-te online!",
+    menuTitle: "Programa o cão robô e protege-te online!",
     menuDesc: "Guia o VanBerto's por missões reais de cibersegurança.",
     colors: { primary:"#6366f1", rgb:"99,102,241", dark:"#3730a3", soft:"rgba(99,102,241,0.12)", bg1:"#e0e7ff", bg2:"#f0f0ff" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -1088,7 +799,7 @@ const ALL_UNIVERSES = {
     name: "Missões da Água",
     emoji: "💧",
     badge: "💧 Ambiente · Água · Pensamento computacional",
-    menuTitle: "Programa o robô e protege a água!",
+    menuTitle: "Programa o cão robô e protege a água!",
     menuDesc: "Limpa oceanos, repara fugas e preserva as nascentes.",
     colors: { primary:"#0ea5e9", rgb:"14,165,233", dark:"#0369a1", soft:"rgba(14,165,233,0.12)", bg1:"#e0f2fe", bg2:"#f0f9ff" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -1179,7 +890,7 @@ const ALL_UNIVERSES = {
     name: "Qualidade do Ar",
     emoji: "🌬️",
     badge: "🌬️ Ambiente · Ar · Pensamento computacional",
-    menuTitle: "Programa o robô e melhora o ar!",
+    menuTitle: "Programa o cão robô e melhora o ar!",
     menuDesc: "Reduz poluição, instala filtros e monitoriza a qualidade do ar.",
     colors: { primary:"#10b981", rgb:"16,185,129", dark:"#065f46", soft:"rgba(16,185,129,0.12)", bg1:"#d1fae5", bg2:"#f0fdf4" },
     hasCycles: ["1c","2c","3c","sec"],
@@ -1270,14 +981,14 @@ const ALL_UNIVERSES = {
     name: "Missões Ambientais",
     emoji: "🌱",
     badge: "🌱 Pensamento computacional · Ambiente",
-    menuTitle: "Programa o robô e cuida do planeta!",
+    menuTitle: "Programa o cão robô e cuida do planeta!",
     menuDesc: "Floresta, reciclagem, oceanos e muito mais.",
     colors: { primary:"#f59e0b", rgb:"245,158,11", dark:"#92400e", soft:"rgba(245,158,11,0.12)", bg1:"#fef3c7", bg2:"#fffbeb" },
     hasCycles: ["1c","2c","3c","sec"],
     cycleDescs: { "1c":"Comandos imediatos", "2c":"Sequência · Planeamento", "3c":"Sequência + otimização", "sec":"Estratégia e eficiência" },
     data: {
       "1c": { name:"1.º Ciclo", mode:"direct", themes: {
-        robo: { name:"Robô & Ambiente", emoji:"🌱", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
+        robo: { name:"Cão Robô & Ambiente", emoji:"🌱", itemEmojis:["🍃","🍂","🌸"], obstacleEmoji:"⛰️",
           levels:[
             {size:5,robot:[4,0],items:[[2,2]],deposit:[[0,4]],obstacles:[],difficulty:"Fácil",desc:"Recolhe a folha e leva ao contentor."},
             {size:5,robot:[4,0],items:[[3,2],[1,3]],deposit:[[0,4]],obstacles:[[2,1]],difficulty:"Médio",desc:"Recolhe as folhas e contorna o obstáculo."},
@@ -1712,13 +1423,13 @@ function _baseTipForTheme(themeKey){
   if(THEME_TIPS[themeKey]) return THEME_TIPS[themeKey];
   // Fuzzy match (no underscores to avoid cross-universe hits)
   const k=Object.keys(THEME_TIPS).find(t=>!t.includes("_")&&(themeKey.includes(t)||t.includes(themeKey)));
-  return k?THEME_TIPS[k]:"💡 Pensa no caminho mais curto antes de começar a programar o robô!";
+  return k?THEME_TIPS[k]:"💡 Pensa no caminho mais curto antes de começar a programar o cão robô!";
 }
 
 /* Dicas extra por tema (universo "ambiente"): cada nível mostra uma dica diferente, sempre sobre o tema.
    Chave = universo_tema. Nível 1 usa a dica base (THEME_TIPS); os seguintes usam estas, em rotação. */
 const THEME_TIPS_EXTRA = {
-  ambiente_robo: ["💡 As folhas caídas podem ir para a compostagem: em alguns meses transformam-se em adubo natural para o jardim.", "💡 Em Portugal, o ecoponto azul é para papel e cartão, o amarelo para plástico e metal e o verde para vidro.", "💡 Já existem drones que plantam árvores e robôs que limpam rios e praias. A tecnologia também ajuda o ambiente!", "💡 Uma árvore adulta pode absorver cerca de 22 kg de CO₂ por ano e liberta o oxigénio que respiramos."],
+  ambiente_robo: ["💡 As folhas caídas podem ir para a compostagem: em alguns meses transformam-se em adubo natural para o jardim.", "💡 Em Portugal, o ecoponto azul é para papel e cartão, o amarelo para plástico e metal e o verde para vidro.", "💡 Já existem drones que plantam árvores e cães robô que limpam rios e praias. A tecnologia também ajuda o ambiente!", "💡 Uma árvore adulta pode absorver cerca de 22 kg de CO₂ por ano e liberta o oxigénio que respiramos."],
   ambiente_oceanos: ["💡 Uma garrafa de plástico pode demorar cerca de 450 anos a decompor-se no mar.", "💡 As tartarugas confundem os sacos de plástico com alforrecas e podem morrer ao comê-los.", "💡 Os recifes de coral ocupam menos de 1% do fundo do mar, mas são casa de cerca de 25% das espécies marinhas.", "💡 Os oceanos cobrem cerca de 71% da superfície da Terra e produzem grande parte do oxigénio que respiramos."],
   ambiente_cidade: ["💡 Em Portugal, cada pessoa produz cerca de 500 kg de resíduos urbanos por ano. Reduzir começa em casa!", "💡 O vidro pode ser reciclado vezes sem conta sem perder qualidade.", "💡 Os telhados verdes arrefecem os edifícios, captam a água da chuva e dão casa a insetos e aves.", "💡 Ir a pé, de bicicleta ou de transportes públicos reduz o trânsito, o ruído e a poluição da cidade."],
   ambiente_natal: ["💡 As luzes LED gastam até cerca de 80% menos energia do que as lâmpadas antigas e duram muito mais.", "💡 Podes embrulhar prendas com jornal, tecido ou papel reutilizado. O papel plastificado ou com purpurinas não se recicla.", "💡 Uma árvore natural pode ser replantada ou transformada em composto depois das festas.", "💡 Cerca de um terço dos alimentos produzidos no mundo é desperdiçado. Planear as quantidades da ceia evita sobras.", "💡 Os cartões de Natal e o papel de embrulho simples (sem plástico nem purpurinas) podem ir para o ecoponto azul."],
@@ -2757,6 +2468,7 @@ function buildDoorSVG(unlocked, opening){
 function shakeRobot(){
   const icon=document.querySelector(".robot-cell .robot-icon");
   if(!icon) return;
+  try{ const _cv=icon.querySelector(".grid-vb-robot"); if(_cv) vbFlashPose(_cv,"sad",-1,false,800); }catch(_e){}
   icon.classList.remove("robot-icon-shake");
   void icon.offsetWidth;
   icon.classList.add("robot-icon-shake");
@@ -2833,7 +2545,7 @@ function renderGrid(){
   // bússola: acumula o ângulo para rodar sempre pelo caminho mais curto
   if(!(_gp && _gp.ls===levelState && _gp.size===size)) renderGrid._cAcc=dir*90; else renderGrid._cAcc=(renderGrid._cAcc||0)+turned;
   const _nd=$("compass-needle"); if(_nd) _nd.style.transform="rotate("+renderGrid._cAcc+"deg)";
-  const _cp=$("dpad-compass"); if(_cp) _cp.setAttribute("title","Direção do robô: "+DIR_ARROWS[dir]);
+  const _cp=$("dpad-compass"); if(_cp) _cp.setAttribute("title","Direção do cão robô: "+DIR_ARROWS[dir]);
   gridEl.style.gridTemplateColumns=`repeat(${size},1fr)`;
   gridEl.classList.remove("big","huge");
   if(size>=8)gridEl.classList.add("big");
@@ -3294,6 +3006,7 @@ function vbSticker(top,txt){
   clearTimeout(wp._t); wp._t=setTimeout(()=>wp.classList.remove("show"),1500);
 }
 function vbCelebrate(top,txt){
+  try{ const _cv=document.querySelector(".robot-cell .grid-vb-robot"); if(_cv) vbDanceSequence(_cv,2); }catch(_e){}
   setTimeout(()=>{
     const el=document.querySelector(".robot-cell .robot-icon")||document.querySelector(".robot-cell");
     const reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -3617,8 +3330,8 @@ const QX_EN={
  "Programador(a)":"Programmer",
  "🥇 Perfeito":"🥇 Perfect","🥈 Excelente":"🥈 Excellent","🥉 Bom":"🥉 Good","✅ Concluído":"✅ Completed",
  "de Pensamento Computacional":"in Computational Thinking","de Pensamento Computacional — ciclo completo":"in Computational Thinking — full cycle",
- "que, com atenção e criatividade, programou o robô e completou o tema":"who, with care and creativity, programmed the robot and completed the theme",
- "que, com atenção e criatividade, programou o robô e completou todos os temas de":"who, with care and creativity, programmed the robot and completed all the themes of",
+ "que, com atenção e criatividade, programou o cão robô e completou o tema":"who, with care and creativity, programmed the robot dog and completed the theme",
+ "que, com atenção e criatividade, programou o cão robô e completou todos os temas de":"who, with care and creativity, programmed the robot dog and completed all the themes of",
  "tornando-se oficialmente Programador(a) do Pensamento Computacional.":"officially becoming a Computational Thinking Programmer.",
  "tornando-se oficialmente Programador(a) do Pensamento Computacional deste ciclo.":"officially becoming a Computational Thinking Programmer for this cycle.",
  "Ensino Secundário":"Upper Secondary",
@@ -3634,14 +3347,14 @@ const QX_EN={
  "😕 Não consegui calcular uma demonstração para este nível.":"😕 I couldn't work out a demo for this level.",
  "🎬 Repara na sequência completa — o passo atual fica em destaque!":"🎬 Watch the whole sequence — the current step is highlighted!",
  "🎬 Fim da demonstração! Carrega em ↺ Reiniciar e tenta tu — este nível ainda não conta.":"🎬 End of the demo! Press ↺ Restart and try it yourself — this level doesn't count yet.",
- "🎬 Repara: primeiro escreve-se o programa, depois o robô executa-o linha a linha.":"🎬 Look: first the program is written, then the robot runs it line by line.",
+ "🎬 Repara: primeiro escreve-se o programa, depois o cão robô executa-o linha a linha.":"🎬 Look: first the program is written, then the robot dog runs it line by line.",
  "📋 A solução ficou escrita na caixa — carrega em ▶️ Executar para a veres outra vez, ou muda o que quiseres.":"📋 The solution is now in the box — press ▶️ Run to watch it again, or change whatever you like.",
  "🎬 Vou reiniciar este nível e mostrar uma forma de o resolver escrevendo o pseudocódigo. Continuar?":"🎬 I'll restart this level and show one way to solve it by writing the pseudocode. Continue?",
  "🎬 Vou reiniciar este nível e mostrar uma forma de o resolver usando os blocos. Continuar?":"🎬 I'll restart this level and show one way to solve it using the blocks. Continue?",
  "🔁 Só podes aninhar ciclos até 2 níveis — fecha o mais interno primeiro.":"🔁 You can nest loops up to 2 levels — close the innermost one first.",
  "Ainda não escreveste nenhum comando.":"You haven't written any commands yet.",
  "🧠 Desafio de Pseudocódigo ":"🧠 Pseudocode Challenge ",
- "Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o robô faz.":"You completed all the pseudocode challenges! You can now read a program line by line and predict what the robot does.",
+ "Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o cão robô faz.":"You completed all the pseudocode challenges! You can now read a program line by line and predict what the robot dog does.",
  "← Voltar ao jogo":"← Back to the game","Terminar ✓":"Finish ✓","Seguinte →":"Next →","Fechar":"Close",
  "✅ Certo! Seguiste o programa passo a passo.":"✅ Correct! You followed the program step by step.","❌ Não era essa — vê a opção a verde e a explicação.":"❌ Not that one — see the green option and the explanation.",
  "Tema concluído! 🏆":"Theme completed! 🏆","Ciclo concluído! 🎓":"Cycle completed! 🎓"
@@ -4007,7 +3720,7 @@ async function runDemoWritten(entries){
   };
   const lbl=$("queue-label"), lblOriginal=lbl?lbl.textContent:null; if(lbl) lbl.textContent=Q("🎬 A demonstrar…");
   runningQueue=true; ta.classList.add("qx-hidden"); pre.classList.remove("qx-hidden");
-  showWriteMsg("","🎬 Repara: primeiro escreve-se o programa, depois o robô executa-o linha a linha.");
+  showWriteMsg("","🎬 Repara: primeiro escreve-se o programa, depois o cão robô executa-o linha a linha.");
   try{
     for(let n=1;n<=lines.length;n++){ paint(n,null); await qxWait(280); }
     await qxWait(500);
@@ -4147,7 +3860,7 @@ function showCertificate(ck,tk){
   const set=(id,t)=>{ const e=$(id); if(e) e.textContent=Q(t); };
   set("certPlayerName",(_getStudentName()||"").trim()||"Programador(a)");
   set("certSubtitle",isCycle?"de Pensamento Computacional — ciclo completo":"de Pensamento Computacional");
-  set("certAchText",isCycle?"que, com atenção e criatividade, programou o robô e completou todos os temas de":"que, com atenção e criatividade, programou o robô e completou o tema");
+  set("certAchText",isCycle?"que, com atenção e criatividade, programou o cão robô e completou todos os temas de":"que, com atenção e criatividade, programou o cão robô e completou o tema");
   set("certHighlight",isCycle?cycleLabel+" — "+uni:theme.name+" ("+cycleLabel+")");
   set("certFinalText",isCycle?"tornando-se oficialmente Programador(a) do Pensamento Computacional deste ciclo.":"tornando-se oficialmente Programador(a) do Pensamento Computacional.");
   const st=isCycle?certCycleStats(ck):certThemeStats(ck,tk);
@@ -4348,19 +4061,19 @@ function buildPseudoChallenges(){
     const trace=r.acts.map(a=>PSEUDO_CMD[a]).join(", ");
     if(src.t==="count"){
       const correct=String(r.n), ops=uniq([correct,String(r.n-1),String(r.n+2),String(lines)]).filter(v=>+v>0).slice(0,4);
-      return {code:src.code,q:EN?"How many commands does the robot run in total, counting every repetition?":"Quantos comandos executa o robô ao todo, contando cada repetição?",ops,a:ops.indexOf(correct),
+      return {code:src.code,q:EN?"How many commands does the robot dog run in total, counting every repetition?":"Quantos comandos executa o cão robô ao todo, contando cada repetição?",ops,a:ops.indexOf(correct),
         e:EN?"REPETIR blocks count every pass. Step by step: "+trace+" → "+r.n+" commands (the program only has "+lines+" written lines).":"Os blocos REPETIR contam todas as voltas. Passo a passo: "+trace+" → "+r.n+" comandos (o programa só tem "+lines+" linhas escritas)."};
     }
     if(src.t==="dir"){
       const ops=DN.slice();
-      return {code:src.code,q:EN?"The robot starts facing up. Which way is it facing at the end?":"O robô começa a olhar para cima. Para onde fica a olhar no fim?",ops,a:r.d,
+      return {code:src.code,q:EN?"The robot dog starts facing up. Which way is it facing at the end?":"O cão robô começa a olhar para cima. Para onde fica a olhar no fim?",ops,a:r.d,
         e:EN?"Each VIRAR À DIREITA turns 90° to the right and each VIRAR À ESQUERDA 90° to the left. The commands were: "+trace+". At the end it faces "+DN[r.d]+".":"Cada VIRAR À DIREITA roda 90° para a direita e cada VIRAR À ESQUERDA 90° para a esquerda. Os comandos foram: "+trace+". No fim olha "+DN[r.d]+"."};
     }
     if(src.t==="pos"){
       const correct=posText(r.x,r.y), ops=uniq([correct,posText(r.y,r.x),posText(r.x+1,r.y),posText(r.x,r.y-1),posText(-r.x,-r.y)]).slice(0,4);
       if(ops.indexOf(correct)<0) ops[0]=correct;
-      return {code:src.code,q:EN?"The robot starts facing up. Where does it end up, compared with its starting square?":"O robô começa a olhar para cima. Onde fica, em relação à casa onde começou?",ops,a:ops.indexOf(correct),
-        e:EN?"Following the commands: "+trace+". The robot always moves in the direction it is facing. It ends "+correct+(r.d?", facing "+DN[r.d]:", facing up")+".":"Seguindo os comandos: "+trace+". O robô anda sempre na direção para onde está virado. Fica "+correct+(r.d?", a olhar "+DN[r.d]:", a olhar para cima")+"."};
+      return {code:src.code,q:EN?"The robot dog starts facing up. Where does it end up, compared with its starting square?":"O cão robô começa a olhar para cima. Onde fica, em relação à casa onde começou?",ops,a:ops.indexOf(correct),
+        e:EN?"Following the commands: "+trace+". The robot dog always moves in the direction it is facing. It ends "+correct+(r.d?", facing "+DN[r.d]:", facing up")+".":"Seguindo os comandos: "+trace+". O cão robô anda sempre na direção para onde está virado. Fica "+correct+(r.d?", a olhar "+DN[r.d]:", a olhar para cima")+"."};
     }
     const mine=expandEntries(parsePseudoProgram(src.code).entries).join(","); const all=[src.alts[0]].concat(src.alts.slice(1));
     const good=all.findIndex(c=>expandEntries(parsePseudoProgram(c).entries).join(",")===mine);
@@ -4377,7 +4090,7 @@ function openPseudoChallenge(idx){
     pop.addEventListener("click",e=>{ if(e.target===pop) closePseudoChallenge(); }); document.body.appendChild(pop); }
   const card=h=>'<div class="psch-card">'+h+'</div>';
   if(idx>=list.length){
-    pop.innerHTML=card('<div style="font-size:2.2rem;text-align:center">🧠✅</div><p class="psch-done">'+Q("Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o robô faz.")+'</p><div class="psch-actions"><button class="btn small" id="psch-close">'+Q("← Voltar ao jogo")+'</button></div>');
+    pop.innerHTML=card('<div style="font-size:2.2rem;text-align:center">🧠✅</div><p class="psch-done">'+Q("Completaste todos os desafios de pseudocódigo! Já sabes ler um programa linha a linha e prever o que o cão robô faz.")+'</p><div class="psch-actions"><button class="btn small" id="psch-close">'+Q("← Voltar ao jogo")+'</button></div>');
     $("psch-close").addEventListener("click",closePseudoChallenge); return;
   }
   const ch=list[idx];

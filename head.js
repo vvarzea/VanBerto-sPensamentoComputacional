@@ -38,7 +38,7 @@
     var S={slow:1.8,normal:1,fast:.45},cur='normal',D='vb_dys_v1',K='vb_speed_v1';
     try{cur=localStorage.getItem(K)||'normal';}catch(e){} if(!S[cur])cur='normal'; window.vbSpeed=S[cur];
     var row=document.querySelector('#game-screen .controls-row');
-    if(row){var w=document.createElement('div');w.className='vb-tools';w.setAttribute('role','group');w.setAttribute('aria-label','Velocidade do robô');
+    if(row){var w=document.createElement('div');w.className='vb-tools';w.setAttribute('role','group');w.setAttribute('aria-label','Velocidade do cão robô');
       [['slow','🐢','Devagar'],['normal','🚶','Normal'],['fast','🐇','Rápido']].forEach(function(o){
         var b=document.createElement('button');b.type='button';b.className='btn secondary small';b.textContent=o[1];b.title='Velocidade: '+o[2];b.setAttribute('aria-label',o[2]);
         b.setAttribute('aria-pressed',o[0]===cur);

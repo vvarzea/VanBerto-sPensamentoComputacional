@@ -14,9 +14,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=25">
+  <link rel="stylesheet" href="styles.css?v=26">
   <link rel="stylesheet" href="vb-blocos.css?v=1">
-  <script src="head.js?v=16"></script>
+  <script src="vanberto-cao.js?v=1"></script>
+<script src="head.js?v=17"></script>
 </head>
 <body>
   <div class="bg-layer"></div>
@@ -223,7 +224,7 @@
               <div class="hero">
                 <div class="hero-top">
                   <div class="hero-text">
-                    <h2 id="menu-title">Programa o robô!</h2>
+                    <h2 id="menu-title">Programa o cão robô!</h2>
                     <p id="menu-desc">Escolhe o teu ciclo e começa a missão.</p>
                   </div>
                   <div class="hero-robot-wrap">
@@ -350,7 +351,7 @@
                     <button type="button" class="tag tag-btn" id="btn-cam-l" title="Rodar o tabuleiro para a esquerda" aria-label="Rodar o tabuleiro para a esquerda">⟲</button>
                     <button type="button" class="tag tag-btn" id="btn-cam-r" title="Rodar o tabuleiro para a direita" aria-label="Rodar o tabuleiro para a direita">⟳</button>
                     <button type="button" class="tag tag-btn" id="btn-tilt" title="Mudar a inclinação da vista" aria-label="Mudar a inclinação da vista">📐 Média</button>
-                    <button type="button" class="tag tag-btn" id="btn-follow" aria-pressed="false" title="A câmara segue o robô" aria-label="A câmara segue o robô">🎥 Seguir</button>
+                    <button type="button" class="tag tag-btn" id="btn-follow" aria-pressed="false" title="A câmara segue o cão robô" aria-label="A câmara segue o cão robô">🎥 Seguir</button>
                     <button type="button" class="tag tag-btn" id="btn-cam-reset" title="Recentrar a vista (também: duplo clique no tabuleiro)" aria-label="Recentrar a vista">🎯 Recentrar</button>
                     </span>
                   </div>
@@ -361,22 +362,22 @@
               </div>
               <div>
                 <div class="tag-row" style="margin-bottom:6px;">
-                  <span class="tag">🎮 Comandos do robô</span>
+                  <span class="tag">🎮 Comandos do cão robô</span>
                 </div>
-                <div class="dpad-wrap" role="group" aria-label="Comandos do robô">
-                  <button class="dpad-btn cmd-btn dp-move" id="btn-cmd-move" data-cmd="MOVE" aria-label="Avançar o robô"><span class="dpad-arrow">⬆️</span><span class="dpad-label">Avançar</span></button>
+                <div class="dpad-wrap" role="group" aria-label="Comandos do cão robô">
+                  <button class="dpad-btn cmd-btn dp-move" id="btn-cmd-move" data-cmd="MOVE" aria-label="Avançar o cão robô"><span class="dpad-arrow">⬆️</span><span class="dpad-label">Avançar</span></button>
                   <button class="dpad-btn cmd-btn dp-left" id="btn-cmd-left" data-cmd="LEFT" aria-label="Rodar à esquerda"><span class="dpad-arrow">↩️</span><span class="dpad-label">Esq.</span></button>
-                  <div class="dpad-center"><div class="dpad-compass" id="dpad-compass" role="img" aria-label="Direção do robô" title="Direção do robô">
+                  <div class="dpad-center"><div class="dpad-compass" id="dpad-compass" role="img" aria-label="Direção do cão robô" title="Direção do cão robô">
                     <svg class="compass-needle" id="compass-needle" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polygon points="12,1.5 19,20.5 12,16.4 5,20.5"/><polygon class="tail" points="12,16.4 19,20.5 12,22.5 5,20.5"/></svg>
                   </div></div>
                   <button class="dpad-btn cmd-btn dp-right" id="btn-cmd-right" data-cmd="RIGHT" aria-label="Rodar à direita"><span class="dpad-arrow">↪️</span><span class="dpad-label">Dir.</span></button>
-                  <button class="dpad-btn cmd-btn dp-back" id="btn-cmd-back" data-cmd="BACK" aria-label="Recuar o robô"><span class="dpad-arrow">⬇️</span><span class="dpad-label">Recuar</span></button>
+                  <button class="dpad-btn cmd-btn dp-back" id="btn-cmd-back" data-cmd="BACK" aria-label="Recuar o cão robô"><span class="dpad-arrow">⬇️</span><span class="dpad-label">Recuar</span></button>
                   <button class="dpad-btn cmd-btn dpad-action-btn dp-collect" id="btn-cmd-collect" data-cmd="COLLECT" aria-label="Recolher objeto"><span class="dpad-arrow">✋</span><span class="dpad-label">Recolher</span></button>
                   <button class="dpad-btn cmd-btn dpad-action-btn dp-drop" id="btn-cmd-drop" data-cmd="DROP" aria-label="Depositar objeto"><span class="dpad-arrow">📥</span><span class="dpad-label">Depositar</span></button>
                 </div>
                 <div id="queue-box" class="queue-box hidden">
                   <span id="queue-label" style="margin-right:4px;font-size:.78rem;font-weight:600;">Sequência:</span>
-                  <div class="queue-mode-tabs qx-hidden" id="queue-mode-tabs" role="group" aria-label="Como queres programar o robô?">
+                  <div class="queue-mode-tabs qx-hidden" id="queue-mode-tabs" role="group" aria-label="Como queres programar o cão robô?">
                     <button type="button" class="btn small" id="tab-blocks" aria-pressed="true">🧩 Blocos</button>
                     <button type="button" class="btn secondary small" id="tab-write" aria-pressed="false">✍️ Escrever</button>
                   </div>
@@ -434,7 +435,7 @@
                   <button class="btn secondary small" id="btn-reset-level">↺ Reiniciar</button>
                   <button class="btn secondary small" id="btn-reset-theme" title="Volta ao nível 1 deste tema e apaga o progresso do tema">🗑 Reset tema</button>
                   <button class="btn secondary small qx-hidden" id="btn-demo" title="Mostra uma forma de resolver este nível">🎬 Demonstração</button>
-                  <button class="btn secondary small qx-hidden" id="btn-pseudo-challenge" title="Perguntas para ler pseudocódigo e prever o que o robô faz">🧠 Desafio de Pseudocódigo</button>
+                  <button class="btn secondary small qx-hidden" id="btn-pseudo-challenge" title="Perguntas para ler pseudocódigo e prever o que o cão robô faz">🧠 Desafio de Pseudocódigo</button>
                   <button class="btn secondary small qx-hidden" id="btn-cert-theme" title="Certificado deste tema">🎓 Certificado</button>
                   <button class="btn secondary small qx-hidden" id="btn-cert-cycle" title="Certificado de todo o ciclo">🎓 Ciclo</button>
                 </div>
@@ -540,7 +541,7 @@
   <div class="fixed-glow"></div>
 </div>
 
-<script src="app.js?v=24"></script>
+<script src="app.js?v=26"></script>
 <script src="vb-blocos.js?v=2"></script>
 
   <!-- ===== ESCAPE ROOMS OVERLAY ===== -->
