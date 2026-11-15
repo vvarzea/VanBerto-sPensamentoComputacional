@@ -2111,3 +2111,7 @@ body.dark .level-concept{color:#e9d5ff!important;background:#3b2a5a;border-color
   78%{transform:translate(-50%,-50%) scale(1) rotate(-2deg);opacity:1;}
   100%{transform:translate(-50%,-62%) scale(.9) rotate(-2deg);opacity:0;}
 }
+
+/* VanBerto's cão-robô: não roda a imagem; desenha-se de frente, costas ou lado conforme a direção */
+.cell.robot-cell .robot-icon{transform:none!important;}
+.robot-icon canvas{image-rendering:auto;}

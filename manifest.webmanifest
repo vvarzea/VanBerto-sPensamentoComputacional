@@ -1,7 +1,7 @@
 {
   "name": "Hora do Código",
   "short_name": "Hora do Código",
-  "description": "Aprende pensamento computacional e segurança na Internet com o robô VanBerto.",
+  "description": "Aprende pensamento computacional e segurança na Internet com o VanBerto's, o cão-robô.",
   "lang": "pt-PT",
   "start_url": "./index.html",
   "scope": "./",
