@@ -48,53 +48,68 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 @keyframes fixedVbJump{0%{transform:translateY(0)}35%{transform:translateY(-26px) scale(1.05)}70%{transform:translateY(0) scale(.97)}100%{transform:translateY(0)}}
 @media(max-width:480px){#fixed-robot-wrap .fixed-robot{width:84px;height:84px}#fixed-robot-wrap{bottom:8px;right:8px}#fixed-robot-wrap .fixed-bubble{max-width:150px;font-size:.78rem}}
 .stage{position:relative}#hud{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:8px;pointer-events:none}#hud div{background:rgba(18,20,30,.78);color:#fff;border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;min-width:96px}#hud b{font:700 1.1rem 'Fredoka',sans-serif}#hud span{font-size:.7rem;opacity:.75}#stl{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:6px;pointer-events:none}#stl .s{flex:1;background:rgba(18,20,30,.72);color:#cbd5e1;border-radius:10px;padding:4px 8px;font-weight:800;font-size:.78rem;border:2px solid transparent}#stl .s i{font-style:normal;opacity:.6;margin-right:2px}#stl .s small{display:block;font-weight:700;opacity:.7}#stl .s.on{border-color:#ffd23f;color:#fff}#stl .s.ok{color:#2ee6a6}@media(max-width:560px){#hud div{min-width:0;padding:4px 6px}#hud b{font-size:.85rem}#hud span{font-size:.6rem}#stl .s{font-size:.62rem;padding:3px 5px}#stl .s small{display:none}}
+
+/* ── editor de blocos (Blockly) + disposição em duas colunas ── */
+.w{max-width:1260px}
+.game{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
+.game>.card{margin-bottom:0}
+@media(min-width:1000px){.game{grid-template-columns:minmax(420px,.95fr) 1.05fr;align-items:start}.game>.stg{order:2;position:sticky;top:10px}.game>.ed{order:1}}
+@media(max-width:999px){.game>.stg{order:1}.game>.ed{order:2}}
+.bwrap{position:relative}
+#bw{height:440px;border:2.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fffdf5}
+@media(max-width:600px){#bw{height:380px}}
+#bw.vb-locked::after{content:"";position:absolute;inset:0;z-index:50;cursor:progress}
+.bcount{position:absolute;top:10px;right:12px;z-index:6;background:rgba(30,27,75,.92);color:#fff;border-radius:10px;padding:2px 10px;font-weight:800;font-size:.8rem;pointer-events:none}
+.vb-run .blocklyPath{stroke:#ffd23f!important;stroke-width:5px!important;filter:drop-shadow(0 0 9px #ffd23f) brightness(1.12)}
+.blocklyText{font-family:Nunito,'Nunito Sans',system-ui,sans-serif!important}
+#pyw{display:none;margin-top:10px}
+.pyhd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#pyv{margin-top:8px;padding:8px 0;border-radius:12px;background:#0f1424;color:#e8ecff;font:600 .86rem/1.6 ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);overflow:auto;max-height:240px}
+.pl{display:block;white-space:pre;padding-right:12px}
+.pl i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;opacity:.4;font-style:normal}
+.pl.on{background:rgba(110,220,130,.30);box-shadow:inset 4px 0 #6ee082}
+.kw{color:#ff9ac1}.st{color:#a5e075}.fn{color:#7cc4ff}.nu{color:#ffcf6b}
+#py{display:none;width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
+#pyeb{display:none}
+.pynote{display:block;margin-top:6px;opacity:.7;font-weight:700}
 </style>
 </head>
 <body>
 <div class="w">
 <header><h1>🏭 Hora do Código · Fábrica de Carros</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
-<div class="card">
-<div class="stage"><canvas id="cv" width="640" height="360"></canvas><div id="hud"><div><b id="h-done">0</b><span>carros prontos</span></div><div><b id="h-t">0.0 s</b><span>tempo deste carro</span></div><div><b id="h-st">Linha à espera</b><span>agora</span></div></div><div id="stl"><div class="s"><i>1</i> Soldadura<small>à espera</small></div><div class="s"><i>2</i> Pintura<small>à espera</small></div><div class="s"><i>3</i> Motor<small>à espera</small></div><div class="s"><i>4</i> Rodas<small>à espera</small></div></div></div>
-<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
-</div>
-<div class="card">
+<div class="game">
+<div class="card ed">
 <div class="lv" id="cys"></div>
 <div class="lv" id="lvs"></div>
 <div id="mis"></div>
-<div class="pal">
-<button style="background:#ff8a3d" data-a="S">🔥 soldar</button>
-<button style="background:#e5484d" data-a="R">🎨 pintar vermelho</button>
-<button style="background:#3e63dd" data-a="B">🎨 pintar azul</button>
-<button style="background:#4c9a2a" data-a="G">🎨 pintar verde</button>
-<button style="background:#d4a000" data-a="Y">🎨 pintar amarelo</button>
-<button style="background:#2b8a9e" data-a="M">🔧 montar o motor</button>
-<button style="background:#d97706" data-a="W">🛞 montar uma roda</button>
-<button style="background:#30a46c" data-a="E">📦 entregar</button>
-<button style="background:#8e4ec6" data-a="rep">🔁 repetir</button>
-<button style="background:#a98bd8" data-a="end">fim do repetir</button>
-<button style="background:#2b8a9e" data-a="ifB">🔀 se encomenda azul</button>
-<button style="background:#2b8a9e" data-a="ifR">🔀 se encomenda vermelha</button>
-<button style="background:#4aa8bb" data-a="else">↔ senão</button>
-<button style="background:#9333ea" data-a="X">🔧 retocar a pintura</button>
-<button style="background:#2b8a9e" data-a="ifD">🔀 se houver defeito</button>
-<button style="background:#c2410c" data-a="wh">🔄 enquanto faltar soldar</button>
-</div>
-<div id="prog"></div>
+<div class="bwrap"><div id="bw"></div><div class="bcount"><b id="bc">0</b> blocos</div></div>
 <div class="row">
 <button id="go">▶ Executar</button>
-<button id="clr">🗑 Limpar</button>
-<button id="pyb">🐍 Ver em Python</button>
+<button id="clr">↺ Recomeçar</button>
+<button id="pyb">🐍 Python</button>
 </div>
 <div id="msg"></div>
-<div id="pyw"><textarea id="py" rows="6" spellcheck="false"></textarea><div class="row"><button id="pya" style="background:#3776ab">⬆ Usar este código</button></div></div>
+<div id="pyw"><div class="pyhd"><b>🐍 O mesmo programa em Python</b><button id="pye">✏️ Editar</button></div>
+<div id="pyv" aria-live="off"></div>
+<textarea id="py" rows="6" spellcheck="false"></textarea>
+<div class="row" id="pyeb"><button id="pya" style="background:#3776ab">⬆ Usar este código</button></div>
+<small class="pynote">Cada linha corresponde a um bloco. Enquanto o bloco trabalha, a linha de código que está a correr fica acesa.</small></div>
 </div>
-<footer>© Prof.ª Vanda Várzea</footer>
+<div class="card stg">
+<div class="stage"><canvas id="cv" width="640" height="360"></canvas><div id="hud"><div><b id="h-done">0</b><span>carros prontos</span></div><div><b id="h-t">0.0 s</b><span>tempo deste carro</span></div><div><b id="h-st">Linha à espera</b><span>agora</span></div></div><div id="stl"><div class="s"><i>1</i> Soldadura<small>à espera</small></div><div class="s"><i>2</i> Pintura<small>à espera</small></div><div class="s"><i>3</i> Motor<small>à espera</small></div><div class="s"><i>4</i> Rodas<small>à espera</small></div></div></div>
+<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
+</div>
+</div>
+<footer>© Prof.ª Vanda Várzea · Editor de blocos: <a href="https://developers.google.com/blockly" target="_blank" rel="noopener" style="color:inherit">Blockly</a> (Google, Apache-2.0)</footer>
 </div>
 
 <div id="fixed-robot-wrap"><div class="fixed-bubble" id="fixedRobotBubble" role="status" aria-live="polite">Olá! 😊</div><canvas class="fixed-robot" id="fixed-robot-cv" width="192" height="192" role="button" tabindex="0" aria-label="Robô VanBerto's — clica para falar"></canvas></div>
 
 <div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#30a46c">⬇ Guardar PNG</button><button id="cpr" style="background:#3776ab">🖨️ Imprimir</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
 <script src="vb-core.js"></script>
+<script src="blockly_compressed.js"></script>
+<script src="blockly-msg-pt.js"></script>
+<script src="vb-editor.js"></script>
 <script src="three.min.js"></script>
 <script src="vb-gfx.js"></script>
 <script>
@@ -359,42 +374,40 @@ function parsePy(t){
  while(depth>0){out.push({k:'end'});depth--}
  return out;
 }
-function clear(){prog=(LV[lv]&&LV[lv].pre)?JSON.parse(JSON.stringify(LV[lv].pre)):[];sel=-1}
-function render(){
- let ind=0;const h=[];
- prog.forEach((b,i)=>{
-  if(b.k==='end'||b.k==='else')ind=Math.max(0,ind-1);
-  let inner;
-  if(b.k==='end')inner='↩ fim';
-  else if(b.k==='rep')inner=NAME.rep+' <b data-n="'+i+'">'+b.n+'×</b> <b data-x="'+i+'">✕</b>';
-  else inner=NAME[b.k]+' <b data-x="'+i+'">✕</b>';
-  h.push('<span class="chip'+(i===sel?' sel':'')+'" style="background:'+COL[b.k]+';margin-left:'+ind*22+'px" data-i="'+i+'">'+inner+'</span>');
-  if(OPEN.includes(b.k)||b.k==='else')ind++;
- });
- $('#prog').innerHTML=h.join('')||'<span style="opacity:.6">Toca nos blocos acima. Toca num bloco do programa para escolher onde juntar o próximo.</span>';
- const t=$('#py');if(document.activeElement!==t)t.value=toPy();
+function clear(){prog=(LV[lv]&&LV[lv].pre)?JSON.parse(JSON.stringify(LV[lv].pre)):[]}
+/* ---------- editor de blocos (Blockly) ---------- */
+const BL={"S": {"t": "soldar", "c": "#ff8a3d"}, "R": {"t": "pintar de vermelho", "c": "#e5484d"}, "B": {"t": "pintar de azul", "c": "#3e63dd"}, "G": {"t": "pintar de verde", "c": "#4c9a2a"}, "Y": {"t": "pintar de amarelo", "c": "#c99700"}, "M": {"t": "montar o motor", "c": "#2b8a9e"}, "W": {"t": "montar uma roda", "c": "#d97706"}, "E": {"t": "entregar o carro", "c": "#30a46c"}, "X": {"t": "retocar a pintura", "c": "#9333ea"}};
+const ED=VBEditor.create({host:$('#bw'),blocks:BL,
+ conds:{"ifB": {"t": "encomenda azul"}, "ifR": {"t": "encomenda vermelha"}, "ifD": {"t": "houver defeito"}},
+ whiles:{"wh": {"t": "faltar soldar"}},py:PY,open:OPEN,repMax:5,repColor:'#8e4ec6',ctrlColor:'#2b8a9e',whileColor:'#c2410c'});
+
+const pyColor=l=>l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/("[^"]*")|\b(for|in|if|else|while|pass)\b|\b(\d+)\b|\b([a-z_]+)(?=\()/g,(m,s,kw,nu,fn)=>s?'<span class="st">'+s+'</span>':kw?'<span class="kw">'+kw+'</span>':nu?'<span class="nu">'+nu+'</span>':fn?'<span class="fn">'+fn+'</span>':m);
+let PYM={lines:[],lineOf:[]};
+function updUI(){
+ $('#bc').textContent=prog.filter(b=>b.k!=='end').length;
+ PYM=ED.pyMap(prog);
+ $('#pyv').innerHTML=PYM.lines.length?PYM.lines.map((l,i)=>'<span class="pl" data-l="'+i+'"><i>'+(i+1)+'</i>'+pyColor(l)+'</span>').join(''):'<span class="pl"><i>1</i><span style="opacity:.55"># o teu programa aparece aqui</span></span>';
+ const t=$('#py');if(document.activeElement!==t)t.value=PYM.lines.join('\n')||'# o teu programa aparece aqui';
 }
-function delBlock(i){VB.delRange(prog,i,OPEN).sort((a,b)=>b-a).forEach(j=>prog.splice(j,1));sel=-1;render()}
-document.querySelector('.pal').onclick=e=>{
- const a=e.target.closest('button');if(!a||running)return;
- const k=a.dataset.a,items=k==='rep'?[{k:'rep',n:2},{k:'end'}]:OPEN.includes(k)?[{k},{k:'end'}]:[{k}];
- const at=sel>=0?sel+1:prog.length;prog.splice(at,0,...items);sel=at;render();beep(600,.06);
-};
-$('#prog').onclick=e=>{
- if(running)return;const t=e.target;
- if(t.dataset.x!==undefined){delBlock(+t.dataset.x);return}
- if(t.dataset.n!==undefined){const b=prog[+t.dataset.n];b.n=b.n>=5?2:b.n+1;render();return}
- const c=t.closest('.chip');if(c){const i=+c.dataset.i;sel=sel===i?-1:i;render()}
-};
+function pyOn(i){
+ document.querySelectorAll('#pyv .pl.on').forEach(e=>e.classList.remove('on'));
+ if(i==null)return;const l=PYM.lineOf[i];if(l==null)return;
+ const e=document.querySelector('#pyv .pl[data-l="'+l+'"]'),pv=$('#pyv');
+ if(e){e.classList.add('on');if(e.offsetTop<pv.scrollTop||e.offsetTop+e.offsetHeight>pv.scrollTop+pv.clientHeight)pv.scrollTop=Math.max(0,e.offsetTop-40)}
+}
+const syncProg=()=>{prog=ED.getProg().prog};
+function render(){ED.load(prog);updUI()}
+ED.onChange(g=>{prog=g.prog;updUI()});
 $('#clr').onclick=()=>{if(running)return;clear();render();reset();say('Tudo limpo! Começa de novo. 🙂')};
-$('#pyb').onclick=()=>{const p=$('#pyw');p.style.display=p.style.display==='block'?'none':'block'};
+$('#pyb').onclick=()=>{const p=$('#pyw');p.style.display=p.style.display==='block'?'none':'block';ED.resize()};
+$('#pye').onclick=()=>{const on=$('#py').style.display==='block';$('#py').style.display=on?'none':'block';$('#pyeb').style.display=on?'none':'flex';$('#pyv').style.display=on?'block':'none';$('#pye').textContent=on?'✏️ Editar':'👁 Ver'};
 $('#pya').onclick=()=>{
  if(running)return;
- try{prog=parsePy($('#py').value);sel=-1;render();$('#msg').textContent='🐍 Código aplicado aos blocos. Carrega em Executar!'}
+ try{prog=parsePy($('#py').value);render();$('#pye').onclick();$('#msg').textContent='🐍 Código aplicado aos blocos. Carrega em Executar!'}
  catch(er){$('#msg').textContent='🐍 '+er.message;say('Há um erro no código. Lê a mensagem por baixo.','sad')}
 };
 
-const DICAS=['Olá! Eu sou o VanBerto’s. Monta os blocos e carrega em Executar! 🚀','Soldar, pintar e entregar: a ordem importa!','O repetir poupa blocos. Toca no número para o mudar.','Toca num bloco do programa para escolher onde juntar o próximo.','Olha para o Python: é o mesmo programa! 🐍'];
+const DICAS=["Olá! Eu sou o VanBerto’s. Arrasta os blocos e carrega em Executar! 🚀", "Soldar, pintar e entregar: a ordem importa!", "O repetir poupa blocos. Muda o número dentro do bloco.", "Liga os blocos por baixo de «quando carregar em ▶ Executar».", "Olha para o Python: é o mesmo programa! 🐍"];
 /* ---------- VanBerto’s (robô oficial, igual ao da Hora do Código) ---------- */
 function rrVan(ctx,x,y,w,h,r){
     const rr=Math.min(r,w/2,h/2);
@@ -551,8 +564,8 @@ $('#sp').onchange=e=>{SPD=+e.target.value};
 function levels(){
  $('#cys').innerHTML=CY.map((c,i)=>'<button class="lvb'+(i===cy?' on':'')+'" data-c="'+i+'">'+c.n+'</button>').join('');
  $('#lvs').innerHTML=LV.map((_,i)=>{const s=P.d[cy+'-'+i];return '<button class="lvb'+(i===lv?' on':'')+'" data-l="'+i+'">Missão '+(i+1)+(s?' '+'⭐'.repeat(s):'')+'</button>'}).join('');
- $('#mis').textContent=LV[lv].t+(LV[lv].max?' (máx. '+LV[lv].max+' blocos, sem contar o «fim»)':'');
- document.querySelectorAll('.pal button').forEach(b=>b.style.display=CY[cy].b.includes(b.dataset.a)?'':'none');
+ $('#mis').textContent=LV[lv].t+(LV[lv].max?' (máx. '+LV[lv].max+' blocos)':'');
+ ED.setAllowed(CY[cy].b);
  $('#pyb').style.display=CY[cy].py?'':'none';
  if(!CY[cy].py)$('#pyw').style.display='none';
 }
@@ -607,18 +620,19 @@ $('#cx').onclick=()=>$('#cert').style.display='none';
 $('#cdl').onclick=()=>{const a=document.createElement('a');a.href=$('#cimg').src;a.download='certificado-fabrica.png';a.click()};
 $('#go').onclick=async()=>{
  if(running)return;
+ syncProg();
  const L=LV[lv],tests=L.tests||[null],e0=tests[Math.floor(Math.random()*tests.length)];
  const acts=expand(e0?{...e0}:null);
  if(!acts.length){say('Junta primeiro alguns blocos! 🙂');return}
  if(acts.length>40){say('Programa muito grande! Usa o repetir com menos vezes.','sad');return}
- running=true;$('#msg').textContent='';reset();tStart();showEnv(e0?{...e0}:null);
+ running=true;ED.lock(true);$('#msg').textContent='';reset();tStart();showEnv(e0?{...e0}:null);
  const lab=e0&&e0.defeito!==undefined?(e0.defeito?'🔍 Controlo de qualidade: defeito na pintura! · ':'🔍 Controlo de qualidade: sem defeitos · '):e0?(e0.cor?'📋 Encomenda '+(e0.cor==='B'?'azul':'vermelha')+' · ':'🔩 Peças por soldar: '+e0.pecas+' · '):'';
- const off=()=>document.querySelectorAll('.chip.run').forEach(c=>c.classList.remove('run'));
+ const off=()=>{ED.highlight(null);pyOn(null)};
  for(let i=0;i<acts.length;i++){
-  off();const c=document.querySelector('.chip[data-i="'+acts[i].i+'"]');if(c)c.classList.add('run');if(document.getElementById('stp')&&document.getElementById('stp').checked)await VB.step();
+  off();ED.highlight(acts[i].i);pyOn(acts[i].i);if(document.getElementById('stp')&&document.getElementById('stp').checked)await VB.step();
   $('#msg').textContent=lab+'Passo '+(i+1)+' de '+acts.length;await ACT[acts[i].k]();
  }
- off();running=false;tStop();
+ off();running=false;ED.lock(false);tStop();
  const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a,seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)).join(),goal=e=>nz(L.x?L.x(e):L.g).join(),shownOk=seq(e0)===goal(e0),okSeq=tests.every(e=>seq(e)===goal(e)),ok=okSeq&&(!L.max||cnt<=L.max);
  if(ok){
   const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;
