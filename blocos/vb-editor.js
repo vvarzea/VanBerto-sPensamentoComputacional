@@ -126,8 +126,9 @@ window.VBEditor=(function(){
     if(OPEN.includes(b.k)){ind++;po=true}else po=false});
    return {lines,lineOf};
   }
+  function orphans(){return ws?ws.getTopBlocks(false).filter(b=>b!==startBlock).length:0}
   function resize(){if(ws)try{B.svgResize(ws)}catch(e){}}
-  return {setAllowed,getProg,load,highlight,lock,pyMap,resize,onChange:fn=>{changeCb=fn},get ws(){return ws}};
+  return {setAllowed,getProg,load,highlight,lock,pyMap,resize,orphans,onChange:fn=>{changeCb=fn},get ws(){return ws}};
  }
  return {create};
 })();

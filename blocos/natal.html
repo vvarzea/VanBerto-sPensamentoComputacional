@@ -72,6 +72,30 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 #py{display:none;width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
 #pyeb{display:none}
 .pynote{display:block;margin-top:6px;opacity:.7;font-weight:700}
+
+/* ── Ajuda por degraus e «Outras soluções» ── */
+#ajb{background:#f59e0b}
+#ajb.pulse{animation:ajp 1s ease-in-out infinite}
+@keyframes ajp{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.75),0 4px 0 #1e1b4b}50%{box-shadow:0 0 0 9px rgba(245,158,11,0),0 4px 0 #1e1b4b}}
+#ajuda{display:none;margin-top:10px;border:2.5px solid var(--ink);border-radius:14px;background:#fff8e1;padding:10px 12px}
+#ajuda.on{display:block}
+.ajhd{display:flex;justify-content:space-between;align-items:center}
+#ajuda .ajx{background:#fff;color:#1e1b4b;padding:2px 10px;min-width:0;font-size:.9rem}
+.ajtabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.ajtabs button{font-size:.8rem;padding:4px 10px;background:#fff;color:#1e1b4b;border:2px solid #1e1b4b;box-shadow:0 2px 0 #1e1b4b}
+.ajtabs button.cur{background:#fbbf24}.ajtabs button:disabled{opacity:.45;cursor:not-allowed}
+.ajh p,.aj0{margin:.35rem 0;font-weight:700}
+.ajrv small{opacity:.7;font-weight:700}
+.ajrv button{background:#7c3aed;font-size:.85rem;padding:5px 12px}
+.solbox{margin-top:10px;border-top:2px dashed #d6c98f;padding-top:8px}
+.solc{background:#fff;border:2.5px solid #1e1b4b;border-radius:12px;padding:8px 10px;margin:8px 0}
+.solc.mine{border-color:#16a34a}
+.solh{margin-bottom:6px}
+.mini .mb{color:#fff;font-weight:800;font-size:.8rem;border-radius:7px;padding:2px 9px;margin:2px 0;width:fit-content;border:1.5px solid rgba(0,0,0,.28)}
+.solpy{background:#0f1424;color:#e8ecff;border-radius:8px;padding:6px 10px;font:600 .78rem/1.5 ui-monospace,Consolas,monospace;margin:6px 0;overflow:auto}
+.soln{margin:.3rem 0;font-weight:700;font-size:.88rem}
+.solb{background:#2f6bff;font-size:.85rem;padding:5px 12px}
+.ajhint,.ajs{background:#f59e0b;font-size:.85rem;padding:5px 12px}
 </style>
 </head>
 <body>
@@ -87,8 +111,10 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <button id="go">▶ Executar</button>
 <button id="clr">↺ Recomeçar</button>
 <button id="pyb">🐍 Python</button>
+<button id="ajb">💡 Ajuda</button>
 </div>
 <div id="msg"></div>
+<div id="ajuda"></div>
 <div id="pyw"><div class="pyhd"><b>🐍 O mesmo programa em Python</b><button id="pye">✏️ Editar</button></div>
 <div id="pyv" aria-live="off"></div>
 <textarea id="py" rows="6" spellcheck="false"></textarea>
@@ -110,6 +136,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <script src="blockly_compressed.js"></script>
 <script src="blockly-msg-pt.js"></script>
 <script src="vb-editor.js"></script>
+<script src="vb-ajuda.js"></script>
 <script src="three.min.js"></script>
 <script src="vb-gfx.js"></script>
 <script>
@@ -426,6 +453,11 @@ function pyOn(i){
 const syncProg=()=>{prog=ED.getProg().prog};
 function render(){ED.load(prog);updUI()}
 ED.onChange(g=>{prog=g.prog;updUI()});
+const SOL={"0-0":{"opt":2,"alts":[{"p":[{"k":"S"},{"k":"E"}],"cnt":2,"tag":"curta"}]},"0-1":{"opt":3,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":3,"tag":"curta"}]},"0-2":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"G"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-3":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"0-4":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-5":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"B"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"0-6":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"Y"},{"k":"W"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-7":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"1-0":{"opt":4,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":4,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-1":{"opt":5,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-2":{"opt":7,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"R"},{"k":"S"},{"k":"S"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"1-3":{"opt":5,"alts":[{"p":[{"k":"rep","n":5},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-4":{"opt":4,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":4,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-5":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"Y"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-6":{"opt":6,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-7":{"opt":6,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"1-8":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"2-0":{"opt":5,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"R"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-1":{"opt":6,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-2":{"opt":6,"alts":[{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"2-3":{"opt":6,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"G"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"G"},{"k":"rep","n":2},{"k":"S"},{"k":"G"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"G"},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"2-4":{"opt":5,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":10,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"rep","n":2},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"2-5":{"opt":6,"alts":[{"p":[{"k":"rep","n":2},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"end"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"W"},{"k":"E"}],"cnt":10,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-6":{"opt":6,"alts":[{"p":[{"k":"rep","n":5},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"3-0":{"opt":5,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"3-1":{"opt":8,"alts":[{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"curta"},{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"S"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"3-2":{"opt":8,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"curta"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"3-3":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"ifD"},{"k":"X"},{"k":"end"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"3-4":{"opt":9,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"curta"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"outra"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"outra"}]},"3-5":{"opt":7,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"ifD"},{"k":"X"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"}]},"3-6":{"opt":7,"alts":[{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"Y"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"},{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"Y"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"S"},{"k":"ifR"},{"k":"Y"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]}};
+const LBLS={"S": "fazer um brinquedo", "R": "embrulhar de vermelho", "B": "embrulhar de azul", "G": "embrulhar de verde", "Y": "embrulhar de amarelo", "M": "pôr o laço", "W": "pôr o cartão", "E": "pôr no trenó", "X": "refazer o embrulho", "ifB": "pedido azul", "ifR": "pedido vermelho", "ifD": "embrulho rasgado", "wh": "faltar brinquedos"},COLS={"S": "#b45309", "R": "#e5484d", "B": "#3e63dd", "G": "#4c9a2a", "Y": "#c99700", "M": "#d946a8", "W": "#0e7490", "E": "#30a46c", "X": "#9333ea"};
+VBA.init({host:$('#ajuda'),btn:$('#ajb'),key:()=>cy+'-'+lv,sol:()=>SOL[cy+'-'+lv]||null,prog:()=>prog,load:p=>{prog=JSON.parse(JSON.stringify(p));render()},label:k=>LBLS[k]||k,color:k=>COLS[k]||'#64748b',py:p=>ED.pyMap(p).lines,open:OPEN,repc:'#8e4ec6',ctrl:'#2b8a9e',whc:'#c2410c',kind:'seq',diag:()=>{syncProg();const L=LV[lv],tests=L.tests||[null],nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a;
+ const per=tests.map(e=>({A:nz(expand(e?{...e}:null).map(a=>a.k)),G:nz(L.x?L.x(e):L.g)}));
+ return {pre:!!L.pre,per,cnt:prog.filter(b=>b.k!=='end').length,max:L.max||0,free:!!L.free,hasPecas:!!(L.tests&&L.tests.some(e=>e.pecas!==undefined)),hasCor:!!(L.tests&&L.tests.some(e=>e.cor!==undefined)),hasDef:!!(L.tests&&L.tests.some(e=>e.defeito!==undefined)),empty:!prog.length,orphans:ED.orphans(),rep:CY[cy].b.includes('rep'),nm:k=>k==='P'?'pintar (uma cor)':(NAME[k]||k)}}});
 $('#clr').onclick=()=>{if(running)return;clear();render();reset();say('Tudo limpo! Começa de novo. 🙂')};
 $('#pyb').onclick=()=>{const p=$('#pyw');p.style.display=p.style.display==='block'?'none':'block';ED.resize()};
 $('#pye').onclick=()=>{const on=$('#py').style.display==='block';$('#py').style.display=on?'none':'block';$('#pyeb').style.display=on?'none':'flex';$('#pyv').style.display=on?'block':'none';$('#pye').textContent=on?'✏️ Editar':'👁 Ver'};
@@ -600,7 +632,7 @@ function levels(){
  $('#cys').innerHTML=CY.map((c,i)=>'<button class="lvb'+(i===cy?' on':'')+'" data-c="'+i+'">'+c.n+'</button>').join('');
  $('#lvs').innerHTML=LV.map((_,i)=>{const s=P.d[cy+'-'+i];return '<button class="lvb'+(i===lv?' on':'')+'" data-l="'+i+'">Missão '+(i+1)+(s?' '+'⭐'.repeat(s):'')+'</button>'}).join('');
  $('#mis').textContent=LV[lv].t+(LV[lv].max?' (máx. '+LV[lv].max+' blocos)':'');
- ED.setAllowed(CY[cy].b);
+ ED.setAllowed(CY[cy].b);VBA.reset();
  $('#pyb').style.display=CY[cy].py?'':'none';
  if(!CY[cy].py)$('#pyw').style.display='none';
 }
@@ -670,18 +702,18 @@ $('#go').onclick=async()=>{
  off();running=false;ED.lock(false);tStop();
  const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a,seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)).join(),goal=e=>nz(L.x?L.x(e):L.g).join(),shownOk=seq(e0)===goal(e0),okSeq=tests.every(e=>seq(e)===goal(e)),ok=okSeq&&(!L.max||cnt<=L.max);
  if(ok){
-  const o=OPT[cy][lv],st=cnt<=o?3:cnt<=o+2?2:1,key=cy+'-'+lv;
+  const o=OPT[cy][lv],st=VBA.cap(cnt<=o?3:cnt<=o+2?2:1),key=cy+'-'+lv;
   if((P.d[key]||0)<st)P.d[key]=st;FAILS[key]=0;save();levels();
   const all=LV.every((_,i)=>P.d[cy+'-'+i]);
   $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆')+(all?' <button id="ce" style="background:#e5a000">🎓 Certificado</button>':'');
-  say('Boa! A fábrica está orgulhosa de ti! 🎉');dance();
+  VBA.onWin();say('Boa! A fábrica está orgulhosa de ti! 🎉');dance();
   beep(523,.12);beep(659,.12,'square',.12);beep(784,.25,'square',.24);
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent='';say(LV[lv].t)};
   const ce=$('#ce');if(ce)ce.onclick=certificate;
  }else{
   const fk=cy+'-'+lv;FAILS[fk]=(FAILS[fk]||0)+1;
   $('#msg').textContent=okSeq?'❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!':(shownOk?'❌ Funciona neste pedido, mas não em todos! O programa tem de servir para qualquer pedido.':VB.hint(FAILS[fk],nz(expand(e0?{...e0}:null).map(a=>a.k)),nz(L.x?L.x(e0):L.g),k=>k==='P'?'🎁 embrulhar (uma cor)':NAME[k]));
-  say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
+  VBA.onFail();say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
  }
 };
 levels();render();
