@@ -2116,7 +2116,7 @@ function animateCards(screen){
 let currentCycleKey=null,currentThemeKey=null,currentCycle=null,currentTheme=null,currentLevelIndex=0;
 let levelState=null,dir=0,carriedItem=false,carriedEmoji="📦",carryJustPicked=false,moveCount=0;
 let runningQueue=false,queuedCommands=[],groupStack=[];
-let currentMinMoves=null,shouldDanceOnRender=false;
+let currentMinMoves=null,shouldDanceOnRender=false,currentBase=null,currentOptKey=null;
 let stuckMoves=0,lastItemCount=0;
 const STUCK_THRESHOLD=8;
 const DIR_ARROWS=["⬆️","➡️","⬇️","⬅️"];
@@ -2424,6 +2424,7 @@ function loadLevel(index){
   const gridEl=$("grid");
   if(gridEl){ gridEl.classList.remove("big","huge"); if(levelState.size>=8)gridEl.classList.add("big"); if(levelState.size>=9)gridEl.classList.add("huge"); }
   const ok=optKey(currentCycleKey,currentThemeKey,index);
+  currentBase=base; currentOptKey=ok;
   if(OPT_CACHE.has(ok)){
     currentMinMoves=OPT_CACHE.get(ok);
     const tagOpt=$("tag-optimal"); if(tagOpt) tagOpt.textContent=`🏁 Ótimo: ${Number.isFinite(currentMinMoves)?currentMinMoves:"—"}`;
@@ -2435,7 +2436,7 @@ function loadLevel(index){
     setTimeout(()=>{
       const result=computeOptimal(_base);
       OPT_CACHE.set(_ok,result);
-      if(ok===_ok){ currentMinMoves=result; }
+      if(currentOptKey===_ok){ currentMinMoves=result; }
       const t=$("tag-optimal"); if(t) t.textContent=`🏁 Ótimo: ${Number.isFinite(result)?result:"—"}`;
     }, base.size>=8 ? 60 : 0);
   }
@@ -3005,7 +3006,7 @@ function renderGrid(){
 /* ============================= COMMANDS ============================= */
 function updateMoves(){ const m=$("moves"); if(m) m.textContent=T('movements',{n:moveCount}); if(window.vbTrailSync) window.vbTrailSync(); }
 function starsToEmoji(n){ return n===3?"⭐⭐⭐":n===2?"⭐⭐":"⭐"; }
-function computeStars(used,min){ if(!min||!Number.isFinite(min)) return 1; if(used<=min) return 3; if(used<=Math.ceil(min*1.25)) return 2; return 1; }
+function computeStars(used,min){ if(!min||!Number.isFinite(min)) return 1; if(used<=min) return 3; if(used<=min+Math.max(1,Math.ceil(min*0.25))) return 2; return 1; }
 
 function openEscapeQuiz(){
   if(escapeQuizOpen) return;
@@ -3243,6 +3244,8 @@ function _handleLevelCompleteNow(){
   runningQueue=false;clearHintBubble();
   const popup=$("popup-complete"); if(popup) popup.classList.add("visible");
   const used=moveCount;
+  // se o cálculo do ótimo (tabuleiros grandes) ainda não terminou, calcula já — evita dar 1 estrela injusta
+  if(!Number.isFinite(currentMinMoves)&&currentBase){ try{ const r=computeOptimal(currentBase); OPT_CACHE.set(currentOptKey,r); currentMinMoves=r; }catch(e){} }
   const stars=computeStars(used,currentMinMoves);
 
   // ── Título personalizado com nome do aluno (como no Dia da Criança) ──
@@ -6672,3 +6675,16 @@ window.vbApp={get cycle(){return currentCycleKey;},get moves(){return moveCount;
     go:function(ck,tk){pickTheme(ck,tk);}};}};
 document.dispatchEvent(new Event('vb-app-ready'));
 }); // end DOMContentLoaded
+
+/* ♿ Letra grande (acessibilidade): botão flutuante "Aa", guardado no navegador */
+(function(){
+  try{
+    const K="vb-letra-grande", root=document.documentElement;
+    const on=()=>{ try{return localStorage.getItem(K)==="1";}catch(e){return false;} };
+    root.classList.toggle("vb-big-text",on());
+    const b=document.createElement("button"); b.type="button"; b.className="vb-a11y-btn";
+    b.textContent="Aa"; b.title="Letra grande"; b.setAttribute("aria-label","Alternar letra grande"); b.setAttribute("aria-pressed",String(on()));
+    b.addEventListener("click",()=>{ const v=!root.classList.contains("vb-big-text"); root.classList.toggle("vb-big-text",v); b.setAttribute("aria-pressed",String(v)); try{localStorage.setItem(K,v?"1":"0");}catch(e){} });
+    document.body.appendChild(b);
+  }catch(e){}
+})();

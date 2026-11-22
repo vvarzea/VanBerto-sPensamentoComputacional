@@ -1,5 +1,7 @@
 /* VanBerto's · motor comum dos jogos de blocos (Fábrica, Casa e Cão, Natal) */
 window.VB=(function(){
+ /* estrelas: 3 até ao ótimo; 2 até ótimo + 25 % (mín. +1); 1 acima — igual à regra dos universos principais */
+ function stars(used,opt){return used<=opt?3:used<=opt+Math.max(1,Math.ceil(opt*0.25))?2:1}
  function build(prog,OPEN){const root={b:[]},st=[root];
   prog.forEach((t,i)=>{const top=st[st.length-1],add=n=>(top.inElse?top.e:top.b).push(n);
    if(OPEN.includes(t.k)){const n={t,i,b:[],e:null,inElse:false};add(n);st.push(n)}
@@ -32,5 +34,5 @@ window.VB=(function(){
    b.style.cssText="position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:#2f6bff;color:#fff;font:800 1rem Nunito,system-ui,sans-serif;border:3px solid #1e1b4b;border-radius:16px;box-shadow:0 4px 0 #1e1b4b;padding:12px 22px;cursor:pointer";
    document.body.appendChild(b)}
   b.style.display='block';b.onclick=()=>{b.style.display='none';r()}})}
- return {build,toPy,delRange,hint,step};
+ return {stars,build,toPy,delRange,hint,step};
 })();

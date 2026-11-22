@@ -47,7 +47,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 @keyframes fixedVbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes fixedVbJump{0%{transform:translateY(0)}35%{transform:translateY(-26px) scale(1.05)}70%{transform:translateY(0) scale(.97)}100%{transform:translateY(0)}}
 @media(max-width:480px){#fixed-robot-wrap .fixed-robot{width:84px;height:84px}#fixed-robot-wrap{bottom:8px;right:8px}#fixed-robot-wrap .fixed-bubble{max-width:150px;font-size:.78rem}}
-.stage{position:relative}#hud{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:8px;pointer-events:none}#hud div{background:rgba(18,20,30,.78);color:#fff;border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;min-width:96px}#hud b{font:700 1.1rem 'Fredoka',sans-serif}#hud span{font-size:.7rem;opacity:.75}#stl{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:6px;pointer-events:none}#stl .s{flex:1;background:rgba(18,20,30,.72);color:#cbd5e1;border-radius:10px;padding:4px 8px;font-weight:800;font-size:.78rem;border:2px solid transparent}#stl .s i{font-style:normal;opacity:.6;margin-right:2px}#stl .s small{display:block;font-weight:700;opacity:.7}#stl .s.on{border-color:#ffd23f;color:#fff}#stl .s.ok{color:#2ee6a6}@media(max-width:560px){#hud div{min-width:0;padding:4px 6px}#hud b{font-size:.85rem}#hud span{font-size:.6rem}#stl .s{font-size:.62rem;padding:3px 5px}#stl .s small{display:none}}
+.stage{position:relative}.stage::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 80px rgba(0,0,0,.24)}#hud{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:8px;pointer-events:none}#hud div{background:rgba(18,20,30,.78);color:#fff;border-radius:12px;padding:6px 10px;display:flex;flex-direction:column;min-width:96px}#hud b{font:700 1.1rem 'Fredoka',sans-serif}#hud span{font-size:.7rem;opacity:.75}#stl{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:6px;pointer-events:none}#stl .s{flex:1;background:rgba(18,20,30,.72);color:#cbd5e1;border-radius:10px;padding:4px 8px;font-weight:800;font-size:.78rem;border:2px solid transparent}#stl .s i{font-style:normal;opacity:.6;margin-right:2px}#stl .s small{display:block;font-weight:700;opacity:.7}#stl .s.on{border-color:#ffd23f;color:#fff}#stl .s.ok{color:#2ee6a6}@media(max-width:560px){#hud div{min-width:0;padding:4px 6px}#hud b{font-size:.85rem}#hud span{font-size:.6rem}#stl .s{font-size:.62rem;padding:3px 5px}#stl .s small{display:none}}
 
 /* ── editor de blocos (Blockly) + disposição em duas colunas ── */
 .w{max-width:1260px}
@@ -72,30 +72,6 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 #py{display:none;width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
 #pyeb{display:none}
 .pynote{display:block;margin-top:6px;opacity:.7;font-weight:700}
-
-/* ── Ajuda por degraus e «Outras soluções» ── */
-#ajb{background:#f59e0b}
-#ajb.pulse{animation:ajp 1s ease-in-out infinite}
-@keyframes ajp{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.75),0 4px 0 #1e1b4b}50%{box-shadow:0 0 0 9px rgba(245,158,11,0),0 4px 0 #1e1b4b}}
-#ajuda{display:none;margin-top:10px;border:2.5px solid var(--ink);border-radius:14px;background:#fff8e1;padding:10px 12px}
-#ajuda.on{display:block}
-.ajhd{display:flex;justify-content:space-between;align-items:center}
-#ajuda .ajx{background:#fff;color:#1e1b4b;padding:2px 10px;min-width:0;font-size:.9rem}
-.ajtabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
-.ajtabs button{font-size:.8rem;padding:4px 10px;background:#fff;color:#1e1b4b;border:2px solid #1e1b4b;box-shadow:0 2px 0 #1e1b4b}
-.ajtabs button.cur{background:#fbbf24}.ajtabs button:disabled{opacity:.45;cursor:not-allowed}
-.ajh p,.aj0{margin:.35rem 0;font-weight:700}
-.ajrv small{opacity:.7;font-weight:700}
-.ajrv button{background:#7c3aed;font-size:.85rem;padding:5px 12px}
-.solbox{margin-top:10px;border-top:2px dashed #d6c98f;padding-top:8px}
-.solc{background:#fff;border:2.5px solid #1e1b4b;border-radius:12px;padding:8px 10px;margin:8px 0}
-.solc.mine{border-color:#16a34a}
-.solh{margin-bottom:6px}
-.mini .mb{color:#fff;font-weight:800;font-size:.8rem;border-radius:7px;padding:2px 9px;margin:2px 0;width:fit-content;border:1.5px solid rgba(0,0,0,.28)}
-.solpy{background:#0f1424;color:#e8ecff;border-radius:8px;padding:6px 10px;font:600 .78rem/1.5 ui-monospace,Consolas,monospace;margin:6px 0;overflow:auto}
-.soln{margin:.3rem 0;font-weight:700;font-size:.88rem}
-.solb{background:#2f6bff;font-size:.85rem;padding:5px 12px}
-.ajhint,.ajs{background:#f59e0b;font-size:.85rem;padding:5px 12px}
 </style>
 </head>
 <body>
@@ -111,10 +87,8 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 <button id="go">▶ Executar</button>
 <button id="clr">↺ Recomeçar</button>
 <button id="pyb">🐍 Python</button>
-<button id="ajb">💡 Ajuda</button>
 </div>
 <div id="msg"></div>
-<div id="ajuda"></div>
 <div id="pyw"><div class="pyhd"><b>🐍 O mesmo programa em Python</b><button id="pye">✏️ Editar</button></div>
 <div id="pyv" aria-live="off"></div>
 <textarea id="py" rows="6" spellcheck="false"></textarea>
@@ -133,10 +107,10 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 
 <div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#30a46c">⬇ Guardar PNG</button><button id="cpr" style="background:#3776ab">🖨️ Imprimir</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
 <script src="vb-core.js"></script>
+<script src="vb-solucoes.js"></script>
 <script src="blockly_compressed.js"></script>
 <script src="blockly-msg-pt.js"></script>
 <script src="vb-editor.js"></script>
-<script src="vb-ajuda.js"></script>
 <script src="three.min.js"></script>
 <script src="vb-gfx.js"></script>
 <script>
@@ -192,8 +166,8 @@ R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
 const S=new THREE.Scene();S.background=new THREE.Color(0x0c1738);S.fog=new THREE.Fog(0x0c1738,32,70);
 const cam=new THREE.PerspectiveCamera(42,16/9,.1,90);
-S.add(new THREE.HemisphereLight(0xcfdcff,0x4a3a3a,.55));
-const dl=new THREE.DirectionalLight(0xdfe8ff,.6);dl.position.set(4,12,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,1024);
+S.add(new THREE.HemisphereLight(0xcfdcff,0x4a3a3a,.4));
+const dl=new THREE.DirectionalLight(0xdfe8ff,.95);const rim=new THREE.DirectionalLight(0x7aa2ff,.55);rim.position.set(-7,6,-9);S.add(rim);dl.position.set(4,12,7);dl.castShadow=true;dl.shadow.mapSize.set(2048,1024);dl.shadow.normalBias=.03;
 Object.assign(dl.shadow.camera,{left:-16,right:16,top:8,bottom:-8,near:1,far:34});dl.shadow.camera.updateProjectionMatrix();S.add(dl);
 const M=(c,r,m,e)=>new THREE.MeshStandardMaterial({color:c,roughness:r==null?.6:r,metalness:m==null?.1:m,emissive:e||0,envMapIntensity:.9});
 function box(w,h,d,mat,x,y,z,p){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;(p||S).add(m);return m}
@@ -205,7 +179,15 @@ VBG.env(R,S,{top:'#1a2a66',mid:'#3d5aa8',bottom:'#0e1228',panelI:4,panels:[[0xff
 
 /* fábrica: chão com painéis, parede, luzes de teto, calhas */
 function floorTex(){const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');g.fillStyle='#33466f';g.fillRect(0,0,256,256);g.strokeStyle='#4a5f93';g.lineWidth=3;g.strokeRect(1,1,254,254);g.fillStyle='rgba(255,255,255,.04)';for(let i=0;i<70;i++)g.fillRect(Math.random()*256,Math.random()*256,3,3);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(10,5);t.encoding=THREE.sRGBEncoding;return t}
-box(40,.3,20,new THREE.MeshStandardMaterial({map:floorTex(),roughness:.34,metalness:.28,envMapIntensity:1.1}),2,-.15,-2);
+const FLOOR=box(40,.3,20,new THREE.MeshStandardMaterial({map:floorTex(),roughness:.34,metalness:.28,envMapIntensity:1.1,transparent:true,opacity:.7}),2,-.15,-2);
+/* reflexo real no chão: 1.º passe = cena espelhada (chão escondido); 2.º passe = cena normal com o chão semitransparente. Desligado no Modo leve. */
+function drawScene(){
+ if(light){FLOOR.material.opacity=1;R.render(S,cam);return}
+ FLOOR.material.opacity=.7;
+ const bg=S.background;FLOOR.visible=false;S.scale.y=-1;S.updateMatrixWorld(true);R.render(S,cam);
+ S.scale.y=1;FLOOR.visible=true;S.updateMatrixWorld(true);
+ S.background=null;R.autoClear=false;R.clearDepth();R.render(S,cam);
+ S.background=bg;R.autoClear=true}
 box(40,9,.3,M(0x1b2b5a,.8),2,4.2,-6.8);
 box(40,.06,.08,new THREE.MeshBasicMaterial({color:0x2fb34a}),2,1.3,-6.6);
 box(40,.06,.08,new THREE.MeshBasicMaterial({color:0xe5484d}),2,6.2,-6.6);
@@ -336,7 +318,7 @@ let last=performance.now(),fr=0,acc=0,camX=3,zm=1.6;
 (function loop(){requestAnimationFrame(loop);const n=performance.now(),d=n-last;acc+=d;last=n;
  if(++fr===90&&!light&&acc/90>55)setLight(true,true);
  const idle=!running&&car.position.x<-9,tx=idle?3.0:Math.max(-5,Math.min(7,car.position.x));camX+=(tx-camX)*.05;zm+=((idle?1.6:1)-zm)*.05;cam.position.set(camX+2.5,8.4*zm,11.6*zm);cam.lookAt(camX+1.2,.7,0);
- stepP(Math.min(d,50)/1000);elves.forEach((e,i)=>{e.body.position.y=Math.abs(Math.sin(n/420+i*1.7))*.07;e.head.rotation.z=Math.sin(n/650+i)*.07});if(!light){bulbs.forEach((b,i)=>b.scale.setScalar(1+.3*Math.sin(n/280+i*1.3)));const q=sg.attributes.position;for(let i=0;i<SN;i++){q.array[i*3+1]-=.025;if(q.array[i*3+1]<0)q.array[i*3+1]=9}q.needsUpdate=true}snow.visible=!light;R.render(S,cam)})();
+ stepP(Math.min(d,50)/1000);elves.forEach((e,i)=>{e.body.position.y=Math.abs(Math.sin(n/420+i*1.7))*.07;e.head.rotation.z=Math.sin(n/650+i)*.07});if(!light){bulbs.forEach((b,i)=>b.scale.setScalar(1+.3*Math.sin(n/280+i*1.3)));const q=sg.attributes.position;for(let i=0;i<SN;i++){q.array[i*3+1]-=.025;if(q.array[i*3+1]<0)q.array[i*3+1]=9}q.needsUpdate=true}snow.visible=!light;drawScene()})();
 
 /* ---------- animação ---------- */
 const T=(f,ms)=>new Promise(r=>{const t0=performance.now();(function l(){const k=Math.min(1,(performance.now()-t0)*SPD/ms);f(k);k<1?requestAnimationFrame(l):r()})()});
@@ -432,9 +414,10 @@ function parsePy(t){
 function clear(){prog=(LV[lv]&&LV[lv].pre)?JSON.parse(JSON.stringify(LV[lv].pre)):[]}
 /* ---------- editor de blocos (Blockly) ---------- */
 const BL={"S": {"t": "fazer um brinquedo", "c": "#b45309"}, "R": {"t": "embrulhar de vermelho", "c": "#e5484d"}, "B": {"t": "embrulhar de azul", "c": "#3e63dd"}, "G": {"t": "embrulhar de verde", "c": "#4c9a2a"}, "Y": {"t": "embrulhar de amarelo", "c": "#c99700"}, "M": {"t": "pôr o laço", "c": "#d946a8"}, "W": {"t": "pôr o cartão", "c": "#0e7490"}, "E": {"t": "pôr no trenó", "c": "#30a46c"}, "X": {"t": "refazer o embrulho", "c": "#9333ea"}};
+const CONDS={"ifB": {"t": "pedido azul"}, "ifR": {"t": "pedido vermelho"}, "ifD": {"t": "embrulho rasgado"}},WHILES={"wh": {"t": "faltar brinquedos"}};
 const ED=VBEditor.create({host:$('#bw'),blocks:BL,
- conds:{"ifB": {"t": "pedido azul"}, "ifR": {"t": "pedido vermelho"}, "ifD": {"t": "embrulho rasgado"}},
- whiles:{"wh": {"t": "faltar brinquedos"}},py:PY,open:OPEN,repMax:5,repColor:'#8e4ec6',ctrlColor:'#2b8a9e',whileColor:'#c2410c'});
+ conds:CONDS,
+ whiles:WHILES,py:PY,open:OPEN,repMax:5,repColor:'#8e4ec6',ctrlColor:'#2b8a9e',whileColor:'#c2410c'});
 
 const pyColor=l=>l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/("[^"]*")|\b(for|in|if|else|while|pass)\b|\b(\d+)\b|\b([a-z_]+)(?=\()/g,(m,s,kw,nu,fn)=>s?'<span class="st">'+s+'</span>':kw?'<span class="kw">'+kw+'</span>':nu?'<span class="nu">'+nu+'</span>':fn?'<span class="fn">'+fn+'</span>':m);
 let PYM={lines:[],lineOf:[]};
@@ -453,11 +436,6 @@ function pyOn(i){
 const syncProg=()=>{prog=ED.getProg().prog};
 function render(){ED.load(prog);updUI()}
 ED.onChange(g=>{prog=g.prog;updUI()});
-const SOL={"0-0":{"opt":2,"alts":[{"p":[{"k":"S"},{"k":"E"}],"cnt":2,"tag":"curta"}]},"0-1":{"opt":3,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":3,"tag":"curta"}]},"0-2":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"G"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-3":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"0-4":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-5":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"B"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"0-6":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"Y"},{"k":"W"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"0-7":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"1-0":{"opt":4,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":4,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-1":{"opt":5,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-2":{"opt":7,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"R"},{"k":"S"},{"k":"S"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"1-3":{"opt":5,"alts":[{"p":[{"k":"rep","n":5},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-4":{"opt":4,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":4,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-5":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"Y"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"outra"}]},"1-6":{"opt":6,"alts":[{"p":[{"k":"S"},{"k":"S"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"1-7":{"opt":6,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"1-8":{"opt":4,"alts":[{"p":[{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":4,"tag":"curta"}]},"2-0":{"opt":5,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"R"},{"k":"rep","n":2},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"R"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-1":{"opt":6,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-2":{"opt":6,"alts":[{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"rep","n":2},{"k":"S"},{"k":"end"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"2-3":{"opt":6,"alts":[{"p":[{"k":"rep","n":3},{"k":"S"},{"k":"G"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"G"},{"k":"rep","n":2},{"k":"S"},{"k":"G"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"S"},{"k":"rep","n":2},{"k":"G"},{"k":"S"},{"k":"end"},{"k":"G"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"2-4":{"opt":5,"alts":[{"p":[{"k":"rep","n":4},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"},{"p":[{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"S"},{"k":"B"},{"k":"M"},{"k":"E"}],"cnt":10,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"rep","n":2},{"k":"S"},{"k":"B"},{"k":"end"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":6,"tag":"outra"}]},"2-5":{"opt":6,"alts":[{"p":[{"k":"rep","n":2},{"k":"rep","n":3},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"end"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"W"},{"k":"E"}],"cnt":10,"tag":"semrepetir"},{"p":[{"k":"rep","n":2},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"R"},{"k":"end"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"2-6":{"opt":6,"alts":[{"p":[{"k":"rep","n":5},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":6,"tag":"curta"},{"p":[{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"S"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"semrepetir"},{"p":[{"k":"S"},{"k":"rep","n":4},{"k":"S"},{"k":"end"},{"k":"Y"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":7,"tag":"outra"}]},"3-0":{"opt":5,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"M"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"3-1":{"opt":8,"alts":[{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"curta"},{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"S"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"3-2":{"opt":8,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"curta"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"outra"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":8,"tag":"outra"}]},"3-3":{"opt":5,"alts":[{"p":[{"k":"S"},{"k":"R"},{"k":"ifD"},{"k":"X"},{"k":"end"},{"k":"E"}],"cnt":5,"tag":"curta"}]},"3-4":{"opt":9,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"curta"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"R"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"outra"},{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"ifR"},{"k":"R"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"W"},{"k":"E"}],"cnt":9,"tag":"outra"}]},"3-5":{"opt":7,"alts":[{"p":[{"k":"wh"},{"k":"S"},{"k":"end"},{"k":"R"},{"k":"ifD"},{"k":"X"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"}]},"3-6":{"opt":7,"alts":[{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"ifR"},{"k":"Y"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"curta"},{"p":[{"k":"S"},{"k":"ifB"},{"k":"B"},{"k":"else"},{"k":"Y"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"},{"p":[{"k":"S"},{"k":"ifR"},{"k":"Y"},{"k":"end"},{"k":"ifB"},{"k":"B"},{"k":"end"},{"k":"M"},{"k":"E"}],"cnt":7,"tag":"outra"}]}};
-const LBLS={"S": "fazer um brinquedo", "R": "embrulhar de vermelho", "B": "embrulhar de azul", "G": "embrulhar de verde", "Y": "embrulhar de amarelo", "M": "pôr o laço", "W": "pôr o cartão", "E": "pôr no trenó", "X": "refazer o embrulho", "ifB": "pedido azul", "ifR": "pedido vermelho", "ifD": "embrulho rasgado", "wh": "faltar brinquedos"},COLS={"S": "#b45309", "R": "#e5484d", "B": "#3e63dd", "G": "#4c9a2a", "Y": "#c99700", "M": "#d946a8", "W": "#0e7490", "E": "#30a46c", "X": "#9333ea"};
-VBA.init({host:$('#ajuda'),btn:$('#ajb'),key:()=>cy+'-'+lv,sol:()=>SOL[cy+'-'+lv]||null,prog:()=>prog,load:p=>{prog=JSON.parse(JSON.stringify(p));render()},label:k=>LBLS[k]||k,color:k=>COLS[k]||'#64748b',py:p=>ED.pyMap(p).lines,open:OPEN,repc:'#8e4ec6',ctrl:'#2b8a9e',whc:'#c2410c',kind:'seq',diag:()=>{syncProg();const L=LV[lv],tests=L.tests||[null],nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a;
- const per=tests.map(e=>({A:nz(expand(e?{...e}:null).map(a=>a.k)),G:nz(L.x?L.x(e):L.g)}));
- return {pre:!!L.pre,per,cnt:prog.filter(b=>b.k!=='end').length,max:L.max||0,free:!!L.free,hasPecas:!!(L.tests&&L.tests.some(e=>e.pecas!==undefined)),hasCor:!!(L.tests&&L.tests.some(e=>e.cor!==undefined)),hasDef:!!(L.tests&&L.tests.some(e=>e.defeito!==undefined)),empty:!prog.length,orphans:ED.orphans(),rep:CY[cy].b.includes('rep'),nm:k=>k==='P'?'pintar (uma cor)':(NAME[k]||k)}}});
 $('#clr').onclick=()=>{if(running)return;clear();render();reset();say('Tudo limpo! Começa de novo. 🙂')};
 $('#pyb').onclick=()=>{const p=$('#pyw');p.style.display=p.style.display==='block'?'none':'block';ED.resize()};
 $('#pye').onclick=()=>{const on=$('#py').style.display==='block';$('#py').style.display=on?'none':'block';$('#pyeb').style.display=on?'none':'flex';$('#pyv').style.display=on?'block':'none';$('#pye').textContent=on?'✏️ Editar':'👁 Ver'};
@@ -632,7 +610,7 @@ function levels(){
  $('#cys').innerHTML=CY.map((c,i)=>'<button class="lvb'+(i===cy?' on':'')+'" data-c="'+i+'">'+c.n+'</button>').join('');
  $('#lvs').innerHTML=LV.map((_,i)=>{const s=P.d[cy+'-'+i];return '<button class="lvb'+(i===lv?' on':'')+'" data-l="'+i+'">Missão '+(i+1)+(s?' '+'⭐'.repeat(s):'')+'</button>'}).join('');
  $('#mis').textContent=LV[lv].t+(LV[lv].max?' (máx. '+LV[lv].max+' blocos)':'');
- ED.setAllowed(CY[cy].b);VBA.reset();
+ ED.setAllowed(CY[cy].b);
  $('#pyb').style.display=CY[cy].py?'':'none';
  if(!CY[cy].py)$('#pyw').style.display='none';
 }
@@ -702,18 +680,19 @@ $('#go').onclick=async()=>{
  off();running=false;ED.lock(false);tStop();
  const cnt=prog.filter(b=>b.k!=='end').length,nz=a=>L.free?a.map(k=>'RBGY'.includes(k)?'P':k):a,seq=e=>nz(expand(e?{...e}:null).map(a=>a.k)).join(),goal=e=>nz(L.x?L.x(e):L.g).join(),shownOk=seq(e0)===goal(e0),okSeq=tests.every(e=>seq(e)===goal(e)),ok=okSeq&&(!L.max||cnt<=L.max);
  if(ok){
-  const o=OPT[cy][lv],st=VBA.cap(cnt<=o?3:cnt<=o+2?2:1),key=cy+'-'+lv;
+  const o=OPT[cy][lv],st=VB.stars(cnt,o),key=cy+'-'+lv;
   if((P.d[key]||0)<st)P.d[key]=st;FAILS[key]=0;save();levels();
   const all=LV.every((_,i)=>P.d[cy+'-'+i]);
-  $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (com menos blocos ganhas mais estrelas)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆')+(all?' <button id="ce" style="background:#e5a000">🎓 Certificado</button>':'');
-  VBA.onWin();say('Boa! A fábrica está orgulhosa de ti! 🎉');dance();
+  $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (o ótimo é '+o+' blocos — experimenta o bloco «repetir» para encurtar o programa)':'')+(lv<LV.length-1?' <button id="nx" style="background:#2f6bff">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆')+(all?' <button id="ce" style="background:#e5a000">🎓 Certificado</button>':'');
+  VB.compare&&VB.compare({game:'natal',cy,lv,prog,parsePy,BL,conds:CONDS,whiles:WHILES,open:OPEN,host:$('#msg'),showPy:!!CY[cy].py});
+  say('Boa! A fábrica está orgulhosa de ti! 🎉');dance();
   beep(523,.12);beep(659,.12,'square',.12);beep(784,.25,'square',.24);
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();reset();$('#msg').textContent='';say(LV[lv].t)};
   const ce=$('#ce');if(ce)ce.onclick=certificate;
  }else{
   const fk=cy+'-'+lv;FAILS[fk]=(FAILS[fk]||0)+1;
   $('#msg').textContent=okSeq?'❌ O resultado está certo, mas usaste blocos a mais. Tenta com menos!':(shownOk?'❌ Funciona neste pedido, mas não em todos! O programa tem de servir para qualquer pedido.':VB.hint(FAILS[fk],nz(expand(e0?{...e0}:null).map(a=>a.k)),nz(L.x?L.x(e0):L.g),k=>k==='P'?'🎁 embrulhar (uma cor)':NAME[k]));
-  VBA.onFail();say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
+  say('Quase! Confere a ordem e quantas vezes soldas.','sad');beep(200,.3,'sawtooth');
  }
 };
 levels();render();
