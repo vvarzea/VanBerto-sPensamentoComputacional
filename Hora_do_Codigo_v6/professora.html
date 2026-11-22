@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="pt-PT"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Área da Professora · VanBerto's</title>
+<style>
+:root{--ink:#1e1b4b;--muted:#64748b;--bg:#fff8eb;--card:#fff;--line:#e2e8f0;--acc:#6366f1;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+@media(prefers-color-scheme:dark){:root{--ink:#e2e8f0;--muted:#94a3b8;--bg:#0f172a;--card:#1e293b;--line:#334155;--acc:#818cf8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Segoe UI",system-ui,sans-serif;line-height:1.5;padding:max(14px,env(safe-area-inset-top)) 14px 40px}
+main{max-width:980px;margin:0 auto}h1{font-size:1.6rem;margin:6px 0}h2{font-size:1.15rem;margin:0 0 8px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:14px 16px;margin:14px 0;box-shadow:0 4px 0 var(--ink)}
+.muted{color:var(--muted);font-size:.85rem}.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:#fde047;color:#1e1b4b;border-radius:999px;padding:8px 16px;cursor:pointer}
+.btn.sec{background:var(--card);color:var(--ink)}.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;white-space:nowrap}th{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.ok{color:var(--ok);font-weight:800}.warn{color:var(--warn);font-weight:800}.bad{color:var(--bad);font-weight:800}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:800}
+textarea{width:100%;min-height:70px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px;font:inherit}
+.alert{background:#fef3c7;color:#78350f;border:1px solid #f59e0b;border-radius:12px;padding:8px 12px;font-size:.85rem}
+.sol{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:8px}pre{margin:4px 0;padding:8px 10px;background:var(--bg);border:1px solid var(--line);border-radius:10px;font:600 .82rem/1.45 ui-monospace,Consolas,monospace;overflow-x:auto;white-space:pre}h3{margin:0}</style></head><body><main>
+<h1>👩‍🏫 Área da Professora</h1>
+<p class="muted">Notas e soluções das Escape Rooms e das Missões de Robótica, e resultados da turma. Os resultados ficam <b>só neste computador</b>: os ficheiros dos alunos são lidos aqui, no browser, e não são enviados para lado nenhum.</p>
+<div class="alert">Para as respostas não ficarem ao alcance dos alunos, <b>não publiques esta página no mesmo site do jogo</b>: guarda-a no teu computador e abre-a daí.</div>
+
+<section class="card"><h2>📥 Resultados da turma</h2>
+<p class="muted">Pede aos alunos que carreguem em <b>📤 Enviar à professora</b> (no fim da sala ou no menu das Escape Rooms) e recebe os ficheiros <code>resultados-nome.json</code> por e-mail, Teams, etc. Escolhe-os todos de uma vez.</p>
+<div class="row"><input type="file" id="files" accept=".json,application/json" multiple>
+<button class="btn sec" id="paste-toggle">Colar texto</button><button class="btn sec" id="clear">Limpar</button><button class="btn" id="csv" disabled>⬇️ Exportar CSV</button></div>
+<div id="paste" hidden style="margin-top:8px"><textarea id="paste-ta" placeholder='Cola aqui o conteúdo de um ficheiro de resultados'></textarea><button class="btn sec" id="paste-add" style="margin-top:6px">Adicionar</button></div>
+<div id="msg" class="muted" style="margin-top:8px"></div>
+<div id="dash"></div></section>
+
+<section class="card"><h2>📋 Notas por sala</h2><div id="notes"></div></section>
+
+<section class="card" id="robotica"><h2>🤖 Missões de Robótica — soluções</h2>
+<p class="muted">Soluções de referência, <b>verificadas por simulação</b> no próprio motor dos jogos (todas passam, incluindo as situações de teste). O jogo valida pelo <b>resultado</b>, por isso há outras soluções certas. Os alunos veem o Python nos ciclos 3.º e Secundário. As missões 🐞 «Encontra o erro» começam com um programa errado que o aluno tem de corrigir. Depois de falhar, o aluno recebe pistas por degraus (1.ª falha: incentivo; 2.ª: diz em que passo está o erro; 3.ª: diz o que era esperado) e pode ligar o modo 🐢 «Passo a passo».</p><details id="rob-fabrica"><summary>🏭 Fábrica de Carros</summary><div style="margin-top:8px"><h3 style="margin:12px 0 4px;font-size:1rem">1.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda o carro e entrega-o.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+entregar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 3.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda, pinta de vermelho e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Solda e pinta o carro da cor que quiseres. Depois entrega!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar verde
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("verde")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4. Cor livre: qualquer cor serve.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Faz o carro: solda, pinta de vermelho, monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+montar_motor()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Faz um carro verde com motor: solda, pinta de verde, monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar verde
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("verde")
+montar_motor()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Solda, pinta de amarelo e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar amarelo
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("amarelo")
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 8 — <span style="font-weight:600">Solda, monta o motor e entrega (sem pintar).</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+montar_motor()
+entregar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">2.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda 3 vezes, pinta de vermelho e entrega. Dica: usa o repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda 4 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(4):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda 2 vezes, pinta de vermelho, solda mais 2 vezes e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar vermelho
+🔁 repetir 2×
+  🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("vermelho")
+for i in range(2):
+    soldar()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Solda 3 vezes, pinta da cor que quiseres e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar amarelo
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("amarelo")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Cor livre: qualquer cor serve.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Carro completo! Solda, pinta de vermelho, monta o motor, monta as 4 rodas (usa o repetir!) e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Carro amarelo completo: solda 2 vezes, pinta de amarelo, monta o motor, monta as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar amarelo
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("amarelo")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 7 — <span style="font-weight:600">🐞 Encontra o erro! Era para soldar 3 vezes, pintar de vermelho e entregar, mas o programa tem um erro. Corrige-o!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 8 — <span style="font-weight:600">Solda 2 vezes, pinta de verde, monta as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar verde
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("verde")
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 9 — <span style="font-weight:600">🐞 Encontra o erro! Era para montar as 4 rodas, mas o programa só monta 3. Corrige-o!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">3.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Solda 5 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(5):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Repete 3 vezes: soldar e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Solda 3 vezes, pinta de vermelho, solda 3 vezes, pinta de azul e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar vermelho
+🔁 repetir 3×
+  🔥 soldar
+🎨 pintar azul
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("vermelho")
+for i in range(3):
+    soldar()
+pintar("azul")
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Carro azul completo: solda 2 vezes, pinta de azul, monta o motor, monta as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+🎨 pintar azul
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+pintar("azul")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Repete 3 vezes: soldar e pintar de verde. Depois monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+  🎨 pintar verde
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+    pintar("verde")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Repete 4 vezes: soldar e pintar de amarelo. Depois monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔥 soldar
+  🎨 pintar amarelo
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(4):
+    soldar()
+    pintar("amarelo")
+montar_motor()
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Carro completo: solda 3 vezes, pinta de azul, monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔥 soldar
+🎨 pintar azul
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    soldar()
+pintar("azul")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">Secundário</h3><details><summary>Missão 1 — <span style="font-weight:600">Repete 2 vezes: soldar, soldar e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔥 soldar
+  🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    soldar()
+    soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>5</b> blocos.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Solda 12 vezes e entrega. Dica: repetir dentro de repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔁 repetir 4×
+    🔥 soldar
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(3):
+    for i in range(4):
+        soldar()
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>4</b> blocos.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Repete 2 vezes: soldar 4 vezes e pintar de vermelho. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔁 repetir 4×
+    🔥 soldar
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>for i in range(2):
+    for i in range(4):
+        soldar()
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>5</b> blocos.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Cada carro chega com um número diferente de peças por soldar. Usa «enquanto» para soldar todas, pinta de vermelho e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar soldar
+  🔥 soldar
+🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>while faltam_pecas():
+    soldar()
+pintar("vermelho")
+entregar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 5 — <span style="font-weight:600">A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda (usa «se» e «senão») e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+↔ senão
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+else:
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8. Limite da missão: <b>7</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Cada carro chega com peças por soldar. Solda todas (usa «enquanto»), pinta de azul, monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar soldar
+  🔥 soldar
+🎨 pintar azul
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>while faltam_pecas():
+    soldar()
+pintar("azul")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9. Limite da missão: <b>8</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 7 — <span style="font-weight:600">A encomenda pode ser azul ou vermelha. Solda 1 vez, pinta da cor da encomenda, monta o motor, as 4 rodas e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+↔ senão
+  🎨 pintar vermelho
+🔧 montar o motor
+🔁 repetir 4×
+  🛞 montar uma roda
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+else:
+    pintar("vermelho")
+montar_motor()
+for i in range(4):
+    montar_roda()
+entregar()</pre></div></div><p class="muted">9 blocos (conta sem o «fim»). ⭐⭐⭐ com 9 ou menos; ⭐⭐ até 12. Limite da missão: <b>10</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 8 — <span style="font-weight:600">🔍 Controlo de qualidade! Solda, pinta de vermelho e, SE o carro tiver defeito, retoca a pintura. Depois entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🎨 pintar vermelho
+🔀 se houver defeito
+  🔧 retocar a pintura
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+pintar("vermelho")
+if tem_defeito():
+    retocar()
+entregar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>6</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 9 — <span style="font-weight:600">A encomenda pode ser azul ou vermelha. Solda 1 vez; se for azul, pinta de azul e monta o motor; senão, pinta de vermelho. Entrega no fim.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+  🔧 montar o motor
+↔ senão
+  🎨 pintar vermelho
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+    montar_motor()
+else:
+    pintar("vermelho")
+entregar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9. Limite da missão: <b>8</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 10 — <span style="font-weight:600">Controlo de qualidade e encomenda! Solda, pinta da cor da encomenda, SE o carro tiver defeito retoca, monta o motor e entrega.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔥 soldar
+🔀 se encomenda azul
+  🎨 pintar azul
+↔ senão
+  🎨 pintar vermelho
+🔀 se houver defeito
+  🔧 retocar a pintura
+🔧 montar o motor
+📦 entregar</pre></div><div><b>Python</b><pre>soldar()
+if encomenda == "azul":
+    pintar("azul")
+else:
+    pintar("vermelho")
+if tem_defeito():
+    retocar()
+montar_motor()
+entregar()</pre></div></div><p class="muted">9 blocos (conta sem o «fim»). ⭐⭐⭐ com 9 ou menos; ⭐⭐ até 12. Limite da missão: <b>10</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details></div></details><details id="rob-casa"><summary>🏠 Casa Inteligente e Cão Robô</summary><div style="margin-top:8px"><h3 style="margin:12px 0 4px;font-size:1rem">1.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Leva o cão até à tigela 🦴.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+andar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Leva o cão até à tigela. Atenção às curvas!</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+↻ virar à direita
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+virar_direita()
+andar()
+andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Acende o candeeiro 💡 e depois vai até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+💡 luz
+↻ virar à direita
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+luz()
+virar_direita()
+andar()
+andar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 4 — <span style="font-weight:600">🐞 Encontra o erro! Era para levar o cão à tigela, mas o programa tem um erro. Corrige-o!</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+andar()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Há um sofá no caminho! Contorna-o e leva o cão até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>↺ virar à esquerda
+🐕 andar
+↻ virar à direita
+🐕 andar
+🐕 andar
+↻ virar à direita
+🐕 andar</pre></div><div><b>Python</b><pre>virar_esquerda()
+andar()
+virar_direita()
+andar()
+andar()
+virar_direita()
+andar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Acende os 2 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+💡 luz
+🐕 andar
+🐕 andar
+💡 luz</pre></div><div><b>Python</b><pre>andar()
+luz()
+andar()
+andar()
+luz()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 7 — <span style="font-weight:600">O cão começa virado para baixo! Acende o candeeiro e vai até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+💡 luz
+↺ virar à esquerda
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+luz()
+virar_esquerda()
+andar()
+andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 8 — <span style="font-weight:600">Leva o cão até ao canto de baixo à direita. Cuidado com as curvas!</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+🐕 andar
+↻ virar à direita
+🐕 andar
+🐕 andar
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+andar()
+virar_direita()
+andar()
+andar()
+andar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">2.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Leva o cão até à tigela. Dica: usa o repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 3.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Acende o candeeiro e continua até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🐕 andar
+💡 luz
+🔁 repetir 3×
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+andar()
+luz()
+for i in range(3):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Faz uma escada: repete andar, virar à direita, andar e virar à esquerda.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+  ↻ virar à direita
+  🐕 andar
+  ↺ virar à esquerda</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+    virar_direita()
+    andar()
+    virar_esquerda()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Vai até ao canto da sala e depois desce até à tigela. Usa o repetir duas vezes!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar
+↻ virar à direita
+🔁 repetir 3×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()
+virar_direita()
+for i in range(3):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Há uma parede à frente do cão! Contorna-a fazendo um U: anda 3 passos, vira à direita, anda 2, vira à direita e anda 3.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔁 repetir 3×
+    🐕 andar
+  ↻ virar à direita
+🐕 andar</pre></div><div><b>Python</b><pre>for i in range(3):
+    for i in range(3):
+        andar()
+    virar_direita()
+andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Acende os 2 candeeiros do corredor de cima e vai até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🐕 andar
+  🐕 andar
+  💡 luz
+🐕 andar</pre></div><div><b>Python</b><pre>for i in range(2):
+    andar()
+    andar()
+    luz()
+andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">3.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Acende os 2 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🐕 andar
+  🐕 andar
+  💡 luz</pre></div><div><b>Python</b><pre>for i in range(2):
+    andar()
+    andar()
+    luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 2 — <span style="font-weight:600">A porta só abre quando o cão carrega no botão vermelho do chão. Chega à tigela!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+🚪 abrir porta
+🔁 repetir 2×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+abrir_porta()
+for i in range(2):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Acende o candeeiro, abre a porta e chega à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+💡 luz
+🔁 repetir 2×
+  🐕 andar
+🚪 abrir porta
+🔁 repetir 2×
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+luz()
+for i in range(2):
+    andar()
+abrir_porta()
+for i in range(2):
+    andar()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Duas portas seguidas! Cada porta tem o seu botão no chão. Chega à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🔁 repetir 2×
+  🚪 abrir porta
+  🐕 andar
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+for i in range(2):
+    abrir_porta()
+    andar()
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Abre a porta com o botão, acende o candeeiro que está depois dela e vai até à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🚪 abrir porta
+🔁 repetir 3×
+  🐕 andar
+💡 luz
+🐕 andar</pre></div><div><b>Python</b><pre>andar()
+abrir_porta()
+for i in range(3):
+    andar()
+luz()
+andar()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Corredor de baixo: o botão está a meio do caminho. Abre a porta e chega à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🐕 andar
+🚪 abrir porta
+🔁 repetir 3×
+  🐕 andar</pre></div><div><b>Python</b><pre>for i in range(2):
+    andar()
+abrir_porta()
+for i in range(3):
+    andar()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">Secundário</h3><details><summary>Missão 1 — <span style="font-weight:600">O cão pode começar em sítios diferentes. Faz com que chegue sempre à tigela, no fim da sala. Usa «enquanto».</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto caminho livre
+  🐕 andar</pre></div><div><b>Python</b><pre>while caminho_livre():
+    andar()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 3. Limite da missão: <b>3</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Acende os 3 candeeiros e termina na tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>for i in range(5):
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>6</b> blocos.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Alguns candeeiros já estão acesos! O botão 💡 liga e desliga. Garante que ficam todos acesos (usa «se»).</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>for i in range(3):
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (4): a solução tem de servir para todas.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Percorre o corredor todo, sem saber que candeeiros estão acesos. Acende só os que estiverem apagados (usa «enquanto» e «se»).</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto caminho livre
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>while caminho_livre():
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>4</b> blocos. O jogo testa várias situações (4): a solução tem de servir para todas.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Abre a porta e depois usa «enquanto» para chegares à parede do fundo.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🚪 abrir porta
+🔄 enquanto caminho livre
+  🐕 andar</pre></div><div><b>Python</b><pre>andar()
+abrir_porta()
+while caminho_livre():
+    andar()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5. Limite da missão: <b>5</b> blocos.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Porta e candeeiros! Abre a porta e acende só os candeeiros apagados até chegares à tigela.</span></summary><div class="sol"><div><b>Blocos</b><pre>🐕 andar
+🚪 abrir porta
+🔁 repetir 4×
+  🐕 andar
+  🔀 se luz apagada aqui
+    💡 luz</pre></div><div><b>Python</b><pre>andar()
+abrir_porta()
+for i in range(4):
+    andar()
+    if luz_apagada():
+        luz()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8. Limite da missão: <b>7</b> blocos. O jogo testa várias situações (4): a solução tem de servir para todas.</p></details></div></details><details id="rob-natal"><summary>🎅 Fábrica do Pai Natal</summary><div style="margin-top:8px"><h3 style="margin:12px 0 4px;font-size:1rem">1.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Faz um brinquedo e põe-no no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+por_no_treno()</pre></div></div><p class="muted">2 blocos (conta sem o «fim»). ⭐⭐⭐ com 2 ou menos; ⭐⭐ até 3.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Faz um brinquedo, embrulha-o em papel vermelho e põe-no no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel vermelho
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("vermelho")
+por_no_treno()</pre></div></div><p class="muted">3 blocos (conta sem o «fim»). ⭐⭐⭐ com 3 ou menos; ⭐⭐ até 4.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Faz um brinquedo, embrulha em papel verde, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel verde
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("verde")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Faz um brinquedo, embrulha na cor que quiseres, põe laço e cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel azul
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("azul")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Cor livre: qualquer cor serve.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Faz um brinquedo, embrulha em vermelho, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel vermelho
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("vermelho")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Prenda azul completa: faz o brinquedo, embrulha em azul, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel azul
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("azul")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Faz um brinquedo, embrulha em amarelo, põe o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel amarelo
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("amarelo")
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 8 — <span style="font-weight:600">Faz um brinquedo, põe o laço e o cartão (sem embrulho!) e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">2.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Faz 3 brinquedos, embrulha em vermelho e põe no trenó. Dica: usa o repetir!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(3):
+    fazer_brinquedo()
+embrulhar("vermelho")
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Faz 4 brinquedos, embrulha em azul, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔨 fazer brinquedo
+🎁 papel azul
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(4):
+    fazer_brinquedo()
+embrulhar("azul")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Faz 2 brinquedos, embrulha em vermelho, faz mais 2, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🔁 repetir 2×
+  🔨 fazer brinquedo
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(2):
+    fazer_brinquedo()
+embrulhar("vermelho")
+for i in range(2):
+    fazer_brinquedo()
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Faz 5 brinquedos, embrulha em verde, põe o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🔨 fazer brinquedo
+🎁 papel verde
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(5):
+    fazer_brinquedo()
+embrulhar("verde")
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 5 — <span style="font-weight:600">🐞 Encontra o erro! Era para fazer 3 brinquedos, embrulhar em vermelho e pôr no trenó, mas o programa tem um erro. Corrige-o!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(3):
+    fazer_brinquedo()
+embrulhar("vermelho")
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Prenda amarela: faz 2 brinquedos, embrulha em amarelo, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔨 fazer brinquedo
+🎁 papel amarelo
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(2):
+    fazer_brinquedo()
+embrulhar("amarelo")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Faz 2 brinquedos, embrulha em verde, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🔨 fazer brinquedo
+🎁 papel verde
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+fazer_brinquedo()
+embrulhar("verde")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 8 — <span style="font-weight:600">Faz 4 brinquedos, embrulha em vermelho, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(4):
+    fazer_brinquedo()
+embrulhar("vermelho")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 9 — <span style="font-weight:600">🐞 Encontra o erro! Era para embrulhar em azul e pôr o laço, mas o programa embrulha na cor errada. Corrige-o!</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel azul
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("azul")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">4 blocos (conta sem o «fim»). ⭐⭐⭐ com 4 ou menos; ⭐⭐ até 5.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">3.º Ciclo</h3><details><summary>Missão 1 — <span style="font-weight:600">Repete 3 vezes: fazer um brinquedo e embrulhar em vermelho. Depois põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔨 fazer brinquedo
+  🎁 papel vermelho
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(3):
+    fazer_brinquedo()
+    embrulhar("vermelho")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 2 — <span style="font-weight:600">Faz 3 brinquedos, embrulha em verde, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔨 fazer brinquedo
+🎁 papel verde
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(3):
+    fazer_brinquedo()
+embrulhar("verde")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Repete 2 vezes: fazer 2 brinquedos e embrulhar em azul. Depois laço e trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔁 repetir 2×
+    🔨 fazer brinquedo
+  🎁 papel azul
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(2):
+    for i in range(2):
+        fazer_brinquedo()
+    embrulhar("azul")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 4 — <span style="font-weight:600">Repete 3 vezes: fazer um brinquedo e embrulhar em verde. Depois laço, cartão e trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 3×
+  🔨 fazer brinquedo
+  🎁 papel verde
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(3):
+    fazer_brinquedo()
+    embrulhar("verde")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 5 — <span style="font-weight:600">Repete 4 vezes: fazer um brinquedo e embrulhar em azul. Depois laço e trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 4×
+  🔨 fazer brinquedo
+  🎁 papel azul
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(4):
+    fazer_brinquedo()
+    embrulhar("azul")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7.</p></details><details><summary>Missão 6 — <span style="font-weight:600">Repete 2 vezes: fazer 3 brinquedos e embrulhar em vermelho. Depois cartão e trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 2×
+  🔁 repetir 3×
+    🔨 fazer brinquedo
+  🎁 papel vermelho
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(2):
+    for i in range(3):
+        fazer_brinquedo()
+    embrulhar("vermelho")
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Faz 5 brinquedos, embrulha em amarelo, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔁 repetir 5×
+  🔨 fazer brinquedo
+🎁 papel amarelo
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>for i in range(5):
+    fazer_brinquedo()
+embrulhar("amarelo")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">6 blocos (conta sem o «fim»). ⭐⭐⭐ com 6 ou menos; ⭐⭐ até 8.</p></details><h3 style="margin:12px 0 4px;font-size:1rem">Secundário</h3><details><summary>Missão 1 — <span style="font-weight:600">Cada pedido chega com um número diferente de brinquedos por fazer. Usa «enquanto» para os fazer todos, embrulha em vermelho, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar fazer
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>while faltam_brinquedos():
+    fazer_brinquedo()
+embrulhar("vermelho")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>5</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 2 — <span style="font-weight:600">O pedido pode ser azul ou vermelho. Faz 1 brinquedo, embrulha na cor do pedido (usa «se» e «senão»), põe laço e cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🔀 se pedido azul
+  🎁 papel azul
+↔ senão
+  🎁 papel vermelho
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+if pedido == "azul":
+    embrulhar("azul")
+else:
+    embrulhar("vermelho")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">8 blocos (conta sem o «fim»). ⭐⭐⭐ com 8 ou menos; ⭐⭐ até 10. Limite da missão: <b>9</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 3 — <span style="font-weight:600">Pedido completo! Faz todos os brinquedos que faltam, embrulha na cor do pedido, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar fazer
+  🔨 fazer brinquedo
+🔀 se pedido azul
+  🎁 papel azul
+↔ senão
+  🎁 papel vermelho
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>while faltam_brinquedos():
+    fazer_brinquedo()
+if pedido == "azul":
+    embrulhar("azul")
+else:
+    embrulhar("vermelho")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">8 blocos (conta sem o «fim»). ⭐⭐⭐ com 8 ou menos; ⭐⭐ até 10. Limite da missão: <b>9</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 4 — <span style="font-weight:600">🔍 Controlo de qualidade! Faz o brinquedo, embrulha em vermelho e, SE o embrulho estiver rasgado, refaz o embrulho. Depois põe no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🎁 papel vermelho
+🔀 se embrulho rasgado
+  🔁 refazer embrulho
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+embrulhar("vermelho")
+if embrulho_rasgado():
+    refazer_embrulho()
+por_no_treno()</pre></div></div><p class="muted">5 blocos (conta sem o «fim»). ⭐⭐⭐ com 5 ou menos; ⭐⭐ até 7. Limite da missão: <b>6</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details><details><summary>Missão 5 — <span style="font-weight:600">O pedido pode ser azul ou vermelho e chega com brinquedos por fazer. Faz todos, embrulha na cor do pedido, põe o laço e o cartão e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar fazer
+  🔨 fazer brinquedo
+🔀 se pedido azul
+  🎁 papel azul
+↔ senão
+  🎁 papel vermelho
+🎀 pôr laço
+✉️ pôr cartão
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>while faltam_brinquedos():
+    fazer_brinquedo()
+if pedido == "azul":
+    embrulhar("azul")
+else:
+    embrulhar("vermelho")
+por_laco()
+por_cartao()
+por_no_treno()</pre></div></div><p class="muted">9 blocos (conta sem o «fim»). ⭐⭐⭐ com 9 ou menos; ⭐⭐ até 12. Limite da missão: <b>10</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 6 — <span style="font-weight:600">🔍 Controlo de qualidade com vários brinquedos! Faz todos, embrulha em vermelho, SE o embrulho estiver rasgado refaz, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔄 enquanto faltar fazer
+  🔨 fazer brinquedo
+🎁 papel vermelho
+🔀 se embrulho rasgado
+  🔁 refazer embrulho
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>while faltam_brinquedos():
+    fazer_brinquedo()
+embrulhar("vermelho")
+if embrulho_rasgado():
+    refazer_embrulho()
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9. Limite da missão: <b>8</b> blocos. O jogo testa várias situações (3): a solução tem de servir para todas.</p></details><details><summary>Missão 7 — <span style="font-weight:600">Se o pedido for azul, embrulha em azul; senão, embrulha em amarelo. Faz 1 brinquedo, põe o laço e coloca no trenó.</span></summary><div class="sol"><div><b>Blocos</b><pre>🔨 fazer brinquedo
+🔀 se pedido azul
+  🎁 papel azul
+↔ senão
+  🎁 papel amarelo
+🎀 pôr laço
+🛷 pôr no trenó</pre></div><div><b>Python</b><pre>fazer_brinquedo()
+if pedido == "azul":
+    embrulhar("azul")
+else:
+    embrulhar("amarelo")
+por_laco()
+por_no_treno()</pre></div></div><p class="muted">7 blocos (conta sem o «fim»). ⭐⭐⭐ com 7 ou menos; ⭐⭐ até 9. Limite da missão: <b>8</b> blocos. O jogo testa várias situações (2): a solução tem de servir para todas.</p></details></div></details><div class="alert" style="margin-top:10px"><b>Nota:</b> no Secundário o limite de blocos já obriga à solução mais curta, por isso quase todas dão ⭐⭐⭐ (o limite é que faz a dificuldade). Na Casa, 💡 e 🚪 só funcionam em cima de um candeeiro ou botão; noutro sítio o cão pára com um aviso.</div></section>
+
+<section class="card"><h2>⚙️ Neste dispositivo</h2>
+<label class="row"><input type="checkbox" id="tmode"> <span>Mostrar o botão <b>Notas professora</b> dentro das Escape Rooms</span></label>
+<p class="muted">Só funciona se esta página estiver no mesmo site do jogo. Em equipamentos de alunos deixa desligado.</p></section>
+</main>
+<script>
+const ROOMS=[{"id": "ims", "title": "Internet Mais Segura", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e, por isso, o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: dados pessoais não se partilham com desconhecidos; confirmar por telefone mensagens estranhas de amigos. Falsas: a mesma palavra-passe em todo o lado (perigoso); enviar fotos a quem não se conhece.<br>\n<b>Porta 2<\/b> — Corretas: <b>2, 3, 5, 6<\/b> (apoiar em privado, guardar provas, bloquear, avisar adulto). Erradas: 1 (ignorar não é solução) e 4 (comentar publicamente pode escalar o conflito).<br>\n<b>Porta 3<\/b> — Ordem: Parar → Apoiar vítima em privado → Guardar provas → Bloquear/denunciar → Avisar adulto.<br>\n<b>Porta 4<\/b> — Anagrama: <b>CIBERCONDUTA<\/b> (12 letras).<br>\n<b>Porta 5<\/b> — Resposta: <b>Xk#9!mPq3@Lr<\/b> (aleatória, longa, sem palavras reais). Erradas: Portugal2024 (palavra+ano fácil de adivinhar), 12345678! (sequência numérica), pedro1234! (nome próprio+números previsível).<br>\n<b>Porta 6<\/b> — Resposta: <b>ir ao site oficial<\/b> (apagar o email e ir diretamente ao site oficial do banco sem usar o link). A urgência falsa é a técnica central do phishing — nunca clicar em links de emails suspeitos.<br>\n<b>Porta 7<\/b> — Anagrama: <b>IDENTIDADE DIGITAL<\/b> (2 palavras, 17 letras sem acentos).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (tratar com respeito, não partilhar dados pessoais, pedir ajuda a adulto/professor)."}, {"id": "agua", "title": "A Aventura da Água", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: só 3% da água é doce; máquina sempre com carga completa poupa água; duche de 5 min gasta menos que um banho. Falsa: uma torneira a pingar desperdiça ~5500 L/ano.<br>\n<b>Porta 2<\/b> — Corretas: 1, 3, 4, 6. Erradas: 2 (banheira usa ~120L vs duche 5min=40L), 5 (torneira aberta ao ensaboar desperdiça ~8L).<br>\n<b>Porta 3<\/b> — Ordem: Evaporação → Condensação → Precipitação → Infiltração.<br>\n<b>Porta 4<\/b> — Anagrama: <b>PRECIPITACAO<\/b>.<br>\n<b>Porta 5<\/b> — Resposta: duche de 4 min (duche 4min×4pessoas×7dias + lava-loiças 1x/dia = ~980L/semana, o mais eficiente).<br>\n<b>Porta 6<\/b> — Resposta: avisar adulto e fechar a torneira se for seguro.<br>\n<b>Porta 7<\/b> — Anagrama: <b>AGUA POTAVEL<\/b>.<br>\n<b>Porta 8<\/b> — Resposta livre: ≥ 3 práticas de poupança de água."}, {"id": "ar", "title": "A Aventura do Ar", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: ventilar 10 min reduz o CO₂; 5 km de bicicleta em vez de carro poupam cerca de 1 kg de CO₂. Falsas: carros elétricos não são 100% limpos (impacto na produção de energia); o ozono estratosférico protege-nos, o do solo faz mal.<br>\n<b>Porta 2<\/b> — Corretas: 1, 2, 4, 6. Erradas: 3 (velas produzem partículas finas), 5 (hora de ponta = mais poluição).<br>\n<b>Porta 3<\/b> — Resposta: <b>muitas pessoas sem ventilação<\/b> (muitas pessoas sem ventilação — acumulação de CO₂ e humidade).<br>\n<b>Porta 4<\/b> — Anagrama: <b>POLUICAO<\/b> (8 letras, sem acento).<br>\n<b>Porta 5<\/b> — Resposta: comboio (15×2×5×14g = 2.100g = 2,1kg CO₂/semana).<br>\n<b>Porta 6<\/b> — Resposta: abrir janelas + avisar adulto.<br>\n<b>Porta 7<\/b> — Anagrama: <b>AR LIMPO<\/b>.<br>\n<b>Porta 8<\/b> — Resposta livre: ≥ 3 boas práticas (mínimo 4 caracteres cada) para proteger o ar."}, {"id": "malware", "title": "Caçadores de Malware", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — Anagrama: <b>RANSOMWARE<\/b> (10 letras, palavra em inglês).<br>\n<b>Porta 2<\/b> — Corretas: <b>1, 3, 5<\/b> (infecta ficheiros, multiplica-se ao executar, precisa de hospedeiro). Erradas: 2 (espalha-se também pela internet), 4 (antivírus desligado é mais vulnerável), 6 (não se apaga sozinho).<br>\n<b>Porta 3<\/b> — Ordem: Entra pelo sistema → Copia-se para memória → Propaga-se pela rede → Causa danos.<br>\n<b>Porta 4<\/b> — Anagrama: <b>ENGENHARIA SOCIAL<\/b> (2 palavras, 16 letras).<br>\n<b>Porta 5<\/b> — Ligações corretas: Spyware↔espia o que fazes, Keylogger↔regista teclas, Adware↔mostra anúncios, Rootkit↔esconde-se no sistema e dá acesso ao atacante.<br>\n<b>Porta 6<\/b> — Resposta: <b>RESGATE<\/b> (tradução de \"ransom\" — o que os criminosos exigem para devolver os ficheiros).<br>\n<b>Porta 7<\/b> — 4 sinais de phishing: <b>1<\/b> (domínio .xyz suspeito), <b>3<\/b> (urgência: \"24h\", \"URGENTE\"), <b>5<\/b> (erros ortográficos: \"supeita\", \"daods\"), <b>6<\/b> (pedido de dados pessoais via link).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (antivírus atualizado, não clicar em links suspeitos, fazer backups regulares)."}, {"id": "fakenews", "title": "Caçadores de Fake News", "notes": "<div style='margin:8px 0;padding:8px 12px;background:#fff7ed;border:1px solid #fdba74;border-radius:10px;font-size:.85rem'><b>Pontuação:<\/b> cada tentativa a mais numa porta custa 20% dos pontos dela, e ver a pista que dá a resposta custa mais 20% (mínimo 40%). Só <b>🥇 Perfeito<\/b> com zero erros e sem pista final.<br><b>Ordem aleatória:<\/b> as opções das portas de escolha e de seleção são baralhadas em cada jogo; os números citados nestas notas (ex.: «Corretas: 1, 3, 5») referem-se à ordem original da lista, não à que o aluno vê.<\/div><h4>📋 Notas para a Professora<\/h4>\n<b>Porta 1<\/b> — A ordem das frases e o código mudam em cada jogo (código = nº de verdadeiras + posição de cada uma). Verdadeiras: a desinformação também é espalhada por quem tem boas intenções; o fact-checking independente é uma das melhores ferramentas. Falsas: «fotos não mentem» (há manipulação e deepfakes); «o título chega» (nunca chega para verificar).<br>\n<b>Porta 2<\/b> — Anagrama: <b>DESINFORMACAO<\/b> (13 letras, sem acentos).<br>\n<b>Porta 3<\/b> — Clickbait: o título <b>alarmista<\/b> (maiúsculas, emojis excessivos, linguagem alarmante sem fonte).<br>\n<b>Porta 4<\/b> — Ordem: Parar → Verificar quem publicou → Comparar com outras fontes → Só partilhar com certeza.<br>\n<b>Porta 5<\/b> — Ligações: Urgência extrema↔manipulação, Sem fonte/autor↔informação inventada, Erros ortográficos↔não revisto, Emojis/maiúsculas↔clickbait.<br>\n<b>Porta 6<\/b> — 3 sinais corretos: <b>1<\/b> (urgência extrema), <b>3<\/b> (sem fonte/data/autor), <b>5<\/b> (afirmação chocante impossível de verificar). Errados: 2 (estar em WhatsApp não é sinal) e 4 (emojis de limão não são sinal).<br>\n<b>Porta 7<\/b> — Resposta: <b>não partilhar<\/b> (e procurar em fontes oficiais e verificar se é deepfake).<br>\n<b>Porta 8<\/b> — Corretas: <b>1, 3, 5<\/b> (verificar a fonte, comparar com outros sites confiáveis, falar com adulto quando há dúvidas)."}];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* notas */
+$("notes").innerHTML=ROOMS.map(r=>`<details id="room-${esc(r.id)}"><summary>${esc(r.title)}</summary><div style="margin-top:8px">${r.notes}</div></details>`).join("");
+function openHash(){const h=(location.hash||"").slice(1),d=h&&$("room-"+h);if(d){d.open=true;d.scrollIntoView();}}
+addEventListener("hashchange",openHash);openHash();
+/* modo professora */
+try{$("tmode").checked=localStorage.getItem("vb_teacher_mode")==="1";}catch(e){}
+$("tmode").onchange=e=>{try{localStorage.setItem("vb_teacher_mode",e.target.checked?"1":"0");}catch(x){}};
+/* painel da turma */
+let students=[];
+function add(obj,src){
+  if(!obj||obj.kind!=="vb-results"||!obj.rooms) throw new Error((src||"ficheiro")+": não é um ficheiro de resultados do VanBerto's");
+  const key=String(obj.name||"Aluno").trim().toLowerCase();
+  const i=students.findIndex(s=>s.key===key);
+  const rec={key,name:String(obj.name||"Aluno"),at:obj.exportedAt||"",rooms:obj.rooms,levels:obj.levels||{}};
+  if(i>=0){ if((rec.at||"")>=(students[i].at||"")) students[i]=rec; } else students.push(rec);
+}
+async function readFiles(list){
+  const errs=[];
+  for(const f of list){ try{ add(JSON.parse(await f.text()),f.name); }catch(e){ errs.push(e.message||String(e)); } }
+  render(errs);
+}
+$("files").onchange=e=>readFiles([...e.target.files]);
+$("paste-toggle").onclick=()=>{$("paste").hidden=!$("paste").hidden;};
+$("paste-add").onclick=()=>{const errs=[];try{add(JSON.parse($("paste-ta").value),"texto colado");$("paste-ta").value="";}catch(e){errs.push("Texto inválido");}render(errs);};
+$("clear").onclick=()=>{students=[];$("files").value="";render([]);};
+function roomIds(){const s=new Set();students.forEach(st=>Object.keys(st.rooms).forEach(k=>s.add(k)));return [...s];}
+function titleOf(id){for(const st of students){if(st.rooms[id])return st.rooms[id].title;}return id;}
+function cell(r){
+  if(!r) return '<span class="muted">—</span>';
+  const done=(r.completed||[]).filter(Boolean).length,n=(r.doors||[]).length,t=(r.tries||[]).reduce((a,b)=>a+(b||0),0);
+  const pct=r.max?Math.round(r.score/r.max*100):0;
+  return r.finished?`<span class="${pct>=90?"ok":pct>=65?"warn":"bad"}">✅ ${r.score}/${r.max}</span> <span class="muted">· ${t} tent.</span>`:`<span class="warn">${done}/${n} portas</span> <span class="muted">· ${t} tent.</span>`;
+}
+function doorStats(id){
+  const out=[];let doors=null;
+  students.forEach(st=>{const r=st.rooms[id];if(r&&r.doors&&!doors)doors=r.doors;});
+  if(!doors) return out;
+  doors.forEach((d,i)=>{let n=0,sum=0,hard=0;
+    students.forEach(st=>{const r=st.rooms[id];if(r&&r.completed&&r.completed[i]){n++;const t=r.tries[i]||0;sum+=t;if(t>=3)hard++;}});
+    out.push({title:String(d.t||"Porta "+(i+1)),n,avg:n?sum/n:0,hard});
+  });
+  return out;
+}
+function render(errs){
+  $("msg").innerHTML=errs.length?errs.map(e=>`<span class="bad">${esc(e)}</span>`).join("<br>"):(students.length?`${students.length} aluno${students.length!==1?"s":""} carregado${students.length!==1?"s":""}.`:"");
+  $("csv").disabled=!students.length;
+  if(!students.length){$("dash").innerHTML="";return;}
+  const ids=roomIds();
+  let h=`<h2 style="margin-top:14px">Alunos × salas</h2><div class="scroll"><table><thead><tr><th>Aluno</th>${ids.map(i=>`<th>${esc(titleOf(i))}</th>`).join("")}</tr></thead><tbody>`+
+    students.slice().sort((a,b)=>a.name.localeCompare(b.name,"pt")).map(st=>`<tr><td><b>${esc(st.name)}</b></td>${ids.map(i=>`<td>${cell(st.rooms[i])}</td>`).join("")}</tr>`).join("")+`</tbody></table></div>`;
+  ids.forEach(id=>{const ds=doorStats(id);if(!ds.length)return;const maxAvg=Math.max(...ds.map(d=>d.avg));
+    h+=`<h2 style="margin-top:16px">${esc(titleOf(id))} — onde sentiram mais dificuldade</h2><div class="scroll"><table><thead><tr><th>Porta</th><th>Concluída por</th><th>Tentativas (média)</th><th>≥ 3 tentativas</th></tr></thead><tbody>`+
+    ds.map(d=>`<tr><td>${esc(d.title)}</td><td>${d.n}</td><td class="${d.avg===maxAvg&&d.avg>1.5?"bad":""}">${d.n?d.avg.toFixed(1):"—"}</td><td>${d.hard}${d.n?` (${Math.round(d.hard/d.n*100)}%)`:""}</td></tr>`).join("")+`</tbody></table></div>`;});
+  $("dash").innerHTML=h;
+}
+$("csv").onclick=()=>{
+  const ids=roomIds(),L=[["Aluno",...ids.flatMap(i=>[titleOf(i)+" (pontos)",titleOf(i)+" (tentativas)",titleOf(i)+" (concluída)"])].join(";")];
+  students.forEach(st=>L.push([st.name,...ids.flatMap(i=>{const r=st.rooms[i];return r?[r.score+"/"+r.max,(r.tries||[]).reduce((a,b)=>a+(b||0),0),r.finished?"sim":"não"]:["","",""];})].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")));
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+L.join("\n")],{type:"text/csv;charset=utf-8"}));a.download="turma-escape-rooms.csv";a.click();
+};
+</script></body></html>
