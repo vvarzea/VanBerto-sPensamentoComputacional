@@ -222,16 +222,62 @@ for(const z of[-3.9,3.9]){for(let x=-11;x<=13;x+=2)box(.1,.9,.1,yel,x,.45,z);box
 const car=new THREE.Group();S.add(car);VBG.blob(car,0,.02,0,3.4,1.8,.5);
 const bodyMat=new THREE.MeshPhysicalMaterial({color:0x8d94a0,roughness:.4,metalness:.5,clearcoat:1,clearcoatRoughness:.12});
 function prof(pts,d,mat){const sh=new THREE.Shape();pts.forEach((p,i)=>i?sh.lineTo(p[0],p[1]):sh.moveTo(p[0],p[1]));const g=new THREE.ExtrudeGeometry(sh,{depth:d,bevelEnabled:true,bevelThickness:.04,bevelSize:.04,bevelSegments:2});g.translate(0,0,-d/2);const m=new THREE.Mesh(g,mat);m.castShadow=true;car.add(m)}
-prof([[-1.25,.3],[1.25,.3],[1.28,.62],[.8,.78],[.4,1.22],[-.55,1.22],[-.95,.8],[-1.25,.72]],1.05,bodyMat);
-prof([[.55,.82],[.34,1.17],[-.5,1.17],[-.82,.82]],1.14,M(0x0e1824,.1,.9));
+prof([[-1.25,.3],[1.38,.3],[1.41,.4],[.82,.4],[.82,.82],[.4,1.22],[-.55,1.22],[-.95,.8],[-1.25,.72]],1.05,bodyMat);
+prof([[.55,.82],[.34,1.17],[-.5,1.17],[-.82,.82]],1.14,new THREE.MeshPhysicalMaterial({color:0x1b3550,roughness:.04,metalness:.9,clearcoat:1,envMapIntensity:1.8}));
 box(2.9,.18,1.5,dark,0,.12,0,car);
 for(const x of[-.78,.78])for(const z of[-.6,.6]){const a=cyl(.36,.36,.02,M(0x050505,.9,0),car);a.rotation.x=Math.PI/2;a.position.set(x,.3,z>0?.585:-.585)}
-for(const z of[-.38,.38]){box(.06,.1,.28,M(0xffffee,.3,0,0xffffcc),1.3,.55,z,car);box(.06,.1,.28,M(0xaa1111,.4,0,0xaa1111),-1.3,.58,z,car)}
-for(const z of[-.68,.68])box(.14,.1,.1,dark,.4,.95,z,car);
-const grille=box(.06,.24,.7,M(0x222222,.5,.2),1.32,.46,0,car);
+const chromeM=M(0xdfe3ea,.18,1);
+for(const z of[-.38,.38]){box(.04,.14,.32,dark,1.41,.56,z,car);box(.04,.1,.27,M(0xffffee,.2,0,0xffffcc),1.435,.56,z,car);box(.03,.018,.3,M(0xffffff,.3,0,0xffffff),1.44,.63,z,car);box(.06,.1,.28,M(0xaa1111,.4,0,0xaa1111),-1.3,.58,z,car);box(.02,.06,.1,M(0xff7a1a,.4,0,0xff5a00),-1.33,.5,z*1.45,car)}
+for(const z of[-.68,.68]){const mr=new THREE.Mesh(new THREE.SphereGeometry(1,14,10),bodyMat);mr.scale.set(.08,.05,.06);mr.position.set(.42,.95,z);mr.castShadow=true;car.add(mr);box(.03,.03,.1,dark,.4,.9,z*.88,car)}
+/* detalhes: linhas das portas, puxadores, para-choques, escape, matrícula */
+for(const z of[-.58,.58]){[.36,-.3,-.82].forEach(x=>box(.012,.46,.01,dark,x,.62,z,car));[-.05,-.6].forEach(x=>box(.11,.022,.02,chromeM,x,.8,z,car))}
+box(.1,.1,1.2,dark,1.43,.34,0,car);box(.09,.07,1.2,dark,-1.32,.33,0,car);cyl(.035,.035,.14,chromeM,car).position.set(-1.36,.31,.3);car.children[car.children.length-1].rotation.z=Math.PI/2;
+box(.02,.1,.3,M(0xf4f4f4,.5,0),-1.35,.5,0,car);box(.022,.03,.2,M(0x233a7a,.5,0),-1.355,.5,0,car);
+const grille=box(.05,.2,.6,M(0x222222,.5,.2),1.435,.5,0,car);[.44,.5,.56].forEach(y=>box(.06,.014,.62,chromeM,1.44,y,0,car));
+box(.12,.26,1.05,bodyMat,1.36,.53,0,car);                       /* frente do carro */
+[-1,1].forEach(s=>box(.56,.2,.05,bodyMat,1.11,.5,s*.5,car));      /* guarda-lamas */
+box(.5,.01,.95,M(0x14161b,.8,.2),1.06,.405,0,car);               /* fundo da cova */
+const hood=new THREE.Group();hood.position.set(.82,.82,0);car.add(hood);
+{const sh=new THREE.Shape();[[0,0],[.58,-.12],[.58,-.19],[0,-.08]].forEach((p,i)=>i?sh.lineTo(p[0],p[1]):sh.moveTo(p[0],p[1]));
+ const g=new THREE.ExtrudeGeometry(sh,{depth:1.0,bevelEnabled:true,bevelThickness:.02,bevelSize:.02,bevelSegments:2});g.translate(0,0,-.5);
+ const m=new THREE.Mesh(g,bodyMat);m.castShadow=true;hood.add(m)}
 const wheels=[];
-for(const x of[-.78,.78])for(const z of[-.62,.62]){const w=new THREE.Group();w.position.set(x,.3,z);car.add(w);const t=cyl(.31,.31,.24,M(0x111111,.9,0),w);t.rotation.x=Math.PI/2;const r=cyl(.18,.18,.26,M(0xc5cad6,.3,.9),w);r.rotation.x=Math.PI/2;wheels.push(w)}
-const engine=box(.9,.5,.7,M(0x3a3f4a,.4,.8,0x0a2a55),0,3,0);engine.visible=false;
+for(const x of[-.78,.78])for(const z of[-.62,.62]){const w=new THREE.Group();w.position.set(x,.3,z);car.add(w);const sg=z>0?1:-1;
+ const tire=new THREE.Mesh(new THREE.TorusGeometry(.235,.085,16,36),M(0x0f1012,.88,0));tire.castShadow=true;w.add(tire);
+ const rimM=M(0xd7dbe3,.22,.95);const rim=cyl(.19,.19,.1,rimM,w);rim.rotation.x=Math.PI/2;rim.position.z=sg*.01;
+ const dsk=cyl(.2,.2,.012,M(0x2c2f36,.4,.9),w);dsk.rotation.x=Math.PI/2;dsk.position.z=sg*.05;
+ const face=cyl(.17,.17,.012,M(0x1b1d22,.5,.5),w);face.rotation.x=Math.PI/2;face.position.z=sg*.056;
+ for(let q=0;q<5;q++){const s=new THREE.Group();s.rotation.z=q*Math.PI*2/5;w.add(s);const sp=box(.045,.17,.02,rimM,0,.1,sg*.062,s);sp.rotation.z=0}
+ const hub=cyl(.055,.055,.03,rimM,w);hub.rotation.x=Math.PI/2;hub.position.z=sg*.068;
+ for(let q=0;q<5;q++){const a=q*Math.PI*2/5,n=cyl(.009,.009,.02,M(0x555a63,.3,.9),w);n.rotation.x=Math.PI/2;n.position.set(Math.cos(a)*.034,Math.sin(a)*.034,sg*.082)}
+ wheels.push(w)}
+const engine=new THREE.Group();engine.position.set(1.04,.41,0);engine.scale.setScalar(.8);car.add(engine);
+let camZoom=0;const engParts=[];let fan=null;
+{
+ const alum=M(0xc9ced8,.3,.92),steelM=M(0x4a5160,.38,.8),redC=M(0xc4281f,.33,.35),blk=M(0x16181d,.55,.4),rub=M(0x0f1013,.9,0),cop=M(0x8a4f2b,.45,.75),batM=M(0x1c2a44,.5,.1),tR=M(0xd32f2f,.4,.3),tK=M(0x222222,.4,.3),cool=M(0x2fd0b0,.3,0,0x0a4a3c),wht=M(0xf2f2f2,.6,0),core=M(0x23272f,.7,.5);
+ const part=()=>{const g=new THREE.Group();g.visible=false;g.position.y=1.3;engine.add(g);engParts.push(g);return g};
+ const cy=(r,hh,m,x,y,z,p,ax)=>{const c=cyl(r,r,hh,m,p);c.position.set(x,y,z);if(ax==='x')c.rotation.z=Math.PI/2;else if(ax==='z')c.rotation.x=Math.PI/2;return c};
+ /* 1 radiador + ventoinha */
+ {const g=part();box(.04,.24,.74,core,.26,.14,0,g);box(.06,.035,.76,blk,.26,.275,0,g);box(.06,.035,.76,blk,.26,.015,0,g);for(let i=-3;i<=3;i++)box(.045,.2,.006,alum,.262,.14,i*.1,g);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.125,.014,8,24),blk);ring.rotation.y=Math.PI/2;ring.position.set(.215,.14,0);g.add(ring);
+  fan=new THREE.Group();fan.position.set(.215,.14,0);g.add(fan);cy(.025,.03,blk,0,0,0,fan,'x');
+  for(let i=0;i<5;i++){const b=new THREE.Group();b.rotation.x=i*Math.PI*2/5;fan.add(b);const bl=box(.006,.1,.04,blk,0,.07,0,b);bl.rotation.y=.5}}
+ /* 2 bloco do motor + carter */
+ {const g=part();box(.4,.13,.3,steelM,-.04,.1,0,g);box(.34,.035,.26,alum,-.04,.025,0,g);box(.38,.035,.28,alum,-.04,.185,0,g);for(let i=0;i<4;i++)box(.012,.1,.31,steelM,-.18+i*.09,.1,0,g)}
+ /* 3 tampa de válvulas, bobinas e tampa do óleo */
+ {const g=part();box(.36,.045,.2,redC,-.04,.23,0,g);box(.12,.004,.06,wht,-.04,.255,0,g);for(let i=0;i<4;i++){cy(.016,.05,blk,-.15+i*.075,.275,0,g);cy(.008,.02,alum,-.15+i*.075,.3,0,g)}cy(.025,.02,blk,.1,.255,.06,g)}
+ /* 4 admissão: coletor, corpo de borboleta, caixa do filtro e mangueira */
+ {const g=part();cy(.035,.34,alum,-.04,.26,-.2,g,'x');for(let i=0;i<4;i++)cy(.016,.08,alum,-.15+i*.075,.22,-.145,g,'z');cy(.03,.06,alum,.15,.26,-.2,g,'x');box(.16,.09,.12,blk,.0,.09,-.38,g);cy(.022,.14,rub,.12,.2,-.3,g,'z')}
+ /* 5 escape: coletor em cobre e proteção térmica */
+ {const g=part();for(let i=0;i<4;i++)cy(.014,.08,cop,-.15+i*.075,.12,.17,g,'z');cy(.03,.34,cop,-.04,.12,.22,g,'x');box(.3,.08,.01,alum,-.04,.17,.265,g)}
+ /* 6 correia, alternador, bateria e depósito */
+ {const g=part();const X=.17;cy(.055,.03,blk,X,.09,0,g,'x');cy(.04,.07,blk,.13,.2,.13,g,'x');cy(.03,.025,alum,X,.2,.13,g,'x');cy(.032,.025,alum,X,.2,-.1,g,'x');
+  const link=(y1,z1,y2,z2)=>{const L=Math.hypot(y2-y1,z2-z1),m=box(.012,.012,L,rub,X+.014,(y1+y2)/2,(z1+z2)/2,g);m.rotation.x=Math.atan2(-(y2-y1),z2-z1)};link(.09,0,.2,.13);link(.2,.13,.2,-.1);link(.2,-.1,.09,0);
+  box(.16,.1,.1,batM,-.1,.06,.38,g);cy(.012,.02,tR,-.15,.12,.38,g);cy(.012,.02,tK,-.05,.12,.38,g);box(.1,.003,.07,wht,-.1,.112,.38,g);
+  cy(.035,.09,cool,.1,.065,.38,g);cy(.037,.02,blk,.1,.12,.38,g)}
+}
+const hoodK=k=>{hood.rotation.z=k*1.15};
+function resetEngine(){engParts.forEach(g=>{g.visible=false;g.position.y=1.3});hoodK(0);engine.position.set(1.04,.41,0);camZoom=0;try{ST.forEach(s=>s.arms.forEach(a=>a.p1.visible=true))}catch(e){}}
 
 /* braços robóticos de 3 articulações */
 const REST=[.25,.5,.3],WORK=[.9,.9,.5];
@@ -274,7 +320,7 @@ const hudState=t=>{$('#h-st').textContent=t};
 let tI=null,t0=0,done=0;
 function tStart(){t0=performance.now();clearInterval(tI);tI=setInterval(()=>{$('#h-t').textContent=((performance.now()-t0)/1000).toFixed(1)+' s'},100)}
 function tStop(){clearInterval(tI)}
-function reset(){car.position.set(-9.5,.3,0);bodyMat.color.set(0x8d94a0);car.visible=true;wheels.forEach(w=>{w.visible=false;w.position.y=.3});engine.visible=false;grille.material.emissive.set(0);showEnv(null);tStop();stEls().forEach((_,i)=>setSt(i,'wait'));hudState('Linha à espera');$('#h-t').textContent='0.0 s'}
+function reset(){car.position.set(-9.5,.3,0);bodyMat.color.set(0x8d94a0);car.visible=true;wheels.forEach(w=>{w.visible=false;w.position.y=.3});resetEngine();grille.material.emissive.set(0);showEnv(null);tStop();stEls().forEach((_,i)=>setSt(i,'wait'));hudState('Linha à espera');$('#h-t').textContent='0.0 s'}
 reset();
 
 function size(){const w=cv.clientWidth||640;R.setPixelRatio(light?.5:Math.min(window.devicePixelRatio||1,2));R.setSize(w,w*9/16,false)}
@@ -285,7 +331,7 @@ let last=performance.now(),fr=0,acc=0,camX=-4;
 (function loop(){requestAnimationFrame(loop);const n=performance.now(),d=n-last;acc+=d;last=n;
  if(++fr===90&&!light&&acc/90>55)setLight(true,true);
  const tx=Math.max(-5,Math.min(7,car.position.x));camX+=(tx-camX)*.05;
- cam.position.set(camX+2.5,8.4,11.6);cam.lookAt(camX+1.2,.7,0);
+ {const e=camZoom*camZoom*(3-2*camZoom),bx=lerp(camX,car.position.x,e);cam.position.set(bx+lerp(2.5,2.2,e),lerp(8.4,3.5,e),lerp(11.6,1.7,e));cam.lookAt(bx+lerp(1.2,1.05,e),lerp(.7,.42,e),0)}
  stepP(Math.min(d,50)/1000);drawScene()})();
 
 /* ---------- animação ---------- */
@@ -305,10 +351,15 @@ async function work(st,colorHex,mode){
  await T(k=>poseArms(st.arms,1-k),400);
 }
 async function motor(st){
- beep(300,.5,'square');await T(k=>poseArms(st.arms,k),400);
- engine.visible=true;await T(k=>engine.position.set(car.position.x,lerp(3.4,1.05,k),0),700);
- engine.visible=false;grille.material.emissive.set(0xff7a1a);
- await T(k=>poseArms(st.arms,1-k),400);
+  beep(300,.5,'square');await T(k=>poseArms(st.arms,k),400);
+  st.arms[1].p1.visible=false; /* o braço da frente sai do plano para se ver o motor */
+  beep(220,.2,'triangle');await Promise.all([T(k=>camZoom=k,520),T(k=>hoodK(k),520)]);
+  for(const g of engParts){g.visible=true;beep(380+Math.random()*140,.07);await T(k=>{const e=1-Math.pow(1-k,3);g.position.y=lerp(1.3,0,e)},210)}
+  beep(110,.7,'sawtooth');await T(k=>{fan.rotation.x+=.55;engine.position.x=1.04+(Math.random()-.5)*.012*(1-k);engine.position.z=(Math.random()-.5)*.012*(1-k)},520);
+  engine.position.set(1.04,.41,0);
+  await Promise.all([T(k=>camZoom=1-k,420),T(k=>hoodK(1-k),420)]);
+  grille.material.emissive.set(0xff7a1a);st.arms[1].p1.visible=true;
+  await T(k=>poseArms(st.arms,1-k),300);
 }
 async function wheel(st){
  beep(500,.2);const w=wheels.find(x=>!x.visible);

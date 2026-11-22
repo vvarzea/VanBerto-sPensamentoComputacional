@@ -97,7 +97,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 </div>
 <div class="card stg">
 <canvas id="cv" width="640" height="360"></canvas>
-<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label></div>
+<div class="row"><label>👤 <input id="nm" type="text" placeholder="O teu nome"></label><label>⏱ <select id="sp"><option value="0.6">Devagar</option><option value="1" selected>Normal</option><option value="2">Rápido</option></select></label><label><input type="checkbox" id="stp"> 🐢 Passo a passo</label><label><input type="checkbox" id="snd" checked> 🔊</label><label><input type="checkbox" id="lt"> ⚡ Modo leve</label> <label><input type="checkbox" id="d3" checked> 🐶 Cão 3D</label></div>
 </div>
 </div>
 <footer>© Prof.ª Vanda Várzea · Editor de blocos: <a href="https://developers.google.com/blockly" target="_blank" rel="noopener" style="color:inherit">Blockly</a> (Google, Apache-2.0)</footer>
@@ -222,11 +222,54 @@ const dogMat=new THREE.MeshBasicMaterial({map:dogTex,transparent:true,alphaTest:
 const dogGeo=new THREE.PlaneGeometry(1,1);dogGeo.translate(0,.5,0);
 const dogPivot=new THREE.Group();dog.add(dogPivot);
 const dogSpr=new THREE.Mesh(dogGeo,dogMat);dogSpr.visible=false;dogSpr.renderOrder=3;dogPivot.add(dogSpr);
-{const im=new Image();im.onload=()=>{dogTex.image=im;dogTex.needsUpdate=true;dogSpr.visible=true};im.src=DOG_IMG}
+{const im=new Image();im.onload=()=>{dogTex.image=im;dogTex.needsUpdate=true;dogSpr.visible=!dog3d};im.src=DOG_IMG}
 VBG.blob(dog,0,.01,0,1.5,.9,.55);
 /* o cartão olha sempre para a câmara; espelha-se para o lado para onde o cão anda (a ilustração olha para a esquerda) */
 let dogFlip=false,dogPulse=0,dogRoll=0;
+/* ---------- cão-robô em 3D (modelo procedural; a ilustração fica como alternativa em «Cão 3D» desligado) ---------- */
+let dog3d=true,walkK=0,dogHappyUntil=0;try{if(localStorage.getItem('vb-dog3d')==='0')dog3d=false}catch(e){}
+const dogBody=new THREE.Group();dog.add(dogBody);dogBody.scale.setScalar(1.4);
+{
+ const cyanM=new THREE.MeshBasicMaterial({color:0x4fe6ff,toneMapped:false}),earM=M(0x1a62d4,.6,.04,0x0a3d9e),pinkM=M(0xff5d7a,.5),blackM=M(0x0a0c12,.25,.3),visM=M(0x0b1226,.12,.65);
+ const dE=(rx,ry,rz,mat,x,y,z,p)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1,28,18),mat);m.scale.set(rx,ry,rz);m.position.set(x,y,z);m.castShadow=true;(p||dogBody).add(m);return m};
+ const dC=(r1,r2,h,mat,x,y,z,p)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,18),mat);m.position.set(x,y,z);m.castShadow=true;(p||dogBody).add(m);return m};
+ /* corpo */
+ dE(.78,.38,.36,dm,0,.82,0);dE(.42,.06,.15,db,-.04,1.17,0);dE(.26,.23,.28,dm,.5,.76,0);
+ /* coleira + medalha */
+ const gz=new THREE.Group();gz.position.set(.52,1.06,0);gz.rotation.z=.7;dogBody.add(gz);
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(.2,.05,12,28),blue);ring.rotation.y=Math.PI/2;gz.add(ring);
+ const tag=dE(.05,.075,.09,blue,.68,.88,0);dE(.03,.04,.05,dm,.73,.88,0);
+ /* cabeça */
+ dogBody.add(dHead);dHead.position.set(.68,1.3,0);
+ dE(.4,.37,.38,dm,0,0,0,dHead);dE(.23,.27,.34,visM,.17,.04,0,dHead);
+ [-1,1].forEach(s=>{const a=new THREE.Mesh(new THREE.TorusGeometry(.07,.022,8,18,Math.PI),cyanM);a.rotation.y=Math.PI/2;a.position.set(.385,.06,s*.13);dHead.add(a)});
+ dE(.17,.14,.19,dm,.3,-.14,0,dHead);dE(.05,.04,.065,blackM,.47,-.1,0,dHead);dE(.07,.025,.06,pinkM,.4,-.25,0,dHead);
+ const dogEars=[];[-1,1].forEach(s=>{const pv=new THREE.Group();pv.position.set(-.05,.3,s*.34);pv.rotation.x=s*.95;dHead.add(pv);dE(.1,.32,.13,earM,0,-.26,s*.1,pv);dogEars.push(pv)});
+ [-1,1].forEach(s=>dE(.05,.06,.04,cyanM,-.02,-.04,s*.39,dHead));
+ /* pernas: pivô na anca, rodam em z */
+ [[.42,.27],[.42,-.27],[-.42,.27],[-.42,-.27]].forEach((p,i)=>{const l=legs[i];dogBody.add(l);l.position.set(p[0],.7,p[1]);
+  dC(.1,.085,.34,dm,0,-.18,0,l);dE(.1,.1,.1,db,0,-.36,0,l);dC(.08,.075,.24,dm,0,-.49,0,l);dC(.092,.092,.05,blue,0,-.43,0,l);dE(.16,.095,.125,dm,.045,-.62,0,l);dE(.05,.02,.07,cyanM,.06,-.71,0,l)});
+ /* cauda às riscas com ponta ciano */
+ dogBody.add(dTail);dTail.position.set(-.74,1.04,0);
+ for(let i=0;i<3;i++){const c=dC(.055,.055,.17,i%2?db:dm,-.07-.1*i,.08+.12*i,0,dTail);c.rotation.z=.75}
+ dE(.085,.085,.085,cyanM,-.38,.45,0,dTail);
+ dogBody.userData.ears=dogEars;
+}
+dogBody.traverse(o=>{if(o.isMesh)o.receiveShadow=false});
+function applyDog(){dogBody.visible=dog3d;dogSpr.visible=!dog3d&&!!dogTex.image}
+{const c=document.getElementById('d3');if(c){c.checked=dog3d;c.onchange=()=>{dog3d=c.checked;try{localStorage.setItem('vb-dog3d',dog3d?'1':'0')}catch(e){}applyDog()}}}
+applyDog();
+function dog3dUpdate(){
+ const t=performance.now()/1000,w=walkK>0&&walkK<1,happy=performance.now()<dogHappyUntil;
+ legs.forEach((l,i)=>{l.rotation.z=w?Math.sin(walkK*Math.PI*4+(i===0||i===3?0:Math.PI))*.55:0});
+ dogBody.position.y=w?Math.abs(Math.sin(walkK*Math.PI*4))*.07:Math.sin(t*2.2)*.012;
+ dogBody.rotation.z=dogRoll;
+ dTail.rotation.y=Math.sin(t*(happy?16:5))*(happy?.7:.35);
+ dogBody.userData.ears.forEach((e,i)=>{e.rotation.z=Math.sin(t*2+i)*.05+(w?Math.sin(walkK*Math.PI*4)*.15:0)});
+ dHead.rotation.z=Math.sin(t*1.3)*.04;dHead.rotation.y=happy?Math.sin(t*9)*.18:0;
+}
 function dogUpdate(){
+ if(dog3d){dog3dUpdate();return}
  const fx=Math.cos(dog.rotation.y);
  if(Math.abs(fx)>.2){const f=fx>0;if(f!==dogFlip){dogFlip=f;dogTex.repeat.x=f?-1:1;dogTex.offset.x=f?1:0;dogPulse=1}}
  dogPulse*=.84;const t=performance.now()/1000;
@@ -342,7 +385,7 @@ addEventListener('resize',size);size();
 /* animação */
 const T=(f,ms)=>new Promise(r=>{const t0=performance.now();(function l(){const k=Math.min(1,(performance.now()-t0)*SPD/ms);f(k);k<1?requestAnimationFrame(l):r()})()});
 const lerp=(a,b,k)=>a+(b-a)*k;
-const swing=k=>{const s=Math.sin(k*Math.PI*4);dogSpr.position.y=k>=1?0:Math.abs(s)*.16;dogRoll=k>=1?0:s*.07};
+const swing=k=>{const s=Math.sin(k*Math.PI*4);dogSpr.position.y=k>=1?0:Math.abs(s)*.16;dogRoll=k>=1?0:s*.07;walkK=k>=1?0:k};
 const hop=ms=>T(k=>dog.position.y=.03+Math.sin(k*Math.PI)*.5,ms||300);
 async function play(a){
  if(a.bump&&a.k!=='F')beep(160,.3,'sawtooth');
@@ -669,7 +712,7 @@ $('#go').onclick=async()=>{
   const all=LV.every((_,i)=>P.d[cy+'-'+i]);
   $('#msg').innerHTML='✅ Missão cumprida! '+'⭐'.repeat(st)+(st<3?' (o ótimo é '+o+' blocos — experimenta o bloco «repetir» para encurtar o programa)':'')+(lv<LV.length-1?' <button id="nx" style="background:#7c3aed">Próxima missão ▶</button>':' Terminaste as missões deste ciclo! 🏆')+(all?' <button id="ce" style="background:#e5a000">🎓 Certificado</button>':'');
   VB.compare&&VB.compare({game:'casa-cao',cy,lv,prog,parsePy,BL,conds:CONDS,whiles:WHILES,open:OPEN,host:$('#msg'),showPy:!!CY[cy].py});
-  say('Boa! O cão chegou à tigela! 🎉');dance();hop(500);
+  say('Boa! O cão chegou à tigela! 🎉');dance();hop(500);dogHappyUntil=performance.now()+2600;
   beep(523,.12);beep(659,.12,'square',.12);beep(784,.25,'square',.24);
   const n=$('#nx');if(n)n.onclick=()=>{lv++;clear();levels();render();preview();$('#msg').textContent='';say(LV[lv].t)};
   const ce=$('#ce');if(ce)ce.onclick=certificate;
