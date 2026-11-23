@@ -6,72 +6,14 @@
 <meta name="theme-color" content="#fff8e7">
 <title>Hora do Código · Cão Robô</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vb-jogo.css">
 <style>
-:root{--ink:#1e1b4b;--sun:#ffd23f;--coral:#ff6b6b;--mint:#2ee6a6;--sky:#4cc9f0;--grape:#7c3aed;--cream:#fff8e7;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background-color:var(--cream);background-image:radial-gradient(rgba(255,150,60,.30) 1.4px,transparent 1.6px);background-size:22px 22px;color:var(--ink);font-family:'Nunito','Nunito Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;padding:10px 10px 170px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.w{max-width:920px;margin:0 auto}
-header{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:0 5px 0 var(--ink);padding:10px 16px;margin-bottom:16px}
-h1{font-family:'Fredoka','Nunito',sans-serif;font-size:1.45rem;margin:0;color:var(--ink);font-weight:700}
-.sub{font-weight:800;opacity:.65;font-size:.9rem}
-.card{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:0 5px 0 var(--ink);padding:12px;margin-bottom:16px}
-canvas#cv{width:100%;aspect-ratio:16/9;display:block;border-radius:14px;background:#1b1f33;border:2.5px solid var(--ink)}
-button{font:800 .95rem 'Nunito',system-ui,sans-serif;cursor:pointer;border:2.5px solid var(--ink);border-radius:14px;box-shadow:0 3px 0 var(--ink);padding:8px 12px;color:var(--ink);background:#fff;transition:transform .08s,box-shadow .08s}
-button:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
-button[style*="background"],#go,#clr,#pyb{color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.3)}
-#go{background:#16a34a}#clr{background:#6b7280}#pyb{background:#3776ab}
-.lv{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
-.lvb.on{background:var(--sun)}
-#mis{font-weight:800;margin:6px 0}
-.pal{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-#prog{min-height:64px;display:flex;flex-direction:column;gap:4px;border:2.5px dashed #b9ad8a;border-radius:14px;padding:8px;background:#fffdf5}
-.chip{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 10px;border-radius:10px;border:2px solid var(--ink);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.3);font-weight:800;cursor:pointer}
-.chip b{background:rgba(0,0,0,.28);border-radius:6px;padding:0 6px}
-.chip.run{outline:3px solid var(--sun);outline-offset:2px}
-.chip.sel{outline:3px dashed var(--ink);outline-offset:2px}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
-#msg{margin-top:8px;font-weight:800;min-height:1.4em}
 #pyw{display:none}
-#py{width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
-label{font-size:.9rem;font-weight:700}
-#nm{font:inherit;padding:6px 8px;border:2.5px solid var(--ink);border-radius:10px;width:150px}
-select{font:inherit;border:2.5px solid var(--ink);border-radius:10px;padding:4px}
-footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top:6px}
-#fixed-robot-wrap{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));right:14px;z-index:30;display:flex;flex-direction:column;align-items:center;pointer-events:none}
-#fixed-robot-wrap .fixed-bubble{pointer-events:auto;position:relative;z-index:2;margin-bottom:12px;max-width:190px;min-width:120px;text-align:center;background:linear-gradient(135deg,#eef2ff,#fff);border:2.5px solid #4f46e5;border-radius:16px;padding:8px 12px;box-shadow:3px 3px 0 rgba(30,27,75,.85);font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;color:#1e1b4b;opacity:0;transform:translateY(6px) scale(.9);transition:opacity .35s,transform .35s cubic-bezier(.34,1.56,.64,1)}
-#fixed-robot-wrap .fixed-bubble.show{opacity:1;transform:none}
-#fixed-robot-wrap .fixed-bubble::after{content:"";position:absolute;bottom:-13px;right:34px;border-left:9px solid transparent;border-right:9px solid transparent;border-top:13px solid #4f46e5}
-#fixed-robot-wrap .fixed-bubble::before{content:"";position:absolute;bottom:-9px;right:36px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid #eef2ff;z-index:1}
-#fixed-robot-wrap .fixed-robot{pointer-events:auto;cursor:pointer;width:130px;height:130px;display:block;position:relative;z-index:1;animation:fixedVbFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 0 14px #7dd3fc)}
-#fixed-robot-wrap .fixed-robot.bounce{animation:fixedVbJump .7s ease}
-@keyframes fixedVbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@keyframes fixedVbJump{0%{transform:translateY(0)}35%{transform:translateY(-26px) scale(1.05)}70%{transform:translateY(0) scale(.97)}100%{transform:translateY(0)}}
-@media(max-width:480px){#fixed-robot-wrap .fixed-robot{width:84px;height:84px}#fixed-robot-wrap{bottom:8px;right:8px}#fixed-robot-wrap .fixed-bubble{max-width:150px;font-size:.78rem}}
 
-/* ── editor de blocos (Blockly) + disposição em duas colunas ── */
 .w{max-width:1260px}
-.game{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
-.game>.card{margin-bottom:0}
-@media(min-width:1000px){.game{grid-template-columns:minmax(420px,.95fr) 1.05fr;align-items:start}.game>.stg{order:2;position:sticky;top:10px}.game>.ed{order:1}}
-@media(max-width:999px){.game>.stg{order:1}.game>.ed{order:2}}
 .bwrap{position:relative}
-#bw{height:440px;border:2.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fffdf5}
-@media(max-width:600px){#bw{height:380px}}
-#bw.vb-locked::after{content:"";position:absolute;inset:0;z-index:50;cursor:progress}
-.bcount{position:absolute;top:10px;right:12px;z-index:6;background:rgba(30,27,75,.92);color:#fff;border-radius:10px;padding:2px 10px;font-weight:800;font-size:.8rem;pointer-events:none}
-.vb-run .blocklyPath{stroke:#ffd23f!important;stroke-width:5px!important;filter:drop-shadow(0 0 9px #ffd23f) brightness(1.12)}
-.blocklyText{font-family:Nunito,'Nunito Sans',system-ui,sans-serif!important}
-#pyw{display:none;margin-top:10px}
-.pyhd{display:flex;justify-content:space-between;align-items:center;gap:8px}
-#pyv{margin-top:8px;padding:8px 0;border-radius:12px;background:#0f1424;color:#e8ecff;font:600 .86rem/1.6 ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);overflow:auto;max-height:240px}
-.pl{display:block;white-space:pre;padding-right:12px}
-.pl i{display:inline-block;width:2.4em;text-align:right;margin-right:12px;opacity:.4;font-style:normal}
-.pl.on{background:rgba(110,220,130,.30);box-shadow:inset 4px 0 #6ee082}
-.kw{color:#ff9ac1}.st{color:#a5e075}.fn{color:#7cc4ff}.nu{color:#ffcf6b}
-#py{display:none;width:100%;margin-top:8px;padding:10px;border-radius:12px;background:#0f1424;color:#9be28f;font-family:ui-monospace,Consolas,monospace;border:2.5px solid var(--ink);resize:vertical}
 #pyeb{display:none}
-.pynote{display:block;margin-top:6px;opacity:.7;font-weight:700}
 </style>
 </head>
 <body>
@@ -724,5 +666,6 @@ $('#go').onclick=async()=>{
 levels();render();preview();
 
 </script>
+<script src="vb-extras.js"></script>
 </body>
 </html>

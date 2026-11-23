@@ -32,4 +32,35 @@ window.VB_SOL={"fabrica": [["soldar()\nentregar()", "soldar()\npintar(\"vermelho
   var b=w.querySelector('.vbc-btn'),p=w.querySelector('.vbc');
   b.addEventListener('click',function(){var v=!p.classList.contains('on');p.classList.toggle('on',v);b.setAttribute('aria-expanded',String(v))});
  }catch(e){}};
+ /* ---- cartão «Novo conceito»: aparece na 1.ª missão do ciclo que usa «repetir», «enquanto» ou «se/senão» ---- */
+ var CON={rep:['🔁','Repetir','Quando um passo se repete, não precisas de o escrever muitas vezes: usa «repetir» e diz quantas vezes.'],
+  wh:['🔄','Enquanto','«Enquanto» repete os passos até a situação mudar. Não é preciso saber quantas vezes — o programa vai verificando.'],
+  'if':['🔀','Se … senão','«Se» só faz os passos quando a condição é verdadeira. Com «senão» escolhes o que fazer no outro caso.']};
+ function conceptsOf(p,o){var c={};p.forEach(function(b){if(b.k==='rep')c.rep=1;else if(b.k==='wh')c.wh=1;else if(b.k==='else'||o.conds[b.k])c['if']=1});return c}
+ function span(p,o,pred){for(var i=0;i<p.length;i++){if(pred(p[i])){var d=0,j=i;for(;j<p.length;j++){if(o.open.indexOf(p[j].k)>=0)d++;else if(p[j].k==='end'){d--;if(d===0)break}}return p.slice(i,j+1)}}return null}
+ VB.intro=function(o){try{
+  var old=document.getElementById('vbi');if(old)old.remove();
+  var sols=((window.VB_SOL||{})[o.game]||[])[o.cy];if(!sols||!o.before)return;
+  var seen={},cur=null;
+  for(var i=0;i<=o.lv&&i<sols.length;i++){var p;try{p=o.parsePy(sols[i])}catch(e){continue}
+   var c=conceptsOf(p,o);if(i<o.lv){for(var q in c)seen[q]=1}else cur={c:c,p:p}}
+  if(!cur)return;
+  var k=['rep','wh','if'].filter(function(x){return cur.c[x]&&!seen[x]})[0];if(!k)return;
+  var key='vbi:'+o.game+':'+o.cy+':'+k;try{if(localStorage.getItem(key))return}catch(e){}
+  var seg=span(cur.p,o,function(b){return k==='rep'?b.k==='rep':k==='wh'?b.k==='wh':!!o.conds[b.k]});if(!seg)return;
+  var col=function(t,sub,code){return '<div class="vbi-c"><b>'+t+'</b> <small>'+sub+'</small><pre>'+esc(code)+'</pre></div>'};
+  var ex;
+  if(k==='rep'){var body=seg.slice(1,-1),flat=[];for(var r=0;r<seg[0].n;r++)flat=flat.concat(body);
+   var fl=lines(flat,o).split('\n'),more=fl.length>10;if(more)fl=fl.slice(0,9).concat('…');
+   ex=col('Sem «repetir»',cnt(flat)+' blocos',fl.join('\n'))+col('Com «repetir»',cnt(seg)+' blocos',lines(seg,o))}
+  else ex=col('Exemplo desta missão',cnt(seg)+' blocos',lines(seg,o));
+  if(!document.getElementById('vbi-css')){var st=document.createElement('style');st.id='vbi-css';
+   st.textContent='.vbi{margin:8px 0;background:#fff8e1;color:#3b2a00;border:2px solid #fbbf24;border-radius:12px;padding:10px;font-size:.92rem;text-align:left}.vbi p{margin:4px 0}.vbi-g{display:flex;gap:10px;flex-wrap:wrap}.vbi-c{flex:1 1 170px;min-width:0}.vbi pre{margin:4px 0;padding:8px;background:#fff;border-radius:8px;white-space:pre-wrap;font:600 .85rem/1.45 ui-monospace,Consolas,monospace}.vbi button{margin-top:6px;background:#d97706;color:#fff;border:0;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer}';document.head.appendChild(st)}
+  var card=document.createElement('div');card.id='vbi';card.className='vbi';card.setAttribute('role','region');card.setAttribute('aria-label','Novo conceito: '+CON[k][1]);
+  card.innerHTML='<b>'+CON[k][0]+' Novo: '+CON[k][1]+'</b><p>'+CON[k][2]+'</p><div class="vbi-g">'+ex+'</div><button type="button">Percebi! ✔</button>';
+  o.before.insertAdjacentElement('beforebegin',card);
+  card.querySelector('button').addEventListener('click',function(){try{localStorage.setItem(key,'1')}catch(e){}card.remove();o.after&&o.after()});
+  o.after&&o.after();
+ }catch(e){}};
+
 })();

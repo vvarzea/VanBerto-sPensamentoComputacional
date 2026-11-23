@@ -28,10 +28,12 @@ for(const m of pr.matchAll(/⭐⭐⭐ com (\d+) ou menos; ⭐⭐ até (\d+)/g)){
 ok(n>0&&bad===0,`professora.html: ${n} limiares coerentes com a regra`);
 
 // 4) service worker e versões
-ok(/vanbertos-v50/.test(R('sw.js')),'sw.js: cache atualizada');
+ok(/vanbertos-v51/.test(R('sw.js')),'sw.js: cache atualizada');
 for(const g of ['fabrica','casa-cao','natal']) ok(R(`blocos/${g}.html`).includes('vb-solucoes.js')&&R(`blocos/${g}.html`).includes('VB.compare'),`${g}: carrega as soluções e a comparação`);
 ok(R('sw.js').includes('vb-solucoes.js'),'sw.js: guarda vb-solucoes.js offline');
 console.log('\nPara validar as soluções no motor real dos jogos:  python3 tests/verify-missoes.py');
 ok(R('blocos/casa-cao.html').includes('dog3dUpdate')&&R('blocos/casa-cao.html').includes('id="d3"'),'casa-cao: cão 3D e opção «Cão 3D» presentes');
 ok(R('blocos/fabrica.html').includes('engParts')&&R('blocos/fabrica.html').includes('hoodK'),'fabrica: motor detalhado e capô presentes');
+for(const g of ['fabrica','casa-cao','natal']){const h=R(`blocos/${g}.html`);ok(h.includes('vb-extras.js')&&h.includes('vb-jogo.css'),`${g}: carrega vb-extras.js e vb-jogo.css`)}
+ok(R('sw.js').includes('vb-extras.js')&&R('sw.js').includes('vb-jogo.css'),'sw.js: guarda extras e CSS comum offline');
 process.exit(fail?1:0);
