@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#fff8e7">
-<title>Hora do Código · Casa Inteligente e Cão Robô</title>
+<title>Hora do Código · Cão Robô</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#1e1b4b;--sun:#ffd23f;--coral:#ff6b6b;--mint:#2ee6a6;--sky:#4cc9f0;--grape:#7c3aed;--cream:#fff8e7;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -76,7 +76,7 @@ footer{text-align:center;font-size:.85rem;font-weight:800;opacity:.75;margin-top
 </head>
 <body>
 <div class="w">
-<header><h1>🏠 Hora do Código · Casa Inteligente e Cão Robô</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
+<header><h1>🐕 Hora do Código · Cão Robô</h1><div class="sub">VanBerto’s · Programa com blocos e Python</div></header>
 <div class="game">
 <div class="card ed">
 <div class="lv" id="cys"></div>
@@ -369,11 +369,11 @@ function show(E){
  });
  const tx=px(E.target[0]),tz=pz(E.target[1]);
  const ring=new THREE.Mesh(new THREE.RingGeometry(.55,.75,32),new THREE.MeshBasicMaterial({color:0x2ee6a6,transparent:true,opacity:.85,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.set(tx,.09,tz);LVG.add(ring);
- const bx=tx+.46,bz=tz+.46,rx=Math.max(-W*TS/2+1.25,Math.min(W*TS/2-1.25,tx+.23)),rz=Math.max(-H*TS/2+.85,Math.min(H*TS/2-.85,tz+.23));
+ const sx=tx>0?-1:1,sz=tz>0?-1:1,bx=tx+sx*.72,bz=tz+sz*.72,rx=Math.max(-W*TS/2+1.25,Math.min(W*TS/2-1.25,tx+sx*.23)),rz=Math.max(-H*TS/2+.85,Math.min(H*TS/2-.85,tz+sz*.23)); /* tigela no canto do quadrado (virado para o interior): o cão pára no centro e não a pisa */
  const rug=box(2.5,.04,1.7,rugMat,rx,.03,rz,LVG);rug.rotation.y=-.05;
- const bw=cyl(.36,.3,.18,M(0xff6b6b,.5),LVG);bw.position.set(bx,.14,bz);
- cyl(.26,.26,.05,M(0x5a2a0c,.9),LVG).position.set(bx,.24,bz);
- {const bn=new THREE.Group();bn.position.set(bx-1.05,.09,bz+.1);bn.rotation.y=.5;LVG.add(bn);const bm=M(0xfff4d0,.6);const sh=cyl(.05,.05,.5,bm,bn);sh.rotation.z=Math.PI/2;[[-.25,.07],[-.25,-.07],[.25,.07],[.25,-.07]].forEach(p=>{const k=new THREE.Mesh(new THREE.SphereGeometry(.08,10,8),bm);k.position.set(p[0],0,p[1]);k.castShadow=true;bn.add(k)})}
+ const bw=cyl(.31,.26,.18,M(0xff6b6b,.5),LVG);bw.position.set(bx,.14,bz);
+ cyl(.22,.22,.05,M(0x5a2a0c,.9),LVG).position.set(bx,.24,bz);
+ {const bn=new THREE.Group();bn.position.set(Math.max(-W*TS/2+.45,Math.min(W*TS/2-.45,tx-sx*.72)),.09,tz+sz*.72);bn.rotation.y=.5;LVG.add(bn);const bm=M(0xfff4d0,.6);const sh=cyl(.05,.05,.5,bm,bn);sh.rotation.z=Math.PI/2;[[-.25,.07],[-.25,-.07],[.25,.07],[.25,-.07]].forEach(p=>{const k=new THREE.Mesh(new THREE.SphereGeometry(.08,10,8),bm);k.position.set(p[0],0,p[1]);k.castShadow=true;bn.add(k)})}
  dog.position.set(px(E.start.x),.03,pz(E.start.y));ang=-E.start.d*Math.PI/2;dog.rotation.y=ang;legs.forEach(l=>l.rotation.z=0);
 }
 function size(){const w=cv.clientWidth||640;R.setPixelRatio(light?.5:Math.min(window.devicePixelRatio||1,2));R.setSize(w,w*9/16,false)}
@@ -554,7 +554,7 @@ function beep(f,d,t,w){
  try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+(w||0);
  o.type=t||'square';o.frequency.value=f;g.gain.setValueAtTime(.05,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}
 }
-const CERT_AC={game:'Casa Inteligente e Cão Robô',main:'#7c3aed',dark:'#4c1d95',rgb:'124,58,237'};
+const CERT_AC={game:'Cão Robô',main:'#7c3aed',dark:'#4c1d95',rgb:'124,58,237'};
 function certStar(g,cx,cy,R,r){g.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rad=i%2?r:R;g[i?'lineTo':'moveTo'](cx+Math.cos(a)*rad,cy+Math.sin(a)*rad)}g.closePath()}
 function certificate(){
  const draw=()=>{

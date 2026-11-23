@@ -17,7 +17,7 @@ bad=total=0
 with sync_playwright() as p:
     b=p.chromium.launch()
     for game in ['fabrica','natal','casa-cao']:
-        pg=b.new_page(); errs=[]; pg.on('pageerror',lambda e:errs.append(str(e)))
+        pg=b.new_page(); errs=[]; pg.add_init_script('window.requestAnimationFrame=()=>0')  # só a lógica interessa: não desenhar o 3D torna o teste rápido; pg.on('pageerror',lambda e:errs.append(str(e)))
         pg.goto((ROOT/f'{game}.html').as_uri(),wait_until='domcontentloaded',timeout=90000); pg.wait_for_timeout(2500)
         pg.evaluate(f"window.GAME='{game}'")
         n=pg.evaluate('VB_SOL[GAME].map(c=>c.length)')
