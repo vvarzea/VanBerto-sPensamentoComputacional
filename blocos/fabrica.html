@@ -50,6 +50,7 @@
 <div id="cert" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;padding:12px;overflow:auto"><div class="card" style="max-width:700px;margin:0 auto"><img id="cimg" alt="Certificado" style="width:100%"><div class="row"><button id="cdl" style="background:#30a46c">⬇ Guardar PNG</button><button id="cpr" style="background:#3776ab">🖨️ Imprimir</button><button id="cx" style="background:#6b7280">Fechar</button></div></div></div>
 <script src="vb-core.js"></script>
 <script src="vb-solucoes.js"></script>
+<script src="vb-atmos.js"></script>
 <script src="blockly_compressed.js"></script>
 <script src="blockly-msg-pt.js"></script>
 <script src="vb-editor.js"></script>
@@ -150,7 +151,7 @@ SX.forEach((x,i)=>{
  for(const z of[-3,3])box(3.6,.04,.07,new THREE.MeshBasicMaterial({color:SC[i]}),x,.05,z);
  for(const dx of[-1.8,1.8])box(.07,.04,6,new THREE.MeshBasicMaterial({color:SC[i]}),x+dx,.05,0);
  sign(STN[i],i+1,x,SH[i]);
- const sp=new THREE.SpotLight(SC[i],2.4,20,.75,.5);sp.position.set(x,9,2);sp.target.position.set(x,0,0);S.add(sp,sp.target);spots.push(sp);
+ const sp=new THREE.SpotLight(SC[i],2.4,20,.75,.5);sp.position.set(x,9,2);sp.target.position.set(x,0,0);S.add(sp,sp.target);spots.push(sp);window.VBA&&VBA.beam(S,x,9,2,x,0,0,2.7,SC[i],.1);
 });
 /* cabine de pintura */
 for(const sx of[-1,1])for(const sz of[-1,1])box(.18,3.6,.18,dark,-2+sx*2,1.8,sz*2.3);
@@ -160,6 +161,15 @@ for(let i=0;i<5;i++){const b=new THREE.Mesh(new THREE.BoxGeometry(3.6,.05,.26),g
 /* guardas amarelas */
 for(const z of[-3.9,3.9]){for(let x=-11;x<=13;x+=2)box(.1,.9,.1,yel,x,.45,z);box(25,.08,.08,yel,1,.9,z);box(25,.08,.08,yel,1,.5,z)}
 
+/* atmosfera e detalhe industrial: poeira no ar, tubagens, bidões e caixotes */
+if(window.VBA){VBA.dust(S,{x0:-12,x1:14,y0:.4,y1:7,z0:-4,z1:4,color:0xfff1d6},150,.07,.4)}
+{const pipeM=M(0x9aa3b2,.35,.85),pipeB=M(0x3e63dd,.4,.5),pipeR=M(0xc83a3a,.4,.5);
+ [[3.3,.17,pipeM],[3.95,.11,pipeB],[2.75,.09,pipeR]].forEach(p=>{const c=cyl(p[1],p[1],40,p[2],S);c.rotation.z=Math.PI/2;c.position.set(2,p[0],-6.35)});
+ for(let x=-16;x<=20;x+=4){box(.14,1.5,.14,dark,x,3.3,-6.5);for(const y of[3.3,3.95,2.75])box(.34,.06,.22,dark,x,y-.04,-6.38)}
+ const barrel=(x,z,c)=>{cyl(.5,.5,1.2,M(c,.5,.4),S).position.set(x,.6,z);[.25,.95].forEach(y=>cyl(.52,.52,.07,dark,S).position.set(x,y,z));cyl(.44,.44,.04,M(0xdddddd,.4,.6),S).position.set(x,1.21,z)};
+ [[-12.6,-5.0,0xc83a3a],[-11.6,-5.4,0x3e63dd],[-12.2,-4.3,0xe2b33a],[14.4,-5.0,0x2fb88f],[13.4,-5.3,0xc83a3a]].forEach(b=>barrel(b[0],b[1],b[2]));
+ const crate=(x,y,z,s)=>{box(s,s,s,M(0xb08850,.85,0),x,y,z);for(const d of[-1,1]){box(s+.04,.07,.07,M(0x6b4a2b,.8,0),x,y+d*s/2,z+s/2);box(.07,s+.04,.07,M(0x6b4a2b,.8,0),x+d*s/2,y,z+s/2)}};
+ crate(-13.7,.55,-5.2,1.1);crate(-13.7,1.65,-5.2,1.0);crate(15.4,.55,-4.9,1.1);}
 /* carro: perfil extrudido com chanfro, vidros, rodas (só aparecem na estação 4) */
 const car=new THREE.Group();S.add(car);VBG.blob(car,0,.02,0,3.4,1.8,.5);
 const bodyMat=new THREE.MeshPhysicalMaterial({color:0x8d94a0,roughness:.4,metalness:.5,clearcoat:1,clearcoatRoughness:.12});
@@ -228,8 +238,11 @@ function arm(x,z,flip,k){
  VBG.blob(S,x,.03,z,2.0,2.0,.55);
  const g=new THREE.Group();g.position.set(x,0,z);if(flip)g.rotation.y=Math.PI;S.add(g);
  cyl(.75,.85,.25,steel,g).position.y=.125;cyl(.55,.6,.5,red,g).position.y=.5;
+ for(let q=0;q<8;q++){const a=q*Math.PI/4;cyl(.045,.045,.06,dark,g).position.set(Math.cos(a)*.68,.28,Math.sin(a)*.68)}
  const p1=new THREE.Group();p1.position.y=.85;g.add(p1);ball(.34,steel,p1);box(.38,1.7,.38,red,0,.85,0,p1);
  const p2=new THREE.Group();p2.position.y=1.75;p1.add(p2);ball(.3,steel,p2);box(.3,1.5,.3,red,0,.75,0,p2);
+ box(.43,.15,.43,yel,0,.2,0,p1);box(.34,.13,.34,yel,0,1.4,0,p1);cyl(.06,.06,1.25,M(0xdfe3ea,.18,1),p1).position.set(0,.95,.3);cyl(.095,.095,.62,steel,p1).position.set(0,.42,.3);cyl(.032,.032,1.45,dark,p2).position.set(.2,.75,.12);
+ {const led=new THREE.Mesh(new THREE.SphereGeometry(.07,10,8),new THREE.MeshBasicMaterial({color:0x2fe26c}));led.position.set(0,1.45,.2);p2.add(led);window.VBA&&VBA.glow(p2,0,1.45,.2,0x2fe26c,.5,.6)}
  const p3=new THREE.Group();p3.position.y=1.5;p2.add(p3);ball(.2,steel,p3);cyl(.1,.07,.55,steel,p3).position.y=.3;
  const tip=new THREE.Object3D();tip.position.y=.62;p3.add(tip);
  const a={p1,p2,p3,tip};poseArms([a],k||0);return a;
@@ -266,7 +279,7 @@ function reset(){car.position.set(-9.5,.3,0);bodyMat.color.set(0x8d94a0);car.vis
 reset();
 
 function size(){const w=cv.clientWidth||640;R.setPixelRatio(light?.5:Math.min(window.devicePixelRatio||1,2));R.setSize(w,w*9/16,false)}
-function setLight(v,auto){light=v;$('#lt').checked=v;R.shadowMap.enabled=!v;S.environment=v?null:VBG.envTex;dl.castShadow=!v;spots.forEach(s=>s.intensity=v?0:2.4);S.traverse(o=>{if(o.material)o.material.needsUpdate=true});size();if(auto)say('Fiz o modo leve para ajudar este computador. 😉')}
+function setLight(v,auto){light=v;window.VBA&&VBA.setLight(S,v);$('#lt').checked=v;R.shadowMap.enabled=!v;S.environment=v?null:VBG.envTex;dl.castShadow=!v;spots.forEach(s=>s.intensity=v?0:2.4);S.traverse(o=>{if(o.material)o.material.needsUpdate=true});size();if(auto)say('Fiz o modo leve para ajudar este computador. 😉')}
 $('#lt').onchange=e=>setLight(e.target.checked);
 addEventListener('resize',size);size();
 let last=performance.now(),fr=0,acc=0,camX=-4;

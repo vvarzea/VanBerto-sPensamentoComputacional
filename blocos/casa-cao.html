@@ -50,6 +50,7 @@
 <script src="vb-gfx.js"></script>
 <script src="vb-core.js"></script>
 <script src="vb-solucoes.js"></script>
+<script src="vb-atmos.js"></script>
 <script src="blockly_compressed.js"></script>
 <script src="blockly-msg-pt.js"></script>
 <script src="vb-editor.js"></script>
@@ -253,6 +254,9 @@ function dogUpdate(){
   const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;
   const m=new THREE.Mesh(new THREE.PlaneGeometry(2.3,2.9),new THREE.MeshBasicMaterial({map:t,transparent:true,opacity:.42,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false}));
   m.rotation.x=-Math.PI/2;m.rotation.z=.18;m.position.set(-1.3,.04,wz+1.75);m.renderOrder=2;S.add(m);window.__sun=m}
+ if(window.VBA){[-2.5,-1.8,-1.1].forEach(x=>VBA.ray(S,x,2.08,wz+.05,x+.55,.05,wz+2.2,.5,.9,0xffe7b0,.16));
+  VBA.dust(S,{x0:-3.2,x1:.3,y0:.2,y1:2.2,z0:wz+.1,z1:wz+2.6,color:0xfff2cf},45,.05,.55);
+  VBA.wallAO(S,W*TS,0,-H*TS/2+.45,0,.32);VBA.wallAO(S,H*TS,-W*TS/2+.45,0,Math.PI/2,.32)}
  /* radiador debaixo da janela + planta no parapeito */
  {const g=new THREE.Group();g.position.set(-1.8,0,wz+.09);S.add(g);
   for(let i=0;i<13;i++)box(.1,.46,.08,wht,-1.0+i*.1667,.45,0,g);box(2.2,.05,.1,wht,0,.72,0,g);box(2.2,.05,.1,wht,0,.2,0,g);
@@ -319,7 +323,7 @@ function show(E){
  dog.position.set(px(E.start.x),.03,pz(E.start.y));ang=-E.start.d*Math.PI/2;dog.rotation.y=ang;legs.forEach(l=>l.rotation.z=0);
 }
 function size(){const w=cv.clientWidth||640;R.setPixelRatio(light?.5:Math.min(window.devicePixelRatio||1,2));R.setSize(w,w*9/16,false)}
-function setLight(v,auto){light=v;if(window.__sun)window.__sun.visible=!v;$('#lt').checked=v;R.shadowMap.enabled=!v;S.environment=v?null:VBG.envTex;dl.castShadow=!v;S.traverse(o=>{if(o.material)o.material.needsUpdate=true});size();if(auto)say('Fiz o modo leve para ajudar este computador. 😉')}
+function setLight(v,auto){light=v;if(window.__sun)window.__sun.visible=!v;window.VBA&&VBA.setLight(S,v);$('#lt').checked=v;R.shadowMap.enabled=!v;S.environment=v?null:VBG.envTex;dl.castShadow=!v;S.traverse(o=>{if(o.material)o.material.needsUpdate=true});size();if(auto)say('Fiz o modo leve para ajudar este computador. 😉')}
 let light=false,fr=0,acc=0,last=performance.now();
 $('#lt').onchange=e=>setLight(e.target.checked);
 addEventListener('resize',size);size();

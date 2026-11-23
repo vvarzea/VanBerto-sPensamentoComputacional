@@ -14,6 +14,7 @@
 | `blocos/vb-editor.js` | Editor de blocos (Blockly) partilhado |
 | `blocos/vb-gfx.js` | Texturas, sombras e ambiente 3D partilhados |
 | `blocos/vb-solucoes.js` | Soluções de referência (`VB_SOL`), comparação no fim da missão (`VB.compare`) e cartão «Novo conceito» (`VB.intro`) |
+| `blocos/vb-atmos.js` | Atmosfera 3D partilhada: feixes de luz, raios de sol, halos nas luzes, poeira no ar e sombras junto às paredes (desligam-se no «Modo leve») |
 | `blocos/vb-extras.js` | Modo teclado, anúncios para leitores de ecrã e ligação do cartão de conceito |
 | `tests/` | Testes automáticos (ver abaixo) |
 
